@@ -4,8 +4,8 @@ SEO-CheckUp
 Analyse wichtiger SEO-Kriterien der Artikel-Livedaten und Anzeige der Ergebnisse in einer Übersichtsseite sowie in der Sidebar des jeweiligen Artikels.
 
 Prüfung u.A. von: Seitentitel, Seitenbeschreibung, H1, Content, Bilder, Lesbarkeit (Flesch), Fokus-Keyword und OpenGraph.
-Weitere Funktionen: Schnelltest in der Sidebar, Artikelübersicht mit allen Ergebnissen, SERP-Snippet  
- 
+Weitere Funktionen: Schnelltest in der Sidebar, Artikelübersicht mit allen Ergebnissen, SERP-Snippet
+
 ![screenshot](https://user-images.githubusercontent.com/4291047/65507701-c5857d80-dece-11e9-8526-54392478404a.jpg)
 
 Features
@@ -38,8 +38,8 @@ Prüfkriterien
 - Keyword-Dichte
 - Fokus-Keyword einmal/mehrmals innerhalb der Webseite
 
-<br /><br />
-##
+
+-------------------
 
 ### Changelog
 siehe CHANGELOG.md des AddOns
