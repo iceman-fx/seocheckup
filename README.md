@@ -1,5 +1,4 @@
-﻿SEO-CheckUp
-===========
+# SEO-CheckUp
 
 Analyse wichtiger SEO-Kriterien der Artikel-Livedaten und Anzeige der Ergebnisse in einer Übersichtsseite sowie in der Sidebar des jeweiligen Artikels.
 
@@ -12,7 +11,7 @@ Weitere Funktionen: Schnelltest in der Sidebar, Artikelübersicht mit allen Erge
 
 <br />
 
-Features
+## Features
 - Schnelltest in der Sidebar des Artikels
 - Anzeige des Ergebnisses bei zugeklapptem Sidebar-Panel
 - Test auf Fokus-Keyword
@@ -23,7 +22,7 @@ Features
 - Konfiguration von Sidebar-Panel & Prüfkriterien
 <br />
 
-Prüfkriterien
+## Prüfkriterien
 - Seitentitel (Vorhandensein, Länge & Wortanzahl)
 - Seitenbeschreibung (Vorhandensein, Länge & Wortanzahl)
 - OpenGraph-Tags (Vorhandensein, Titel/Beschreibung/URL gesetzt)
