@@ -7,7 +7,9 @@ Prüfung u.A. von: Seitentitel, Seitenbeschreibung, H1, Content, Bilder, Lesbark
 Weitere Funktionen: Schnelltest in der Sidebar, Artikelübersicht mit allen Ergebnissen, SERP-Snippet
 
 <br />
+
 ![screenshot](https://user-images.githubusercontent.com/4291047/65507701-c5857d80-dece-11e9-8526-54392478404a.jpg)
+
 <br />
 
 Features
