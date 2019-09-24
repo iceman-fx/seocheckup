@@ -36,7 +36,7 @@ Prüfkriterien
 - Fokus-Keyword im Alternativtext der Bilder
 - Keyword-Dichte
 - Fokus-Keyword einmal/mehrmals innerhalb der Webseite
-    
+
 -----
 
 ### Changelog
