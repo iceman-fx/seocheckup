@@ -18,7 +18,6 @@ Features
 - Auslesen der Daten über den Quelltext des Artikels sowie, sofern vorhanden, aus yRewrite
 - Hinweis auf Artikelstatus sowie vorhandene Weiterleitung (rex_redirect)
 - Konfiguration von Sidebar-Panel & Prüfkriterien
-<br />
 
 Prüfkriterien
 -------------
@@ -37,9 +36,8 @@ Prüfkriterien
 - Fokus-Keyword im Alternativtext der Bilder
 - Keyword-Dichte
 - Fokus-Keyword einmal/mehrmals innerhalb der Webseite
-
-
--------------------
+    
+-----
 
 ### Changelog
 siehe CHANGELOG.md des AddOns
