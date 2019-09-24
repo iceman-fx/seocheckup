@@ -41,6 +41,3 @@ Prüfkriterien
 
 ### Changelog
 siehe CHANGELOG.md des AddOns
-
-### Lizenz
-MIT-Lizenz, siehe LICENSE des AddOns
