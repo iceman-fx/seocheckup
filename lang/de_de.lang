@@ -1,0 +1,175 @@
+# addon: seocheckup de_de
+
+a1544_title = SEO-CheckUp
+
+a1544_default = Artikel-CheckUp
+a1544_help = Hilfe
+a1544_config = Einstellungen
+
+a1544_head_basics = Allgemeine Einstellungen
+a1544_head_config = Einstellungen
+a1544_head_help = Onlinehilfe
+
+
+a1544_subheader_config1 = Einstellungen Sidebar
+a1544_subheader_config2 = Konfiguration SEO-Prüfungen
+
+
+# Backend-Ausgaben
+a1544_seo_modal_title = SEO-CheckUp
+a1544_seo_modal_analyze = Analyse wird geladen ...
+a1544_seo_modal_close = Schließen
+a1544_seo_modal_error = Fehler
+a1544_seo_modal_legibility = Lesbarkeit
+a1544_seo_modal_artnotfound = Artikel nicht gefunden
+
+a1544_seo_head = SEO-CheckUp der Liveversion
+a1544_seo_details = Details ...
+a1544_seo_keyword = Fokus-Keyword
+a1544_seo_refresh = aktualisieren
+a1544_seo_tests = Analyse
+a1544_seo_nottested = Analyse noch nicht durchgeführt.
+a1544_seo_tests_ok = Test(s) erfolgreich
+a1544_seo_preview = Vorschau
+a1544_seo_nohtml = <span class="rex-offline">Fehler beim Abruf des Artikels!</span><br />"###error###".
+a1544_seo_artoffline = <span class="rex-offline">Artikel ist offline!</span><br />Analyse daher nur eingeschränkt möglich.</span>
+a1544_seo_artchanged = <span class="rex-offline">Artikel wurde geändert!</span><br />Schalten Sie die Änderung live, um die Analyse zu komplettieren.</span>
+a1544_seo_artredirect = <span class="rex-offline">Aktive Weiterleitung entdeckt!</span><br />Korrekte Analyse für diesen Artikel nicht möglich.</span>
+
+a1544_seo_title_ok = Seitentitel ist gesetzt
+a1544_seo_title_nok = Seitentitel fehlt
+a1544_seo_title_short = Seitentitel ist zu kurz
+a1544_seo_title_long = Seitentitel ist zu lang
+a1544_seo_title_opt = Seitentitel hat die optimale Länge
+a1544_seo_title_words = Seitentitel hat eine optimale Wortanzahl
+a1544_seo_desc_ok = Seitenbeschreibung ist gesetzt
+a1544_seo_desc_nok = Seitenbeschreibung fehlt
+a1544_seo_desc_short = Seitenbeschreibung ist zu kurz
+a1544_seo_desc_long = Seitenbeschreibung ist zu lang
+a1544_seo_desc_opt = Seitenbeschreibung hat die optimale Länge
+a1544_seo_desc_words = Seitenbeschreibung hat eine optimale Wortanzahl
+a1544_seo_og_ok = OpenGraph-Tags sind vorhanden
+a1544_seo_og_nok = OpenGraph-Tags sollten gesetzt werden
+a1544_seo_ogtitle_ok = OpenGraph-Titel ist gesetzt
+a1544_seo_ogtitle_nok = OpenGraph-Titel fehlt
+a1544_seo_ogdesc_ok = OpenGraph-Beschreibung ist gesetzt
+a1544_seo_ogdesc_nok = OpenGraph-Beschreibung fehlt
+a1544_seo_ogurl_ok = OpenGraph-URL ist gesetzt
+a1544_seo_ogurl_nok = OpenGraph-URL fehlt
+a1544_seo_h1_ok = H1-Überschrift gefunden
+a1544_seo_h1_nok = Keine H1-Überschrift gefunden
+a1544_seo_h1multi = Mehrere H1-Überschriften gefunden
+a1544_seo_cnt_short = Content sollte länger sein (###words###/###cwords### Wörter)
+a1544_seo_cnt_ok = Content hat eine gute Länge (###words### Wörter gefunden)
+
+a1544_seo_cnt_titlewords_ok = Wörter aus Seitentitel im Content gefunden
+a1544_seo_cnt_titlewords_nok = Worte aus dem Seitentitel fehlen im Content
+a1544_seo_cnt_h1words_ok = Wörter aus H1-Überschrift im Content gefunden
+a1544_seo_cnt_h1words_nok = Worte aus der H1-Überschrift fehlen im Content
+
+a1544_seo_img_ok = Alle Bilder besitzen Alternativtexte
+a1544_seo_img_nok = ###count### Bild(er) ohne Alternativtext gefunden
+a1544_seo_img_notfound = Es konnten keine Bilder gefunden werden
+a1544_seo_flesch = Flesch-Reading Wert: ###score### (###result### lesbarer Text)
+a1544_seo_flesch_grade1 = sehr leicht
+a1544_seo_flesch_grade2 = leicht
+a1544_seo_flesch_grade3 = mittelmäßig
+a1544_seo_flesch_grade4 = schwer
+a1544_seo_flesch_grade5 = sehr schwer
+
+a1544_seo_density = Keyword-Dichte liegt bei ###density###%
+a1544_seo_keyunique = Fokus-Keyword wird nur auf dieser Seite genutzt
+a1544_seo_keymulti = Fokus-Keyword wird auf mehreren Seiten genutzt
+a1544_seo_keycount = Keyword ###count###x auf der Seite gefunden
+a1544_seo_keycnt_ok = Keyword ###count###x im Content gefunden
+a1544_seo_keycnt_nok = Keyword fehlt im Content
+a1544_seo_keytitle_ok = Keyword im Seitentitel gefunden
+a1544_seo_keytitle_nok = Keyword fehlt im Seitentitel
+a1544_seo_keydesc_ok = Keyword in der Seitenbeschreibung gefunden
+a1544_seo_keydesc_nok = Keyword fehlt in der Seitenbeschreibung
+a1544_seo_keyurl_ok = Keyword in der URL gefunden
+a1544_seo_keyurl_nok = Keyword fehlt in der URL
+a1544_seo_keyh1_ok = Keyword in der H1-Überschrift gefunden
+a1544_seo_keyh1_nok = Keyword fehlt in der H1-Überschrift
+a1544_seo_keyimg_ok = Keyword im Alternativtext von Bildern gefunden
+a1544_seo_keyimg_nok = Keyword fehlt im Alternativtext von Bildern
+
+
+# Seite: Allgemein = SEO-CheckUp
+a1544_bas_list_name = Artikelname
+a1544_bas_list_status = Status
+a1544_bas_list_result = SEO-Analyse
+a1544_bas_list_focuskw = Fokus-Keyword
+a1544_bas_list_refreshall = angezeigte Artikel analysieren
+
+
+# Seite: Einstellungen
+a1544_config_seo = SEO-CheckUp anzeigen
+a1544_config_seo_info = SEO-CheckUp in der Sidebar des Artikels anzeigen
+a1544_config_seo_opened = SEO-CheckUp geöffnet anzeigen
+a1544_config_seo_opened_info = SEO-CheckUp immer geöffnet anzeigen
+a1544_config_seo_showchecks = SEO-CheckUp Anzeigemodus
+a1544_config_seo_showchecks_info1 = nicht bestandene Tests / Detail-Schaltfläche
+a1544_config_seo_showchecks_info2 = alle Einzeltests immer anzeigen
+a1544_config_seo_offlinekeywords = Keyword in Offline-Artikeln
+a1544_config_seo_offlinekeywords_info = die Verwendung des Fokus-Keywords auch in Offline-Artikeln prüfen
+a1544_config_seo_title_chars = Anz. Zeichen Seitentitel
+a1544_config_seo_desc_chars = Anz. Zeichen Seitenbeschreibung
+a1544_config_seo_title_words = Anz. Wörter Seitentitel
+a1544_config_seo_desc_words = Anz. Wörter Seitenbeschreibung
+a1544_config_seo_content_words = Anz. Wörter Content
+a1544_config_seo_density_range = Keyword-Dichte (%)
+a1544_config_seo_removeblock = Content aufbereiten
+a1544_config_seo_removeblock_header = <header>-Blöcke entfernen
+a1544_config_seo_removeblock_footer = <footer>-Blöcke entfernen
+a1544_config_seo_removeblock_nav = <nav>-Blöcke entfernen
+
+
+# Sonstige Vorgaben
+a1544_example = Beispiel
+a1544_examples = Beispiele...
+a1544_overview = Übersicht:
+
+a1544_search_all = alle
+a1544_search_noselection = - keine Auswahl -
+a1544_search_sort = Ansicht
+a1544_search_sort_onlyactive = nur aktive Einträge (online)
+a1544_search_sort_onlyinactive = nur deaktivierte Einträge (offline)
+a1544_search_keyword = Suchbegriff
+a1544_search_submit = suchen
+a1544_search_reset = Suche zurücksetzen
+a1544_search_notfound = Es wurden keine Einträge gefunden.
+a1544_search_more = mehr Optionen
+a1544_search_cat = Kategorie
+a1544_search_maincat = Hauptkategorie
+a1544_search_archive = Nur Archiveinträge anzeigen
+
+a1544_edit = ändern
+a1544_delete = löschen
+a1544_online = online
+a1544_offline = offline
+a1544_new = hinzufügen
+a1544_save = Speichern
+a1544_yes = ja
+a1544_no = nein
+a1544_showbox = anzeigen/ausblenden
+a1544_showcss = CSS anzeigen/ausblenden
+
+a1544_settings_saved = Die Einstellungen wurden gespeichert!
+a1544_module_saved = Das Modul wurde installiert!
+a1544_error = Es ist ein Fehler aufgetreten!
+a1544_notice = Hinweis
+a1544_entry_saved = Eintrag gespeichert
+a1544_entry_deleted = Eintrag gelöscht
+a1544_error_saved = Fehler beim Speichern
+a1544_error_deleted = Fehler beim Löschen
+
+a1544_dir = Verzeichnis
+a1544_destdir = Zielverzeichnis
+a1544_notdeleted = konnte nicht gelöscht werden
+a1544_notcopyed = konnte nicht kopiert werden
+a1544_deletemodule = Bitte löschen Sie über das Addon installierte Module von Hand.
+a1544_emptyfield = leer oder ungültig
+a1544_charslenfield = ist zu kurz
+
+a1544_js_confirm = Wollen Sie das Modul wirklich installieren?

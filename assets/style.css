@@ -1,0 +1,55 @@
+@charset "utf-8";
+/* CSS Document for SEO-CheckUp */
+
+.seocu-title { position: relative; padding-right: 35px; }
+.seocu-head { display: block; font-weight: bold !important; margin: 20px 0px 5px; }
+	
+form.seoculist-form a.rotate i, .seocheckup a.rotate i { animation: seocu-rotate 2s linear infinite; }
+	@keyframes seocu-rotate { 100% { transform: rotate(360deg); } }
+
+.seocheckup ul { list-style: none; margin: 0px; padding: 0px; }
+.seocheckup li { display: block; position: relative; margin: 0px; padding: 0px 0px 0px 20px; }
+	.seocheckup li.seocu-noicon { padding-left: 0px; }
+	.seocheckup li.seocu-indent { padding-left: 40px; }
+.seocheckup li i { position: absolute; left: 0px; top: 3px; }
+	.seocheckup li.seocu-indent i { left: 20px; }
+
+.seocu-result { display: inline-block; background: none; color: #FFF; border-radius: 2px; font-size: 12px; font-weight: normal; padding: 3px 8px; width: auto; line-height: normal; margin: 0px 0px 0px 10px; }
+	.seocheckup .seocu-result { margin: 0px 5px 0px 0px; }
+	.seocu-result-refresh { background: #747d87; margin: 0px; cursor: pointer; }
+		.seocu-result-refresh:hover { background: #999; }
+	.seocu-result-refresh i { margin-right: 6px; }
+.seocu-resultbar { background: none; width: 1%; height: 3px; margin: 8px -16px -11px; }
+.seocu-quickinfo { background: none; width: auto; position: absolute; right: -6px; top: 5px; font-size: 12px; text-align: center; line-height: 13px; }
+	.seocu-quickinfo > span { background: #FFF; padding: 4px 2px; border-radius: 3px; }
+		.seocu-quickinfo > span.info { padding: 4px 6px; }
+	
+.seocu-preview { max-width: 570px; }
+	.seocu-preview > span { display: block; font-family: Arial,sans-serif; font-style: normal; font-weight: 400; zoom: 1; text-align: left; list-style-image: none; list-style-position: outside; list-style-type: none; word-break: break-word; word-wrap: break-word; }
+.seocu-preview-title { color: #1a0dab; cursor: pointer; display: inline; font-size: 17px; height: auto; line-height: 1.3; text-decoration: none; width: auto; }
+.seocu-preview-url { color: #006621; font-size: 13px; min-height: 15px; line-height: 1.5; margin-bottom: 1px; white-space: normal; width: auto; }
+.seocu-preview-desc { color: #444; display: inline; font-size: 12px; height: auto; line-height: 1.57; width: auto; word-break: normal; word-wrap: normal; }
+
+
+.seoculist-name { word-break: break-all; }
+.seoculist-nowrap { white-space: nowrap; }
+.seoculist-url, .seoculist-detail { font-size: 0.85em; opacity: 0.85; }
+.seoculist-detail { cursor: pointer; }
+.seoculist-data .seocu-result { margin: 0px 0px 2px 0px; }
+	.seoculist-data .seocu-result-info { background: rgba(0,0,0, 0.1); color: rgba(0,0,0, 0.6); }
+.seoculist-data .seocu-resultbar { display: none; margin: 10px 0px 0px; }
+
+
+#seocu-modal { background: rgba(40,53,66, 0.4); }
+#seocu-modal .modal-header { background: #dfe3e9; line-height: 1.25; padding: 10px 15px; font-size: 16px; }
+#seocu-modal .modal-title { display: inline; }
+#seocu-modal .seocu-check .seocu-head:first-child { margin-top: 0px; }
+
+#seocu-modal .seocu-preview-title { font-size: 18px; }
+#seocu-modal .seocu-preview-url { font-size: 14px; min-height: 16px; }
+#seocu-modal .seocu-preview-desc { font-size: 13px; }
+
+
+/* mobile Ansicht */
+@media screen and (max-width:991px){
+}
