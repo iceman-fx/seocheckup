@@ -35,6 +35,8 @@ Weitere Funktionen: Schnelltest in der Sidebar, Artikelübersicht mit allen Erge
 - Keyword-Dichte
 - Fokus-Keyword einmal/mehrmals innerhalb der Webseite
 
+<br /><br />
+##
 
 ### Changelog
 siehe CHANGELOG.md des AddOns
