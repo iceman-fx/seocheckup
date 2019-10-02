@@ -3,6 +3,10 @@
 
 Changelog
 ---------
+<b>Version 1.2</b>
+- Integration weiterer Analysen (Überschriftenstruktur, Verlinkungen, URL-Länge/-Tiefe)
+- Codeoptimierung/Bugfixing
+
 <b>Version 1.1.3</b>
 - Designoptimierung Sidebar-Ansicht
 

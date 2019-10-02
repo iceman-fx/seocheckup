@@ -2,7 +2,7 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Verwaltung: Einstellungen (config)
-	v1.1.3
+	v1.2
 	by Falko Müller @ 2019
 	package: redaxo5
 */
@@ -28,10 +28,13 @@ if ($func == "save" && isset($_POST['submit'])):
 		'be_seo_desc_words'		=> rex_post('be_seo_desc_words', 'int'),
 		'be_seo_content_words'	=> rex_post('be_seo_content_words', 'int'),
 		'be_seo_density_min'	=> rex_post('be_seo_density_min', 'int'),
-		'be_seo_density_max'	=> rex_post('be_seo_density_max', 'int'),		
+		'be_seo_density_max'	=> rex_post('be_seo_density_max', 'int'),
+		'be_seo_url_max'		=> rex_post('be_seo_url_max', 'int'),
+		'be_seo_url_depths'		=> rex_post('be_seo_url_depths', 'int'),
+		'be_seo_links'			=> rex_post('be_seo_links', 'int'),
 		'be_seo_removeblock_header'	=> rex_post('be_seo_removeblock_header'),
 		'be_seo_removeblock_footer'	=> rex_post('be_seo_removeblock_footer'),
-		'be_seo_removeblock_nav'	=> rex_post('be_seo_removeblock_nav'),		
+		'be_seo_removeblock_nav'	=> rex_post('be_seo_removeblock_nav'),
 	]);
 
 	$res = $this->setConfig('config', $newCfg);											//Config speichern (ersetzt komplett die alte Config)
@@ -192,6 +195,30 @@ endif;
                 <dt><label for="be_seo_content_words"><?php echo $this->i18n('a1544_config_seo_content_words'); ?></label></dt>
                 <dd>
                     <input type="text" size="25" name="be_seo_content_words" id="be_seo_content_words" value="<?php echo @$config['be_seo_content_words']; ?>" maxlength="3" class="form-control" />
+                </dd>
+            </dl>
+            
+        
+            <dl class="rex-form-group form-group">
+                <dt><label for="be_seo_links"><?php echo $this->i18n('a1544_config_seo_links'); ?></label></dt>
+                <dd>
+                    <input type="text" size="25" name="be_seo_links" id="be_seo_links" value="<?php echo @$config['be_seo_links']; ?>" maxlength="2" class="form-control" />
+                </dd>
+            </dl>
+            
+        
+            <dl class="rex-form-group form-group">
+                <dt><label for="be_seo_url_max"><?php echo $this->i18n('a1544_config_seo_url_max'); ?></label></dt>
+                <dd>
+                    <input type="text" size="25" name="be_seo_url_max" id="be_seo_url_max" value="<?php echo @$config['be_seo_url_max']; ?>" maxlength="3" class="form-control" placeholder="max" />
+                </dd>
+            </dl>
+            
+        
+            <dl class="rex-form-group form-group">
+                <dt><label for="be_seo_url_depths"><?php echo $this->i18n('a1544_config_seo_url_depths'); ?></label></dt>
+                <dd>
+                    <input type="text" size="25" name="be_seo_url_depths" id="be_seo_url_depths" value="<?php echo @$config['be_seo_url_depths']; ?>" maxlength="2" class="form-control" placeholder="max" />
                 </dd>
             </dl>
             

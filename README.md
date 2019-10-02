@@ -1,4 +1,4 @@
-SEO-CheckUp
+﻿SEO-CheckUp
 ===========
 
 Analyse wichtiger SEO-Kriterien der Artikel-Livedaten und Anzeige der Ergebnisse in einer Übersichtsseite sowie in der Sidebar des jeweiligen Artikels.
@@ -6,7 +6,7 @@ Analyse wichtiger SEO-Kriterien der Artikel-Livedaten und Anzeige der Ergebnisse
 Prüfung u.A. von: Seitentitel, Seitenbeschreibung, H1, Content, Bilder, Lesbarkeit (Flesch), Fokus-Keyword und OpenGraph.
 Weitere Funktionen: Schnelltest in der Sidebar, Artikelübersicht mit allen Ergebnissen, SERP-Snippet
 
-![screenshot](https://user-images.githubusercontent.com/4291047/65508788-4e9db400-ded1-11e9-85c1-9817ea0e2c43.jpg)
+![screenshot](https://user-images.githubusercontent.com/4291047/65507701-c5857d80-dece-11e9-8526-54392478404a.jpg)
 
 Features
 --------
@@ -25,8 +25,11 @@ Prüfkriterien
 - Seitenbeschreibung (Vorhandensein, Länge & Wortanzahl)
 - OpenGraph-Tags (Vorhandensein, Titel/Beschreibung/URL gesetzt)
 - H1-Überschrift (Vorhandensein, mehrfaches Vorkommen)
+- Überschriftenstruktur
 - Content (Länge, Vorhandensein der Wörter aus Seitentitel & H1)
 - Bilder (Vorhandensein, leere ALT-Attribute)
+- Verlinkungen (Vorhandensein)
+- URL-Länge/-Tiefe
 
 - Fokus-Keyword im Seitentitel
 - Fokus-Keyword in der Seitenbeschreibung

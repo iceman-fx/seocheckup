@@ -2,7 +2,7 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Installation
-	v1.1.3
+	v1.2
 	by Falko Müller @ 2019
 	package: redaxo5
 */
@@ -28,6 +28,9 @@ if (!$this->hasConfig()):
 		'be_seo_content_words'	=> '300',
 		'be_seo_density_min'	=> '2',
 		'be_seo_density_max'	=> '4',
+		'be_seo_url_max'		=> '55',
+		'be_seo_url_depths'		=> '3',
+		'be_seo_links'			=> '3',
 		'be_seo_removeblock_header'	=> 'checked',
 		'be_seo_removeblock_footer'	=> 'checked',
 		'be_seo_removeblock_nav'	=> 'checked',

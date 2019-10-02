@@ -2,7 +2,7 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Backend-Funktionen (SEO)
-	v1.1.3
+	v1.2
 	by Falko Müller @ 2019
 	package: redaxo5
 */
@@ -70,7 +70,7 @@ $panel .= <<<EOD
 EOD;
 
 	//SEO-Panel erstellen und ausgeben
-	$collapsed = ($config['be_seo_opened'] != 'checked') ? true : false;
+	$collapsed = (@$config['be_seo_opened'] != 'checked') ? true : false;
 	$frag = new rex_fragment();
 		$frag->setVar('title', '<div class="seocu-title"><i class="rex-icon fa-stethoscope"></i> '.rex_i18n::msg('a1544_seo_head').'<div class="seocu-resultbar"></div><div class="seocu-quickinfo"></div></div>', false);
 		$frag->setVar('body', $panel, false);
@@ -138,9 +138,10 @@ function a1544_seocheckup()
 
 	//Vorgaben einlesen/setzen
 	$config = rex_addon::get($a1544_mypage)->getConfig('config');			//Addon-Konfig einladen
-		$config['be_seo_removeblock_header']= (!isset($config['be_seo_removeblock_header']))? '' : $config['be_seo_removeblock_header'];
-		$config['be_seo_removeblock_footer']= (!isset($config['be_seo_removeblock_footer']))? '' : $config['be_seo_removeblock_footer'];
-		$config['be_seo_removeblock_nav'] 	= (!isset($config['be_seo_removeblock_nav'])) 	? '' : $config['be_seo_removeblock_nav'];
+		$config['be_seo_removeblock_header']= (!isset($config['be_seo_removeblock_header']))? 'checked' : $config['be_seo_removeblock_header'];
+		$config['be_seo_removeblock_footer']= (!isset($config['be_seo_removeblock_footer']))? 'checked' : $config['be_seo_removeblock_footer'];
+		$config['be_seo_removeblock_nav'] 	= (!isset($config['be_seo_removeblock_nav'])) 	? 'checked' : $config['be_seo_removeblock_nav'];
+		
 		$config['be_seo_offlinekeywords'] 	= (!isset($config['be_seo_offlinekeywords'])) 	? '' : $config['be_seo_offlinekeywords'];
 		$config['be_seo_title_min'] 		= (!isset($config['be_seo_title_min']))			? '50' : $config['be_seo_title_min'];
 		$config['be_seo_title_max'] 		= (!isset($config['be_seo_title_max']))			? '65' : $config['be_seo_title_max'];
@@ -148,20 +149,25 @@ function a1544_seocheckup()
 		$config['be_seo_desc_min'] 			= (!isset($config['be_seo_desc_min'])) 			? '130' : $config['be_seo_desc_min'];
 		$config['be_seo_desc_max'] 			= (!isset($config['be_seo_desc_max'])) 			? '160' : $config['be_seo_desc_max'];
 		$config['be_seo_desc_words'] 		= (!isset($config['be_seo_desc_words'])) 		? '12' : $config['be_seo_desc_words'];
+		$config['be_seo_content_words'] 	= (!isset($config['be_seo_content_words'])) 	? '300' : $config['be_seo_content_words'];
 		$config['be_seo_density_min'] 		= (!isset($config['be_seo_density_min'])) 		? '300' : $config['be_seo_density_min'];
 		$config['be_seo_density_max'] 		= (!isset($config['be_seo_density_max'])) 		? '4' : $config['be_seo_density_max'];
+		$config['be_seo_url_max'] 			= (!isset($config['be_seo_url_max'])) 			? '55' : $config['be_seo_url_max'];
+		$config['be_seo_url_depths'] 		= (!isset($config['be_seo_url_depths'])) 		? '3' : $config['be_seo_url_depths'];
+		$config['be_seo_links'] 			= (!isset($config['be_seo_links'])) 			? '3' : $config['be_seo_links'];
 	
 	$showchecks = ((isset($config['be_seo_showchecks']) && $config['be_seo_showchecks'] == 'checked') || $showtests) ? true : false;
 		
-	$regex_script = "/<script((?!src=)[^>])*?>.*<\/script>/isU";	//regex: Script-Bereiche
-	$regex_style = "/<style[^>]*?>.*<\/style>/isU";					//regex: Style-Bereiche
+	$regex_script = "/<script((?!src=)[^>])*?>.*?<\/script>/is";	//regex: Script-Bereiche --> kein U-Modifier, da bereits non-greedy
+	$regex_style = "/<style[^>]*?>.*?<\/style>/is";					//regex: Style-Bereiche --> kein U-Modifier, da bereits non-greedy
 	$regex_wspace = "/\s\s+/";										//regex: Multiple Leerzeichen
 	$regex_pmarks = "/[[:punct:]]/";								//regex: Satzzeichen + gängige Sonderzeichen
 	
 	
     //SEO+HTML-Daten vorbereiten
 	$yr = array();
-	$prot = 'http://';
+	$prot = 'http://';																								//TODO: Protokoll aus Aufruf bereits auslesen, falls kein yRewrite genutzt wird
+	$dom = $_SERVER['SERVER_NAME'];
 	$url = $prot.$_SERVER['SERVER_NAME'].rex_getUrl($actArt, $actClang);
 
 		//mit Daten aus yRewrite abgleichen
@@ -172,10 +178,11 @@ function a1544_seocheckup()
 				$yr['desc'] = $yrs->getDescription();
 				$yr['desctag'] = $yrs->getDescriptionTag();
 					$tmp = $yrs->getRobotsTag();
-				$yr['robots'] = (!empty($tmp)) ? preg_replace('#^.*content="(.*)".*#i', "$1", $tmp) : '';
+				$yr['robots'] = (!empty($tmp)) ? preg_replace('/^.*content\s*=\s*"(.*)".*/i', "$1", $tmp) : '';
 				$yr['canonical'] = $yrs->getCanonicalUrlTag();
 			
 			$prot = (rex_yrewrite::isHttps()) ? 'https://' : $prot;
+			$dom = rex_yrewrite::getDomainByArticleId($actArt)->getName();
 			$url = rex_yrewrite::getFullUrlByArticleId($actArt, $actClang);
 		endif;
 		
@@ -217,9 +224,9 @@ function a1544_seocheckup()
 		//Content aufbereiten
 		$html = trim($html);
 		$artcnt_raw = trim($artcnt_raw);
-			$artcnt_raw = ($config['be_seo_removeblock_header'] == 'checked') 	? preg_replace("/<header[^\>]*>.*<\/header>/ims", "", $artcnt_raw) : $artcnt_raw;
-			$artcnt_raw = ($config['be_seo_removeblock_footer'] == 'checked') 	? preg_replace("/<footer[^\>]*>.*<\/footer>/ims", "", $artcnt_raw) : $artcnt_raw;
-			$artcnt_raw = ($config['be_seo_removeblock_nav'] == 'checked') 		? preg_replace("/<nav[^\>]*>.*<\/nav>/ims", "", $artcnt_raw) : $artcnt_raw;
+			$artcnt_raw = ($config['be_seo_removeblock_header'] == 'checked') 	? preg_replace("/<header[^\>]*>.*<\/header>/imsU", "", $artcnt_raw) : $artcnt_raw;			//--> U-Modifier, da sonst greedy
+			$artcnt_raw = ($config['be_seo_removeblock_footer'] == 'checked') 	? preg_replace("/<footer[^\>]*>.*<\/footer>/imsU", "", $artcnt_raw) : $artcnt_raw;			//--> U-Modifier, da sonst greedy
+			$artcnt_raw = ($config['be_seo_removeblock_nav'] == 'checked') 		? preg_replace("/<nav[^\>]*>.*<\/nav>/imsU", "", $artcnt_raw) : $artcnt_raw;				//--> U-Modifier, da sonst greedy
 		$arthead = trim(substr($html, 0,stripos($html, "</head>")));
 		unset($html);
 		
@@ -227,23 +234,21 @@ function a1544_seocheckup()
             $artcnt = preg_replace($regex_script, "", $artcnt);																				//Script-Blöcke entfernen
             $artcnt = preg_replace($regex_style, "", $artcnt);																				//Style-Blöcke entfernen
 			$artcnt = trim(preg_replace($regex_wspace, " ", strip_tags($artcnt)));															//Tags entfernen, mehrfache Leerzeichen vereinfachen
-		$artcnt_wo_h1 = preg_replace("/<h1[^>]*>.*?<\/h1>/is", "", $artcnt_raw);															//Content ohne H1-Überschriften
+		$artcnt_wo_h1 = preg_replace("/<h1[^>]*>.*?<\/h1>/is", "", $artcnt_raw);															//Content ohne H1-Überschriften --> kein U-Modifier, da bereits non-greedy
             $artcnt_wo_h1 = preg_replace($regex_script, "", $artcnt_wo_h1);																	//Script-Blöcke entfernen
             $artcnt_wo_h1 = preg_replace($regex_style, "", $artcnt_wo_h1);																	//Style-Blöcke entfernen
 			$artcnt_wo_h1 = trim(preg_replace($regex_wspace, " ", strip_tags($artcnt_wo_h1)));												//Tags entfernen, mehrfache Leerzeichen vereinfachen		
 		
 		$art = rex_article::get($actArt, $actClang);																						//Artikel referenzieren für weitere Prüfungen
 		
-		/*		
-		if ($mode != 'json'):
-			dump("artcnt_raw\n\n\n".$artcnt_raw);
-       		dump("artcnt\n\n\n".$artcnt);
-			dump("artcnt_wo_h1\n\n\n".$artcnt_wo_h1);
-		endif;
-		*/
+		//dump("artcnt_raw\n\n\n".$artcnt_raw);
+		//dump("artcnt\n\n\n".$artcnt);
+		//dump("artcnt_wo_h1\n\n\n".$artcnt_wo_h1);
 
 	
     //Prüfungen durchführen
+	$col_ok = "rex-online";
+	$col_nok = "rex-offline";
     $icon_ok = "fa-check-circle rex-online";
     $icon_nok = "fa-times-circle rex-offline";
     $icon_info = "fa-info-circle";
@@ -283,46 +288,54 @@ $cnt .= <<<EOD
         </div>
 EOD;
 */		
-    	$cnt .= '<span class="seocu-head seocu-first-head">'.rex_i18n::msg('a1544_seo_tests').'</span>';																						//<span class="seocu-result"></span>
+    	$cnt .= '<span class="seocu-head seocu-first-head">'.rex_i18n::msg('a1544_seo_tests').'</span>';																	//<span class="seocu-result"></span>
         $cnt .= '<ul>';
 		$cnt .= '###detaillink###';
 		
         
 		//Einzelwerte aufbereiten
-		preg_match("/<title[^>]*>(.*?)<\/title>/is", $arthead, $matches);
+		preg_match("/<title[^>]*>(.*?)<\/title>/is", $arthead, $matches);																									//Title holen --> kein U-Modifier, da bereits non-greedy
 			$title = (!isset($matches[1]) || empty($matches[1])) ? $yrs->getTitle() : $matches[1];
 			$title = trim(preg_replace("/\s\s+/", " ", $title));
 			$title_raw = aFM_unmaskQuotes($title);
 			$title_words = (!empty($title_raw)) ? explode(" ", trim(preg_replace($regex_wspace, " ", preg_replace($regex_pmarks, " ", $title_raw))) ) : array();			//Wörter in title finden
 			
-		preg_match("/<meta name=[\"']{1}description[\"']{1}[ ]+content=[\"']{1}([^\"']*)[\"']{1}[^>]*>/is", $arthead, $matches);
+		preg_match("/<meta name\s*=\s*[\"']{1}description[\"']{1}[ ]+content\s*=\s*[\"']{1}([^\"']*)[\"']{1}[^>]*>/is", $arthead, $matches);								//Description holen
 			$desc = (!isset($matches[1]) || empty($matches[1])) ? $yrs->getDescription() : $matches[1];
 			$desc = trim(preg_replace("/\s\s+/", " ", $desc));
 			$desc_raw = aFM_unmaskQuotes($desc);
 			
-		preg_match_all("/<h1[^>]*>(.*?)<\/h1[^>]*>/iU", $artcnt_raw, $matches);
+		preg_match_all("/<h1[^>]*>(.*?)<\/h1[^>]*>/is", $artcnt_raw, $matches);																								//H1-Überschrift(en) holen --> kein U-Modifier, da bereits non-greedy
 			$h1 = $h1cnt = (isset($matches[1])) ? $matches[1] : '';
 			$h1cnt = (is_array($h1cnt)) ? implode(" ", $h1cnt) : $h1cnt;
 				$h1cnt = preg_replace($regex_script, "", $h1cnt);																											//Script-Blöcke entfernen
 				$h1cnt = preg_replace($regex_style, "", $h1cnt);																											//Style-Blöcke entfernen
 				$h1cnt = trim(preg_replace($regex_wspace, " ", strip_tags($h1cnt)));																						//Tags entfernen
 			$h1_words = (!empty($h1cnt)) ? explode(" ", trim(preg_replace($regex_wspace, " ", preg_replace($regex_pmarks, " ", aFM_unmaskQuotes($h1cnt)))) ) : array();		//Wörter in H1 finden
+
+		preg_match_all("/<h([0-6]{1})[^>]*>(.*?)<\/h[0-6]{1}[^>]*>/is", $artcnt_raw, $matches);																				//alle Überschriften holen --> kein U-Modifier, da bereits non-greedy
+			$hx = (isset($matches[2])) ? $matches[2] : '';
+			$hx_types = (isset($matches[1])) ? $matches[1] : '';
 			
-		$has_og = (float)preg_match_all("/<meta property=[\"']{1}og:[^\"']*[\"']{1}[ ]+content=[\"']{1}[^\"']*[\"']{1}[^>]*>/iU", $arthead);
+		$has_og = (float)preg_match_all("/<meta property\s*=\s*[\"']{1}og:[^\"']*[\"']{1}[ ]+content\s*=\s*[\"']{1}[^\"']*[\"']{1}[^>]*>/iU", $arthead);					//Anzahl OG-Tags holen --> U-Modifier, da sonst greedy
 			$has_og = ($has_og > 0) ? true : false;
-			preg_match("/<meta property=[\"']{1}og:title[\"']{1}[ ]+content=[\"']{1}([^\"']*)[\"']{1}[^>]*>/is", $arthead, $matches);
+			preg_match("/<meta property\s*=\s*[\"']{1}og:title[\"']{1}[ ]+content\s*=\s*[\"']{1}([^\"']*)[\"']{1}[^>]*>/is", $arthead, $matches);
 				$ogtitle = (isset($matches[1])) ? trim(preg_replace("/\s\s+/", " ", $matches[1])) : '';
 				$ogtitle_raw = aFM_unmaskQuotes($ogtitle);
-			preg_match("/<meta property=[\"']{1}og:description[\"']{1}[ ]+content=[\"']{1}([^\"']*)[\"']{1}[^>]*>/is", $arthead, $matches);
+			preg_match("/<meta property\s*=\s*[\"']{1}og:description[\"']{1}[ ]+content\s*=\s*[\"']{1}([^\"']*)[\"']{1}[^>]*>/is", $arthead, $matches);
 				$ogdesc = (isset($matches[1])) ? trim(preg_replace("/\s\s+/", " ", $matches[1])) : '';
 				$ogdesc_raw = aFM_unmaskQuotes($ogdesc);
-			preg_match("/<meta property=[\"']{1}og:url[\"']{1}[ ]+content=[\"']{1}([^\"']*)[\"']{1}[^>]*>/is", $arthead, $matches);
+			preg_match("/<meta property\s*=\s*[\"']{1}og:url[\"']{1}[ ]+content\s*=\s*[\"']{1}([^\"']*)[\"']{1}[^>]*>/is", $arthead, $matches);
 				$ogurl = (isset($matches[1])) ? trim(preg_replace("/\s\s+/", " ", $matches[1])) : '';
 				$ogurl_raw = aFM_unmaskQuotes($ogurl);
-				
-		preg_match_all("/<img(.*?)[^\/>]*\/>/iU", $artcnt_raw, $matches);
-			$imgs = (isset($matches[1])) ? $matches[1] : array();
+		
+		preg_match_all("/<img([\w\W]+?)\/>/is", $artcnt_raw, $matches);																										//alle Bilder holen --> kein U-Modifier, da bereits non-greedy
+			$imgs = (isset($matches[1])) ? $matches[1] : array();																											//alt: /<img [^\/>]*\/>/isU
 			$imgcnt = (is_array($imgs)) ? implode(" ", $imgs) : $imgs;
+		
+		preg_match_all("/<a [^>]*href\s*=\s*[\"']{1}([^\"']*)[\"']{1}[^>]*>(.*)<\/a>/isU", $artcnt_raw, $matches);															//alle Verlinkungen holen (a href) --> U-Modifier, da sonst greedy
+			$links = (isset($matches[1])) ? $matches[1] : array();
+			//$linknames = (isset($matches[2])) ? $matches[2] : array();
 
 		
 		//allgemeine Prüfungen (title, desc, opengraph (title, desc, url), h1, content)
@@ -402,6 +415,29 @@ EOD;
 		$checks++;
 		
 		
+		//URL Länge
+		$tmp = preg_replace("/(http[s]?:\/\/|\/$)/i", "", str_replace($dom, "", $url));
+			$tmp = preg_replace("/^\//i", "", $tmp);
+		if (strlen($tmp) > $config['be_seo_url_max']):
+			$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.rex_i18n::msg('a1544_seo_url_length_nok').'</li>';
+		else:
+			$cnt .= ($showchecks) ? '<li><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_url_length_ok').'</li>' : '';
+			$checks_ok++;
+		endif;
+		$checks++;
+		
+		
+		//URL Verzeichnistiefe
+		$tmp = explode("/", $tmp);
+		if (count($tmp) > $config['be_seo_url_depths']):
+			$cnt .= '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_nok.'"></i>'.rex_i18n::msg('a1544_seo_url_depth_nok').'</li>';
+		else:
+			$cnt .= ($showchecks) ? '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_url_depth_ok').'</li>' : '';
+			$checks_ok++;
+		endif;
+		$checks++;		
+		
+		
 		//H1
 		if (count($h1) > 1):
 			$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.rex_i18n::msg('a1544_seo_h1multi').'</li>';
@@ -412,6 +448,39 @@ EOD;
 			$checks_ok++;
 		endif;
 		$checks++;
+		
+		
+		//H-Struktur
+		$hxcount = count($hx_types);
+		if ($hxcount > 0):
+			$hxlast = $hx_types[0];
+			$hxerror = ($hxlast != 1) ? true : false;
+
+			$tmp = ($hxerror) ? $col_nok : '';
+			$hxlist = '<div id="seocu-hxlist" class="seocu-infolist seocu-hide">';
+			$hxlist .= '<dl><dt>H'.$hx_types[0].'</dt><dd class="'.$tmp.'">'.$hx[0].'</dd></dl>';
+			for ($i=1; $i < $hxcount; $i++):
+				if ($hx_types[$i] != 1 && ($hx_types[$i] == $hxlast || $hx_types[$i] < $hxlast || $hx_types[$i] == ($hxlast+1))):
+					$tmp = "";
+				else:
+					$hxerror = true;
+					$tmp = $col_nok;
+				endif;
+				
+				$hxlast = $hx_types[$i];					
+				$hxlist .= '<dl><dt>H'.$hx_types[$i].'</dt><dd class="'.$tmp.'">'.$hx[$i].'</dd></dl>';
+			endfor;
+			$hxlist .= '</div>';
+			
+			if (!$hxerror):
+				$cnt .= ($showchecks) ? '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_hx_ok').'</li>' : '';
+				$checks_ok++;
+			else:
+				$cnt .= '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_nok.'"></i><span class="seocu-infolistswitch" data-seocu-dst="#seocu-hxlist">'.rex_i18n::msg('a1544_seo_hx_nok').'&nbsp;<span class="rex-icon fa-caret-down"></span></span>'.$hxlist.'</li>';
+			endif;
+			$checks++;
+		endif;
+		unset($hxlist, $hxerror);
 		
 		
 		//content
@@ -425,10 +494,11 @@ EOD;
 		$checks++;
 		
 		
-		//content -> found title words
+		//content -> gefundene title Wörter
 		$found = 0;
 		foreach ($title_words as $word):
-			if (strstr(strtolower($artcnt_wo_h1), strtolower($word))) { $found++; }
+			//if (strstr(strtolower($artcnt_wo_h1), strtolower($word))) { $found++; }
+			if (stristr($artcnt_wo_h1, $word)) { $found++; }
 		endforeach;
 		
 		if (count($title_words) == $found):
@@ -440,10 +510,11 @@ EOD;
 		$checks++;
 		
 		
-		//content -> found H1 words
+		//content -> gefundene H1 Wöter
 		$found = 0;
 		foreach ($h1_words as $word):
-			if (strstr(strtolower($artcnt_wo_h1), strtolower($word))) { $found++; }
+			//if (strstr(strtolower($artcnt_wo_h1), strtolower($word))) { $found++; }
+			if (stristr($artcnt_wo_h1, $word)) { $found++; }
 		endforeach;
 		
 		if (count($h1_words) == $found):
@@ -458,15 +529,55 @@ EOD;
 		//images
 		$acount = 0;
 		if (count($imgs) > 0):
+			$imglist = '<div id="seocu-imglist" class="seocu-infolist seocu-hide">';
 			foreach ($imgs as $img):
-				preg_match("/alt=[\"']{1}([^\"']*)[\"']{1}/i", $img, $matches);
-				if (!isset($matches[1]) || empty($matches[1])) { $acount++; }
+				preg_match("/alt\s*=\s*[\"']{1}([^\"']*)[\"']{1}/i", $img, $matches);
+				if (!isset($matches[1]) || empty($matches[1])):
+					$acount++;
+					
+					preg_match("/src\s*=\s*[\"']{1}([^\"']*)[\"']{1}/i", $img, $matches);
+					$imglist .= (isset($matches[1]) && !empty($matches[1])) ? '<dl><dt>IMG</dt><dd class="'.$col_nok.'">'.$matches[1].'</dd></dl>' : '';
+				endif;
 			endforeach;
+			$imglist .= '</div>';
 			
 			if ($acount > 0):
-				$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.str_replace("###count###", $acount, rex_i18n::msg('a1544_seo_img_nok')).'</li>';
+				$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i><span class="seocu-infolistswitch" data-seocu-dst="#seocu-imglist">'.str_replace("###count###", $acount, rex_i18n::msg('a1544_seo_img_nok')).'&nbsp;<span class="rex-icon fa-caret-down"></span></span>'.$imglist.'</li>';
 			else:
 				$cnt .= ($showchecks) ? '<li><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_img_ok').'</li>' : '';
+				$checks_ok++;
+			endif;
+			$checks++;
+		endif;
+		unset($imglist);
+		
+		
+		//links
+		$lcount = $lcount_int = $lcount_ext = $lcount_intimg = 0;
+		if (count($links) > 0):
+			foreach ($links as $link):
+				$link = trim($link);
+				
+				if (!empty($link)):
+					if (preg_match("/^#/i", $link)): continue; endif;
+
+					$lcount++;
+					if (stristr($link, $dom) || !preg_match("/^(http[s]?:\/\/)/i", $link)):
+						if (preg_match("/\.(jpg|jpeg|gif|png|svg)$/i", $link)):
+							$lcount_intimg++;
+						else:
+							$lcount_int++;
+						endif;
+					else:
+						$lcount_ext++;
+					endif;
+				endif;
+			endforeach;
+			
+			if ($lcount_int < $config['be_seo_links']):
+				$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.str_replace(array("###intlinks###", "###extlinks###"), array($lcount_int, $lcount_ext), rex_i18n::msg('a1544_seo_links_nok')).'</li>';
+			else:
+				$cnt .= ($showchecks) ? '<li><i class="rex-icon '.$icon_ok.'"></i>'.str_replace(array("###intlinks###", "###extlinks###"), array($lcount_int, $lcount_ext), rex_i18n::msg('a1544_seo_links_ok')).'</li>' : '';
 				$checks_ok++;
 			endif;
 			$checks++;
@@ -478,7 +589,8 @@ EOD;
 			$cnt .= ($showchecks || $checks > $checks_ok) ? '<li>&nbsp;</li>' : '';
 		
 			//title
-			if (strstr(strtolower($title_raw), $keyword)):
+			//if (strstr(strtolower($title_raw), $keyword)):
+			if (stristr($title_raw, $keyword)):
 				$cnt .= ($showchecks) ? '<li><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_keytitle_ok').'</li>' : '';
 				$checks_ok++;
 			else:
@@ -488,7 +600,8 @@ EOD;
 			
 			
 			//desc
-			if (strstr(strtolower($desc_raw), $keyword)):
+			//if (strstr(strtolower($desc_raw), $keyword)):
+			if (stristr($desc_raw, $keyword)):
 				$cnt .= ($showchecks) ? '<li><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_keydesc_ok').'</li>' : '';
 				$checks_ok++;
 			else:
@@ -498,17 +611,21 @@ EOD;
 			
 			
 			//url
-			if (strstr(strtolower($url), $keyword)):
+			//if (strstr(strtolower($url), $keyword)):
+			if (!stristr($url, $keyword)):
+				$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.rex_i18n::msg('a1544_seo_keyurl_nok').'</li>';
+			elseif (substr_count($url, $keyword) > 1):
+				$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.rex_i18n::msg('a1544_seo_keyurl_multi').'</li>';
+			else:
 				$cnt .= ($showchecks) ? '<li><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_keyurl_ok').'</li>' : '';
 				$checks_ok++;
-			else:
-				$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.rex_i18n::msg('a1544_seo_keyurl_nok').'</li>';
 			endif;
 			$checks++;
 			
 			
 			//h1
-			if (strstr(strtolower($h1cnt), $keyword)):
+			//if (strstr(strtolower($h1cnt), $keyword)):
+			if (stristr($h1cnt, $keyword)):
 				$cnt .= ($showchecks) ? '<li><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_keyh1_ok').'</li>' : '';
 				$checks_ok++;
 			else:
@@ -520,7 +637,7 @@ EOD;
 			//content
 			//preg_match_all("/".$keyword."/iU", $artcnt, $matches);
 			//$kcountbody = count(@$matches[0]);
-			$kcountbody = (float)preg_match_all("/".$keyword."/iU", $artcnt);
+			$kcountbody = (float)preg_match_all("/".$keyword."/iU", $artcnt);				//U-Modifier, da sonst greedy
 			if ($kcountbody > 0):
 				$cnt .= ($showchecks) ? '<li><i class="rex-icon '.$icon_ok.'"></i>'.str_replace("###count###", $kcountbody, rex_i18n::msg('a1544_seo_keycnt_ok')).'</li>' : '';
 				$checks_ok++;
@@ -533,7 +650,7 @@ EOD;
 			//images
 			//preg_match_all("/".$keyword."/iU", $imgcnt, $matches);
 			//$kcountimg = count(@$matches[0]);
-			$kcountimg = (float)preg_match_all("/".$keyword."/iU", $imgcnt);
+			$kcountimg = (float)preg_match_all("/".$keyword."/iU", $imgcnt);				//U-Modifier, da sonst greedy
 			if ($kcountimg > 0):
 				$cnt .= ($showchecks) ? '<li><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_keyimg_ok').'</li>' : '';
 				$checks_ok++;
@@ -674,12 +791,23 @@ EOD;
 		$cnt .= '<span class="seocu-preview-title">'.aFM_maskChar($ptitle).'</span>';
 		$cnt .= '<span class="seocu-preview-url">'.$url.'</span>';
 		$cnt .= '<span class="seocu-preview-desc">'.$desc.'</span>';
-    $cnt .= '</div>';    
-	
+    $cnt .= '</div>';
+
+
+	/* SPÄÄÄÄTER vielleicht !!!
+	//Navbar & Navcontent aufbereiten
+	$cnt .= '<div class="seocu-navbar btn-group btn-group-xs">';
+		$cnt .= '<a class="btn btn-default active">'.rex_i18n::msg('a1544_seo_preview').'</a>';
+		$cnt .= '<a class="btn btn-default">Überschriften</a>';
+		$cnt .= '<a class="btn btn-default">Bilder</a>';
+		$cnt .= '<a class="btn btn-default">Links</a>';
+	$cnt .= '</div>	';
+	*/
+
 
 	//hau wech den mist
 	unset($config, $yr, $url, $html, $art, $artcnt_raw, $artcnt, $db);
-	unset($title, $title_raw, $title_words, $desc, $desc_raw, $h1, $h1cnt, $tmp);
+	unset($title, $title_raw, $title_words, $desc, $desc_raw, $h1, $h1cnt, $imgs, $imgcnt, $links, $linknames, $tmp);
 	unset($sents, $sylls, $flesch_score, $flesch_result, $asl, $asw, $result, $resultcol, $quick, $ptitle, $artdom, $path, $artdommp);
 	
 	

@@ -1,8 +1,7 @@
 // SEO-CheckUp Scripts
 
 $(function(){
-	//open detail-window
-	
+	//open detail-window	
 	$("body").on("click", "a.seoculist-detail", function(e){ e.preventDefault(); showSeocumodal($(this)); });
 
 	//init single-refresh from seoculist
@@ -11,6 +10,9 @@ $(function(){
 	
 	//init multi-refresh from seoculist
 	$("body").on("click", ".seocu-result-refresh", function(e){ $("form.seoculist-form input").each(function(){ var a = $(this).parent().find("a"); a.addClass("rotate"); setTimeout(function(){ refreshSeoculist(a, false, false); }, 250); }); });
+	
+	//switch infolist
+	$("body").on("click", ".seocu-infolistswitch", function(e){ dst = $(this).attr('data-seocu-dst'); $(this).next("div").toggle(); /*$(dst).toggle();*/ });
 });
 
 	

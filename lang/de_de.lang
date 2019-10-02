@@ -42,12 +42,16 @@ a1544_seo_title_short = Seitentitel ist zu kurz
 a1544_seo_title_long = Seitentitel ist zu lang
 a1544_seo_title_opt = Seitentitel hat die optimale Länge
 a1544_seo_title_words = Seitentitel hat eine optimale Wortanzahl
+a1544_seo_title_repeat_ok = Keine Wortwiederholungen im Seitentitel
+a1544_seo_title_repeat_nok = Es gibt Wortwiederholungen im Seitentitel
+
 a1544_seo_desc_ok = Seitenbeschreibung ist gesetzt
 a1544_seo_desc_nok = Seitenbeschreibung fehlt
 a1544_seo_desc_short = Seitenbeschreibung ist zu kurz
 a1544_seo_desc_long = Seitenbeschreibung ist zu lang
 a1544_seo_desc_opt = Seitenbeschreibung hat die optimale Länge
 a1544_seo_desc_words = Seitenbeschreibung hat eine optimale Wortanzahl
+
 a1544_seo_og_ok = OpenGraph-Tags sind vorhanden
 a1544_seo_og_nok = OpenGraph-Tags sollten gesetzt werden
 a1544_seo_ogtitle_ok = OpenGraph-Titel ist gesetzt
@@ -56,15 +60,26 @@ a1544_seo_ogdesc_ok = OpenGraph-Beschreibung ist gesetzt
 a1544_seo_ogdesc_nok = OpenGraph-Beschreibung fehlt
 a1544_seo_ogurl_ok = OpenGraph-URL ist gesetzt
 a1544_seo_ogurl_nok = OpenGraph-URL fehlt
+
+a1544_seo_url_length_ok = URL hat eine optimale Länge
+a1544_seo_url_length_nok = URL ist zu lang
+a1544_seo_url_depth_ok = URL-Verzeichnistiefe ist gut
+a1544_seo_url_depth_nok = URL-Verzeichnistiefe ist zu hoch
+a1544_seo_links =  ###intlinks### interne(r) Link(s) und ###extlinks### externe(r) Link(s) gefunden
+a1544_seo_links_ok = Ausreichend Verlinkungen gefunden (###intlinks###x intern / ###extlinks###x extern)
+a1544_seo_links_nok = Interne Verlinkungen unzureichend (###intlinks###x intern / ###extlinks###x extern)
+
 a1544_seo_h1_ok = H1-Überschrift gefunden
 a1544_seo_h1_nok = Keine H1-Überschrift gefunden
 a1544_seo_h1multi = Mehrere H1-Überschriften gefunden
+a1544_seo_hx_ok = Überschriftenstruktur fehlerfrei
+a1544_seo_hx_nok = Überschriftenstruktur fehlerhaft
 a1544_seo_cnt_short = Content sollte länger sein (###words###/###cwords### Wörter)
 a1544_seo_cnt_ok = Content hat eine gute Länge (###words### Wörter gefunden)
 
 a1544_seo_cnt_titlewords_ok = Wörter aus Seitentitel im Content gefunden
 a1544_seo_cnt_titlewords_nok = Worte aus dem Seitentitel fehlen im Content
-a1544_seo_cnt_h1words_ok = Wörter aus H1-Überschrift im Content gefunden
+a1544_seo_cnt_h1words_ok = Wörter aus der H1-Überschrift im Content gefunden
 a1544_seo_cnt_h1words_nok = Worte aus der H1-Überschrift fehlen im Content
 
 a1544_seo_img_ok = Alle Bilder besitzen Alternativtexte
@@ -89,6 +104,7 @@ a1544_seo_keydesc_ok = Keyword in der Seitenbeschreibung gefunden
 a1544_seo_keydesc_nok = Keyword fehlt in der Seitenbeschreibung
 a1544_seo_keyurl_ok = Keyword in der URL gefunden
 a1544_seo_keyurl_nok = Keyword fehlt in der URL
+a1544_seo_keyurl_multi = Keyword kommt mehrfach in der URL vor
 a1544_seo_keyh1_ok = Keyword in der H1-Überschrift gefunden
 a1544_seo_keyh1_nok = Keyword fehlt in der H1-Überschrift
 a1544_seo_keyimg_ok = Keyword im Alternativtext von Bildern gefunden
@@ -119,6 +135,9 @@ a1544_config_seo_title_words = Anz. Wörter Seitentitel
 a1544_config_seo_desc_words = Anz. Wörter Seitenbeschreibung
 a1544_config_seo_content_words = Anz. Wörter Content
 a1544_config_seo_density_range = Keyword-Dichte (%)
+a1544_config_seo_url_max = Länge der URL
+a1544_config_seo_url_depths = URL-Verzeichnistiefe
+a1544_config_seo_links = Anz. interne Verlinkungen
 a1544_config_seo_removeblock = Content aufbereiten
 a1544_config_seo_removeblock_header = <header>-Blöcke entfernen
 a1544_config_seo_removeblock_footer = <footer>-Blöcke entfernen

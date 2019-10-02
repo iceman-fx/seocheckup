@@ -13,6 +13,11 @@ form.seoculist-form a.rotate i, .seocheckup a.rotate i { animation: seocu-rotate
 	.seocheckup li.seocu-indent { padding-left: 40px; }
 .seocheckup li i { position: absolute; left: 0px; top: 3px; }
 	.seocheckup li.seocu-indent i { left: 20px; }
+.seocheckup .seocu-infolist { font-size: 0.9em; margin: 0px 0px 10px; }
+	.seocheckup .seocu-infolist dl { position: relative; display: block; margin: 5px 0px 0px; }
+	.seocheckup .seocu-infolist dl > * {}
+		.seocheckup .seocu-infolist dt { position: absolute; top: 0px; left: 0px; padding: 1px 5px 1px; background: #dfe3e9; border-radius: 3px; font-size: 0.9em; }
+		.seocheckup .seocu-infolist dd { padding: 2px 0px 0px 35px; word-break: break-word; word-wrap: break-word; }
 
 .seocu-result { display: inline-block; background: none; color: #FFF; border-radius: 2px; font-size: 12px; font-weight: normal; padding: 3px 8px; width: auto; line-height: normal; margin: 0px 0px 0px 10px; }
 	.seocheckup .seocu-result { margin: 0px 5px 0px 0px; }
@@ -30,6 +35,9 @@ form.seoculist-form a.rotate i, .seocheckup a.rotate i { animation: seocu-rotate
 .seocu-preview-url { color: #006621; font-size: 13px; min-height: 15px; line-height: 1.5; margin-bottom: 1px; white-space: normal; width: auto; }
 .seocu-preview-desc { color: #444; display: inline; font-size: 12px; height: auto; line-height: 1.57; width: auto; word-break: normal; word-wrap: normal; }
 
+.seocu-infolistswitch { display: inline-block; cursor: pointer; }
+.seocu-hide { display: none; }
+.seocu-navbar { margin-top: 15px; }
 
 .seoculist-name { word-break: break-all; }
 .seoculist-nowrap { white-space: nowrap; }
