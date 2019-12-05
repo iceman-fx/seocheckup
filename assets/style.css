@@ -1,5 +1,6 @@
 @charset "utf-8";
 /* CSS Document for SEO-CheckUp */
+/* v1.3 */
 
 .seocu-title { position: relative; padding-right: 35px; }
 .seocu-head { display: block; font-weight: bold !important; margin: 20px 0px 5px; }
@@ -56,6 +57,9 @@ form.seoculist-form a.rotate i, .seocheckup a.rotate i { animation: seocu-rotate
 #seocu-modal .seocu-preview-title { font-size: 18px; }
 #seocu-modal .seocu-preview-url { font-size: 14px; min-height: 16px; }
 #seocu-modal .seocu-preview-desc { font-size: 13px; }
+
+
+.seocu-tooltip { text-decoration: none; border-bottom: 1px dashed #999; cursor: help; }
 
 
 /* mobile Ansicht */

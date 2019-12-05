@@ -1,4 +1,5 @@
 // SEO-CheckUp Scripts
+// v1.3
 
 $(function(){
 	//open detail-window	

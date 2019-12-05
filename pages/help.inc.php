@@ -2,7 +2,7 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Verwaltung: Hilfe
-	v1.2
+	v1.3
 	by Falko Müller @ 2019
 	package: redaxo5
 */
@@ -52,8 +52,8 @@
                       <li>die Überschriftenstruktur</li>
                       <li>das Vorkommen des Fokus-Keywords in den einzelnen Bereichen</li>
                       <li>die Keyword-Dichte</li>
-                      <li> das Vorhandensein von Bildern</li>
-                      <li>  der Flesch-Wert des Seiteninhaltes</li>
+                      <li>das Vorhandensein von Bildern</li>
+                      <li>der Flesch-Wert des Seiteninhaltes</li>
                     </ul>
                   <p><br>
                     Um die Analyse des jeweiligen Artikels zu starten, klicken Sie auf die Aktualisieren-Schaltfläche hinter dem Eingabefeld für das Fokus-Keyword. <br>

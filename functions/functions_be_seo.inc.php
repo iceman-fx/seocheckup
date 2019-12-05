@@ -2,7 +2,7 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Backend-Funktionen (SEO)
-	v1.2
+	v1.3
 	by Falko Müller @ 2019
 	package: redaxo5
 */
@@ -189,7 +189,7 @@ function a1544_seocheckup()
 	
 		//Daten des Artikels holen 
 		rex::setProperty('redaxo', false);
-		$html = $httpheader = $sockerror = $hasRedirect = $artcnt = $artcnt_raw = $artcnt_wo_h1 = "";
+		$html = $httpheader = $sockerror = $hasRedirect = $artcnt = $artcnt_raw = $artcnt_wo_h1 = "";	
 		
 		//Live-Artikel holen & auf aktive Redirects testen
 		$htmlloaded = false;
@@ -345,9 +345,9 @@ EOD;
 			$checks_ok++;
 			
 			if (strlen($title_raw) < $config['be_seo_title_min']):
-				$cnt .= '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_nok.'"></i>'.rex_i18n::msg('a1544_seo_title_short').'</li>';
+				$cnt .= '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_nok.'"></i>'.str_replace(array("###min###", "###max###"), array($config['be_seo_title_min'], $config['be_seo_title_max']), rex_i18n::rawmsg('a1544_seo_title_short')).'</li>';
 			elseif (strlen($title_raw) > $config['be_seo_title_max']):
-				$cnt .= '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_nok.'"></i>'.rex_i18n::msg('a1544_seo_title_long').'</li>';
+				$cnt .= '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_nok.'"></i>'.str_replace(array("###min###", "###max###"), array($config['be_seo_title_min'], $config['be_seo_title_max']), rex_i18n::rawmsg('a1544_seo_title_long')).'</li>';
 			else:
 				$cnt .= ($showchecks) ? '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_title_opt').'</li>' : '';
 				$checks_ok++;
@@ -367,9 +367,9 @@ EOD;
 			$checks_ok++;
 			
 			if (strlen($desc_raw) < $config['be_seo_desc_min']):
-				$cnt .= '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_nok.'"></i>'.rex_i18n::msg('a1544_seo_desc_short').'</li>';
+				$cnt .= '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_nok.'"></i>'.str_replace(array("###min###", "###max###"), array($config['be_seo_desc_min'], $config['be_seo_desc_max']), rex_i18n::rawmsg('a1544_seo_desc_short')).'</li>';
 			elseif (strlen($desc_raw) > $config['be_seo_desc_max']):
-				$cnt .= '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_nok.'"></i>'.rex_i18n::msg('a1544_seo_desc_long').'</li>';
+				$cnt .= '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_nok.'"></i>'.str_replace(array("###min###", "###max###"), array($config['be_seo_desc_min'], $config['be_seo_desc_max']), rex_i18n::rawmsg('a1544_seo_desc_long')).'</li>';
 			else:
 				$cnt .= ($showchecks) ? '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_desc_opt').'</li>' : '';
 				$checks_ok++;
@@ -419,7 +419,7 @@ EOD;
 		$tmp = preg_replace("/(http[s]?:\/\/|\/$)/i", "", str_replace($dom, "", $url));
 			$tmp = preg_replace("/^\//i", "", $tmp);
 		if (strlen($tmp) > $config['be_seo_url_max']):
-			$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.rex_i18n::msg('a1544_seo_url_length_nok').'</li>';
+			$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.str_replace(array("###max###"), array($config['be_seo_url_max']), rex_i18n::rawmsg('a1544_seo_url_length_nok')).'</li>';
 		else:
 			$cnt .= ($showchecks) ? '<li><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_url_length_ok').'</li>' : '';
 			$checks_ok++;
@@ -430,7 +430,7 @@ EOD;
 		//URL Verzeichnistiefe
 		$tmp = explode("/", $tmp);
 		if (count($tmp) > $config['be_seo_url_depths']):
-			$cnt .= '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_nok.'"></i>'.rex_i18n::msg('a1544_seo_url_depth_nok').'</li>';
+			$cnt .= '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_nok.'"></i>'.str_replace(array("###max###"), array($config['be_seo_url_depths']), rex_i18n::rawmsg('a1544_seo_url_depth_nok')).'</li>';
 		else:
 			$cnt .= ($showchecks) ? '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_url_depth_ok').'</li>' : '';
 			$checks_ok++;
@@ -648,23 +648,26 @@ EOD;
 			
 			
 			//images
-			//preg_match_all("/".$keyword."/iU", $imgcnt, $matches);
-			//$kcountimg = count(@$matches[0]);
-			$kcountimg = (float)preg_match_all("/".$keyword."/iU", $imgcnt);				//U-Modifier, da sonst greedy
-			if ($kcountimg > 0):
-				$cnt .= ($showchecks) ? '<li><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_keyimg_ok').'</li>' : '';
-				$checks_ok++;
-			else:
-				$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.rex_i18n::msg('a1544_seo_keyimg_nok').'</li>';
+			if (count($imgs) > 0):
+				//preg_match_all("/".$keyword."/iU", $imgcnt, $matches);
+				//$kcountimg = count(@$matches[0]);
+				$kcountimg = (float)preg_match_all("/".$keyword."/iU", $imgcnt);				//U-Modifier, da sonst greedy
+				if ($kcountimg > 0):
+					$cnt .= ($showchecks) ? '<li><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_keyimg_ok').'</li>' : '';
+					$checks_ok++;
+				else:
+					$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.rex_i18n::msg('a1544_seo_keyimg_nok').'</li>';
+				endif;
+				$checks++;
 			endif;
-			$checks++;
 			
 					
 			//density
 			$tmp = ($wcount > 0) ? round( (float)($kcountbody / $wcount) * 100, 1) : 0;
-				$l = str_replace("###density###", $tmp, rex_i18n::msg('a1544_seo_density'));
+				$l = str_replace(array("###min###", "###max###", "###density###"), array($config['be_seo_density_min'], $config['be_seo_density_max'], $tmp), rex_i18n::rawmsg('a1544_seo_density_nok'));
+				
 			if ($tmp >= $config['be_seo_density_min'] && $tmp <= $config['be_seo_density_max']):
-				$cnt .= ($showchecks) ? '<li><i class="rex-icon '.$icon_ok.'"></i>'.$l.'</li>' : '';
+				$cnt .= ($showchecks) ? '<li><i class="rex-icon '.$icon_ok.'"></i>'.str_replace("###density###", $tmp, rex_i18n::msg('a1544_seo_density_ok')).'</li>' : '';
 				$checks_ok++;
 			else:
 				$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.$l.'</li>';

@@ -2,7 +2,7 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Installation
-	v1.2
+	v1.3
 	by Falko Müller @ 2019
 	package: redaxo5
 */
@@ -19,6 +19,7 @@ if (!$this->hasConfig()):
 		'be_seo_opened'			=> '',
 		'be_seo_showchecks'		=> '',
 		'be_seo_offlinekeywords'=> '',
+		'be_seo_offlinearts'	=> '',
 		'be_seo_title_min'		=> '50',
 		'be_seo_title_max'		=> '65',
 		'be_seo_title_words'	=> '6',

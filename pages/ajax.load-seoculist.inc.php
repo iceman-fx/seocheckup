@@ -2,7 +2,7 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Verwaltung: AJAX Loader - SEO-CheckUp-Liste
-	v1.2
+	v1.3
 	by Falko Müller @ 2019
 	package: redaxo5
 */
@@ -86,8 +86,11 @@ $addPath = "index.php?page=content/edit";
 					$cid = intval($db->getValue('clang_id'));
 					$editPath = $addPath.'&amp;article_id='.$eid.'&amp;clang='.$cid.'&amp;mode=edit';
 					
+					$curstat = $db->getValue('status');
+						if ($curstat != 1 && $config['be_seo_offlinearts'] != 'checked') continue;
+						
 					$status = '<span class="rex-offline"><i class="rex-icon rex-icon-offline"></i> '.$this->i18n('a1544_offline').'</span>';
-						$status = ($db->getValue('status') == 1) ? '<span class="rex-online"><i class="rex-icon rex-icon-online"></i> '.$this->i18n('a1544_online').'</span>' : $status;
+						$status = ($curstat == 1) ? '<span class="rex-online"><i class="rex-icon rex-icon-online"></i> '.$this->i18n('a1544_online').'</span>' : $status;
 
 					$name = $db->getValue('name');
 					//$name = strip_tags($name, '<br>');

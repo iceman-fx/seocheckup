@@ -2,7 +2,7 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Verwaltung: Hauptseite (Default)
-	v1.2
+	v1.3
 	by Falko Müller @ 2019
 	package: redaxo5
 */

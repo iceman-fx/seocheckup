@@ -13,6 +13,7 @@ a1544_head_help = Onlinehilfe
 
 a1544_subheader_config1 = Einstellungen Sidebar
 a1544_subheader_config2 = Konfiguration SEO-Prüfungen
+a1544_subheader_config3 = Einstellungen Artikel-CheckUp
 
 
 # Backend-Ausgaben
@@ -38,8 +39,8 @@ a1544_seo_artredirect = <span class="rex-offline">Aktive Weiterleitung entdeckt!
 
 a1544_seo_title_ok = Seitentitel ist gesetzt
 a1544_seo_title_nok = Seitentitel fehlt
-a1544_seo_title_short = Seitentitel ist zu kurz
-a1544_seo_title_long = Seitentitel ist zu lang
+a1544_seo_title_short = Seitentitel ist <span class="seocu-tooltip" title="Empfehlung: ###min###-###max### Zeichen">zu kurz</span>
+a1544_seo_title_long = Seitentitel ist <span class="seocu-tooltip" title="Empfehlung: ###min###-###max### Zeichen">zu lang</span>
 a1544_seo_title_opt = Seitentitel hat die optimale Länge
 a1544_seo_title_words = Seitentitel hat eine optimale Wortanzahl
 a1544_seo_title_repeat_ok = Keine Wortwiederholungen im Seitentitel
@@ -47,8 +48,8 @@ a1544_seo_title_repeat_nok = Es gibt Wortwiederholungen im Seitentitel
 
 a1544_seo_desc_ok = Seitenbeschreibung ist gesetzt
 a1544_seo_desc_nok = Seitenbeschreibung fehlt
-a1544_seo_desc_short = Seitenbeschreibung ist zu kurz
-a1544_seo_desc_long = Seitenbeschreibung ist zu lang
+a1544_seo_desc_short = Seitenbeschreibung ist <span class="seocu-tooltip" title="Empfehlung: ###min###-###max### Zeichen">zu kurz</span>
+a1544_seo_desc_long = Seitenbeschreibung ist <span class="seocu-tooltip" title="Empfehlung: ###min###-###max### Zeichen">zu lang</span>
 a1544_seo_desc_opt = Seitenbeschreibung hat die optimale Länge
 a1544_seo_desc_words = Seitenbeschreibung hat eine optimale Wortanzahl
 
@@ -62,9 +63,9 @@ a1544_seo_ogurl_ok = OpenGraph-URL ist gesetzt
 a1544_seo_ogurl_nok = OpenGraph-URL fehlt
 
 a1544_seo_url_length_ok = URL hat eine optimale Länge
-a1544_seo_url_length_nok = URL ist zu lang
+a1544_seo_url_length_nok = URL ist <span class="seocu-tooltip" title="Empfehlung: max. ###max### Zeichen">zu lang</span>
 a1544_seo_url_depth_ok = URL-Verzeichnistiefe ist gut
-a1544_seo_url_depth_nok = URL-Verzeichnistiefe ist zu hoch
+a1544_seo_url_depth_nok = URL-Verzeichnistiefe ist <span class="seocu-tooltip" title="Empfehlung: max. ###max### Ebenen">zu hoch</span>
 a1544_seo_links =  ###intlinks### interne(r) Link(s) und ###extlinks### externe(r) Link(s) gefunden
 a1544_seo_links_ok = Ausreichend Verlinkungen gefunden (###intlinks###x intern / ###extlinks###x extern)
 a1544_seo_links_nok = Interne Verlinkungen unzureichend (###intlinks###x intern / ###extlinks###x extern)
@@ -92,7 +93,8 @@ a1544_seo_flesch_grade3 = mittelmäßig
 a1544_seo_flesch_grade4 = schwer
 a1544_seo_flesch_grade5 = sehr schwer
 
-a1544_seo_density = Keyword-Dichte liegt bei ###density###%
+a1544_seo_density_ok = Keyword-Dichte liegt bei ###density###%
+a1544_seo_density_nok = Keyword-Dichte liegt bei <span class="seocu-tooltip" title="Empfehlung: ###min###-###max### Prozent">###density###%</span>
 a1544_seo_keyunique = Fokus-Keyword wird nur auf dieser Seite genutzt
 a1544_seo_keymulti = Fokus-Keyword wird auf mehreren Seiten genutzt
 a1544_seo_keycount = Keyword ###count###x auf der Seite gefunden
@@ -129,6 +131,8 @@ a1544_config_seo_showchecks_info1 = nicht bestandene Tests / Detail-Schaltfläch
 a1544_config_seo_showchecks_info2 = alle Einzeltests immer anzeigen
 a1544_config_seo_offlinekeywords = Keyword in Offline-Artikeln
 a1544_config_seo_offlinekeywords_info = die Verwendung des Fokus-Keywords auch in Offline-Artikeln prüfen
+a1544_config_seo_offlinearts = Offline-Artikel auflisten
+a1544_config_seo_offlinearts_info = auch alle Offline-Artikel in der Artikel-CheckUp-Liste aufführen
 a1544_config_seo_title_chars = Anz. Zeichen Seitentitel
 a1544_config_seo_desc_chars = Anz. Zeichen Seitenbeschreibung
 a1544_config_seo_title_words = Anz. Wörter Seitentitel

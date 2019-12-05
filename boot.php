@@ -2,7 +2,7 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Boot (weitere Konfigurationen)
-	v1.2
+	v1.3
 	by Falko Müller @ 2019
 	package: redaxo5
 	
@@ -72,8 +72,8 @@ if (rex::isBackend() && rex::getUser()):
 	//SEO-CheckUp einbinden
 	require_once(rex_path::addon($mypage)."/functions/functions_be_seo.inc.php");
 	
-	rex_view::addCssFile($this->getAssetsUrl('style.css?v='.time() ));
-	rex_view::addJsFile($this->getAssetsUrl('script.js?v='.time() ));
+	rex_view::addCssFile($this->getAssetsUrl('style.css'));
+	rex_view::addJsFile($this->getAssetsUrl('script.js'));
 	rex_extension::register('OUTPUT_FILTER', 'a1544_seocuJS');
 
 	if (@$config['be_seo'] == "checked"):

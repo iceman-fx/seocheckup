@@ -2,7 +2,7 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Verwaltung: Einstellungen (config)
-	v1.2
+	v1.3
 	by Falko Müller @ 2019
 	package: redaxo5
 */
@@ -20,6 +20,7 @@ if ($func == "save" && isset($_POST['submit'])):
 		'be_seo_opened'			=> rex_post('be_seo_opened'),
 		'be_seo_showchecks'		=> rex_post('be_seo_showchecks'),
 		'be_seo_offlinekeywords'=> rex_post('be_seo_offlinekeywords'),
+		'be_seo_offlinearts'	=> rex_post('be_seo_offlinearts'),
 		'be_seo_title_min'		=> rex_post('be_seo_title_min', 'int'),
 		'be_seo_title_max'		=> rex_post('be_seo_title_max', 'int'),		
 		'be_seo_title_words'	=> rex_post('be_seo_title_words', 'int'),
@@ -99,6 +100,22 @@ endif;
                     </div>
                 </dd>
             </dl>
+
+
+            <dl class="rex-form-group form-group"><dt></dt></dl>
+            
+			<legend><?php echo $this->i18n('a1544_subheader_config3'); ?></legend>
+                 
+            <dl class="rex-form-group form-group">
+                <dt><label for=""><?php echo $this->i18n('a1544_config_seo_offlinearts'); ?></label></dt>
+                <dd>
+                    <div class="checkbox">
+                    <label for="be_seo_offlinearts">
+                        <input name="be_seo_offlinearts" type="checkbox" id="be_seo_offlinearts" value="checked" <?php echo @$config['be_seo_offlinearts']; ?> /> <?php echo $this->i18n('a1544_yes').', '.$this->i18n('a1544_config_seo_offlinearts_info'); ?>
+                    </label>
+                    </div>
+                </dd>
+            </dl>            
             
             
             <dl class="rex-form-group form-group"><dt></dt></dl>

@@ -2,7 +2,7 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Verwaltung: index
-	v1.2
+	v1.3
 	by Falko Müller @ 2019
 	package: redaxo5
 */
@@ -22,6 +22,7 @@ $subpage2 = rex_be_controller::getCurrentPagePart(3);						//2. Unterebene = dri
 $func = rex_request('func', 'string');
 
 $config = $this->getConfig('config');
+	$config['be_seo_offlinearts'] = (!isset($config['be_seo_offlinearts'])) ? '' : $config['be_seo_offlinearts'];
 
 
 //Userrechte prüfen

@@ -3,6 +3,13 @@
 
 Changelog
 ---------
+<b>Version 1.3</b>
+- UI-Optimierung
+- Offlineartikel werden nicht per Standard in Artikel-CheckUp-Liste aufgeführt
+
+<b>Version 1.2.1</b>
+- Codeoptimierung/Bugfixing
+
 <b>Version 1.2</b>
 - Integration weiterer Analysen (Überschriftenstruktur, Verlinkungen, URL-Länge/-Tiefe)
 - Codeoptimierung/Bugfixing
