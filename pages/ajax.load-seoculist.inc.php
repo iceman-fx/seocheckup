@@ -2,7 +2,7 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Verwaltung: AJAX Loader - SEO-CheckUp-Liste
-	v1.3
+	v1.3.1
 	by Falko Müller @ 2019
 	package: redaxo5
 */
@@ -57,6 +57,10 @@ endif;
 $sql_where .= ($subpage2 > 0) ? " AND clang_id = '".$subpage2."'" : '';
 
 
+//Eingrenzung On-/Offline
+$sql_where .= ($config['be_seo_offlinearts'] != 'checked') ? " AND status = '1'" : '';
+
+
 //Sortierung
 //$sql_where .= " ORDER BY CONVERT(seocu_result, DECIMAL) ".$order.", name ASC, id ASC";
 $sql_where .= " ORDER BY name ".$order.", CONVERT(seocu_result, DECIMAL) ASC, id ASC";
@@ -85,10 +89,8 @@ $addPath = "index.php?page=content/edit";
 					$eid = intval($db->getValue('id'));
 					$cid = intval($db->getValue('clang_id'));
 					$editPath = $addPath.'&amp;article_id='.$eid.'&amp;clang='.$cid.'&amp;mode=edit';
-					
+										
 					$curstat = $db->getValue('status');
-						if ($curstat != 1 && $config['be_seo_offlinearts'] != 'checked') continue;
-						
 					$status = '<span class="rex-offline"><i class="rex-icon rex-icon-offline"></i> '.$this->i18n('a1544_offline').'</span>';
 						$status = ($curstat == 1) ? '<span class="rex-online"><i class="rex-icon rex-icon-online"></i> '.$this->i18n('a1544_online').'</span>' : $status;
 
