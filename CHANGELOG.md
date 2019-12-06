@@ -3,6 +3,9 @@
 
 Changelog
 ---------
+<b>Version 1.3.1</b>
+- Bugfixing On/Offline-Artikel
+
 <b>Version 1.3</b>
 - UI-Optimierung
 - Offlineartikel werden nicht per Standard in Artikel-CheckUp-Liste aufgeführt
