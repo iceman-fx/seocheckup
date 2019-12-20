@@ -2,7 +2,7 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Verwaltung: AJAX Loader - SEO-CheckUp-Liste
-	v1.3.1
+	v1.3.2
 	by Falko Müller @ 2019
 	package: redaxo5
 */

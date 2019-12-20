@@ -3,6 +3,9 @@
 
 Changelog
 ---------
+<b>Version 1.3.2</b>
+- Bugfixing Darstellungsfehler Meldungen & SERP-Snippet
+
 <b>Version 1.3.1</b>
 - Bugfixing On/Offline-Artikel
 

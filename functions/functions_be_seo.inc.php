@@ -2,7 +2,7 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Backend-Funktionen (SEO)
-	v1.3
+	v1.3.2
 	by Falko Müller @ 2019
 	package: redaxo5
 */
@@ -261,7 +261,7 @@ function a1544_seocheckup()
     $cnt .= '<div class="seocu-check">';
 	
 		//Hinweis auf Einlesen nicht möglich
-		$cnt .= (!empty($sockerror)) ? '<span class="seocu-head">'.str_replace("###error###", $sockerror, rex_i18n::msg('a1544_seo_nohtml')).'</span>' : '';	
+		$cnt .= (!empty($sockerror)) ? '<span class="seocu-head">'.str_replace("###error###", $sockerror, rex_i18n::rawmsg('a1544_seo_nohtml')).'</span>' : '';	
 		
 		//Hinweis auf aktive Weiterleitung im Artikel
 		$cnt .= ($hasRedirect) ? '<span class="seocu-head">'.rex_i18n::rawmsg('a1544_seo_artredirect').'</span>' : '';
@@ -791,9 +791,9 @@ EOD;
 		
     $cnt .= '<div class="seocu-preview">';
 		$cnt .= '<span class="seocu-head">'.rex_i18n::msg('a1544_seo_preview').'</span>';
-		$cnt .= '<span class="seocu-preview-title">'.aFM_maskChar($ptitle).'</span>';
+		$cnt .= '<span class="seocu-preview-title">'.aFM_maskChar(aFM_revChar($ptitle)).'</span>';
 		$cnt .= '<span class="seocu-preview-url">'.$url.'</span>';
-		$cnt .= '<span class="seocu-preview-desc">'.$desc.'</span>';
+		$cnt .= '<span class="seocu-preview-desc">'.aFM_maskChar(aFM_revChar($desc)).'</span>';
     $cnt .= '</div>';
 
 
