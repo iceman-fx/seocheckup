@@ -776,8 +776,8 @@ EOD;
 	
     
     //Vorschau aufbereiten
-	$ptitle = (strlen($title_raw) > $config['be_seo_title_max']) ? substr($title_raw, 0, ($config['be_seo_title_max']-3)).' ...' : $title_raw;
-	$ptitle = trim($ptitle);
+	$ptitle = aFM_revChar($title_raw);
+	$ptitle = (strlen($ptitle) > $config['be_seo_title_max']) ? substr($ptitle, 0, ($config['be_seo_title_max']-3)).' ...' : $ptitle;
 		/* Variante mit Einkürzung nach Wörtern
 		$ptitle = "";
 			$tmp = explode(" ", $title_raw);
@@ -791,7 +791,7 @@ EOD;
 		
     $cnt .= '<div class="seocu-preview">';
 		$cnt .= '<span class="seocu-head">'.rex_i18n::msg('a1544_seo_preview').'</span>';
-		$cnt .= '<span class="seocu-preview-title">'.aFM_maskChar(aFM_revChar($ptitle)).'</span>';
+		$cnt .= '<span class="seocu-preview-title">'.aFM_maskChar($ptitle).'</span>';
 		$cnt .= '<span class="seocu-preview-url">'.$url.'</span>';
 		$cnt .= '<span class="seocu-preview-desc">'.aFM_maskChar(aFM_revChar($desc)).'</span>';
     $cnt .= '</div>';
