@@ -4,7 +4,7 @@
 Changelog
 ---------
 <b>Version 1.3.3</b>
-- Bugfixing Darstellungsfehler SERP-Snippet
+- Bugfixing Zeichenlängenberechnung
 
 <b>Version 1.3.2</b>
 - Bugfixing Darstellungsfehler Meldungen & SERP-Snippet

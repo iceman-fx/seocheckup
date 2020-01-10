@@ -2,7 +2,7 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Backend-Funktionen (SEO)
-	v1.3.2
+	v1.3.3
 	by Falko Müller @ 2019
 	package: redaxo5
 */
@@ -64,9 +64,11 @@ $panel .= <<<EOD
             </div>
         </div>
 	</div>
+	/*
 	<script type="text/javascript">$(function(){ var seocubtn = $(".seocheckup a");	$(".seocheckup form").on('submit', function(e){ e.preventDefault(); }); seocubtn.click(function(){ seocubtn.addClass("rotate"); 	
 	urldata = "rex-api-call=a1544_getSeocheckup&keyword="+encodeURIComponent($(".seocheckup input").val())+"&lasturl="+encodeURIComponent(window.location.href);
 	$("#seocheckup").load("", urldata, function(){ seocubtn.removeClass("rotate"); }); }); seocubtn.trigger('click'); $(document).on("rex:ready", function(){ seocubtn.trigger('click'); }); });</script>
+	*/
 EOD;
 
 	//SEO-Panel erstellen und ausgeben
@@ -297,13 +299,13 @@ EOD;
 		preg_match("/<title[^>]*>(.*?)<\/title>/is", $arthead, $matches);																									//Title holen --> kein U-Modifier, da bereits non-greedy
 			$title = (!isset($matches[1]) || empty($matches[1])) ? $yrs->getTitle() : $matches[1];
 			$title = trim(preg_replace("/\s\s+/", " ", $title));
-			$title_raw = aFM_unmaskQuotes($title);
+			$title_raw = aFM_unmaskQuotes(aFM_revChar($title));
 			$title_words = (!empty($title_raw)) ? explode(" ", trim(preg_replace($regex_wspace, " ", preg_replace($regex_pmarks, " ", $title_raw))) ) : array();			//Wörter in title finden
 			
 		preg_match("/<meta name\s*=\s*[\"']{1}description[\"']{1}[ ]+content\s*=\s*[\"']{1}([^\"']*)[\"']{1}[^>]*>/is", $arthead, $matches);								//Description holen
 			$desc = (!isset($matches[1]) || empty($matches[1])) ? $yrs->getDescription() : $matches[1];
 			$desc = trim(preg_replace("/\s\s+/", " ", $desc));
-			$desc_raw = aFM_unmaskQuotes($desc);
+			$desc_raw = aFM_unmaskQuotes(aFM_revChar($desc));
 			
 		preg_match_all("/<h1[^>]*>(.*?)<\/h1[^>]*>/is", $artcnt_raw, $matches);																								//H1-Überschrift(en) holen --> kein U-Modifier, da bereits non-greedy
 			$h1 = $h1cnt = (isset($matches[1])) ? $matches[1] : '';
@@ -344,9 +346,9 @@ EOD;
 			$cnt .= ($showchecks) ? '<li><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_title_ok').'</li>' : '';
 			$checks_ok++;
 			
-			if (strlen($title_raw) < $config['be_seo_title_min']):
+			if (strlen(utf8_decode($title_raw)) < $config['be_seo_title_min']):
 				$cnt .= '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_nok.'"></i>'.str_replace(array("###min###", "###max###"), array($config['be_seo_title_min'], $config['be_seo_title_max']), rex_i18n::rawmsg('a1544_seo_title_short')).'</li>';
-			elseif (strlen($title_raw) > $config['be_seo_title_max']):
+			elseif (strlen(utf8_decode($title_raw)) > $config['be_seo_title_max']):
 				$cnt .= '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_nok.'"></i>'.str_replace(array("###min###", "###max###"), array($config['be_seo_title_min'], $config['be_seo_title_max']), rex_i18n::rawmsg('a1544_seo_title_long')).'</li>';
 			else:
 				$cnt .= ($showchecks) ? '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_title_opt').'</li>' : '';
@@ -366,9 +368,9 @@ EOD;
 			$cnt .= ($showchecks) ? '<li><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_desc_ok').'</li>' : '';
 			$checks_ok++;
 			
-			if (strlen($desc_raw) < $config['be_seo_desc_min']):
+			if (strlen(utf8_decode($desc_raw)) < $config['be_seo_desc_min']):
 				$cnt .= '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_nok.'"></i>'.str_replace(array("###min###", "###max###"), array($config['be_seo_desc_min'], $config['be_seo_desc_max']), rex_i18n::rawmsg('a1544_seo_desc_short')).'</li>';
-			elseif (strlen($desc_raw) > $config['be_seo_desc_max']):
+			elseif (strlen(utf8_decode($desc_raw)) > $config['be_seo_desc_max']):
 				$cnt .= '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_nok.'"></i>'.str_replace(array("###min###", "###max###"), array($config['be_seo_desc_min'], $config['be_seo_desc_max']), rex_i18n::rawmsg('a1544_seo_desc_long')).'</li>';
 			else:
 				$cnt .= ($showchecks) ? '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_desc_opt').'</li>' : '';
@@ -418,7 +420,7 @@ EOD;
 		//URL Länge
 		$tmp = preg_replace("/(http[s]?:\/\/|\/$)/i", "", str_replace($dom, "", $url));
 			$tmp = preg_replace("/^\//i", "", $tmp);
-		if (strlen($tmp) > $config['be_seo_url_max']):
+		if (strlen(utf8_decode($tmp)) > $config['be_seo_url_max']):
 			$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.str_replace(array("###max###"), array($config['be_seo_url_max']), rex_i18n::rawmsg('a1544_seo_url_length_nok')).'</li>';
 		else:
 			$cnt .= ($showchecks) ? '<li><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_url_length_ok').'</li>' : '';
@@ -704,8 +706,7 @@ EOD;
 			$tmp = preg_replace("/([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{2,4})/i", "$1-$2-$3", $tmp);						//deutsches Datum ersetzen, um Sätze bessere zählen zu können
 		$sents = (float)preg_match_all("/([^\.\!\?]+[\.\?\!]*)/", $tmp);												//Sätze anhand der üblichen Satzzeichen trennen
 		$sylls = 0;																										//Silben anhand der Vokale zählen
-			$tmp = strlen($artcnt);
-			for ($i=0; $i < $tmp; $i++):
+			for ($i=0; $i < strlen($artcnt); $i++):
 				if (preg_match("/[aeiouyäöü]/i", $artcnt[$i]) && !preg_match("/[aeiouyäöü]/i", $artcnt[$i-1])) { $sylls++; }
 			endfor;
 		
@@ -776,8 +777,8 @@ EOD;
 	
     
     //Vorschau aufbereiten
-	$ptitle = aFM_revChar($title_raw);
-	$ptitle = (strlen($ptitle) > $config['be_seo_title_max']) ? substr($ptitle, 0, ($config['be_seo_title_max']-3)).' ...' : $ptitle;
+	$ptitle = $title_raw;
+	$ptitle = (strlen(utf8_decode($ptitle)) > $config['be_seo_title_max']) ? substr($ptitle, 0, ($config['be_seo_title_max']-3)).' ...' : $ptitle;
 		/* Variante mit Einkürzung nach Wörtern
 		$ptitle = "";
 			$tmp = explode(" ", $title_raw);
