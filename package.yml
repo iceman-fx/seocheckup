@@ -1,18 +1,16 @@
-# Alle hier gesetzten Werte können über $addon->getProperty($key) abgefragt werden
-
-package: seocheckup																							#Pflichtfeld
-version: '1.3.3'																							#Pflichtfeld
-author: © Falko Müller
-supportpage: https://redaxo.org/forum/
+package: seocheckup
+version: '1.3.3'
+author: Friends Of REDAXO
+supportpage: https://github.com/FriendsOfREDAXO/seocheckup
 
 page:
-    title: 'translate:a1544_title' 																			#Werte die mit "translate:" beginnen kommen aus der Sprachdatei.
+    title: 'translate:a1544_title'
     perm: seocheckup[]
     icon: rex-icon fa-stethoscope
     subpages:
         default: { title: 'translate:a1544_default' }
-        config: { title: 'translate:a1544_config', perm: 'seocheckup[config]', icon: rex-icon fa-wrench }	#config-Seite mit separaten Rechten
+        config: { title: 'translate:a1544_config', perm: 'seocheckup[config]', icon: rex-icon fa-wrench }
         help: { title: 'translate:a1544_help', icon: rex-icon fa-info-circle, itemclass: pull-right }
 
 requires:
-    redaxo: '^5.3.0' 																						#benötigt mindestens REDAXO 5.3
+    redaxo: '^5.3.0'
