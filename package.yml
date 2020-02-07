@@ -1,9 +1,9 @@
 # Alle hier gesetzten Werte können über $addon->getProperty($key) abgefragt werden
 
 package: seocheckup																							#Pflichtfeld
-version: '1.3.3'																							#Pflichtfeld
+version: '1.3.4'																							#Pflichtfeld
 author: © Falko Müller
-supportpage: https://redaxo.org/forum/
+supportpage: https://github.com/iceman-fx/seocheckup
 
 page:
     title: 'translate:a1544_title' 																			#Werte die mit "translate:" beginnen kommen aus der Sprachdatei.

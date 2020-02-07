@@ -27,6 +27,7 @@ Prüfkriterien
 - H1-Überschrift (Vorhandensein, mehrfaches Vorkommen)
 - Überschriftenstruktur
 - Content (Länge, Vorhandensein der Wörter aus Seitentitel & H1)
+- Bold/Strong-Tags (Vorhandensein, Anzahl, Länge, leere Tags)
 - Bilder (Vorhandensein, leere ALT-Attribute)
 - Verlinkungen (Vorhandensein)
 - URL-Länge/-Tiefe

@@ -75,17 +75,26 @@ a1544_seo_h1_nok = Keine H1-Überschrift gefunden
 a1544_seo_h1multi = Mehrere H1-Überschriften gefunden
 a1544_seo_hx_ok = Überschriftenstruktur fehlerfrei
 a1544_seo_hx_nok = Überschriftenstruktur fehlerhaft
+
 a1544_seo_cnt_short = Content sollte länger sein (###words###/###cwords### Wörter)
 a1544_seo_cnt_ok = Content hat eine gute Länge (###words### Wörter gefunden)
-
-a1544_seo_cnt_titlewords_ok = Wörter aus Seitentitel im Content gefunden
+a1544_seo_cnt_titlewords_ok = Wörter aus dem Seitentitel im Content gefunden
 a1544_seo_cnt_titlewords_nok = Worte aus dem Seitentitel fehlen im Content
 a1544_seo_cnt_h1words_ok = Wörter aus der H1-Überschrift im Content gefunden
 a1544_seo_cnt_h1words_nok = Worte aus der H1-Überschrift fehlen im Content
 
+a1544_seo_bolds_ok = Keine Probleme bei bold/strong-Tags gefunden
+a1544_seo_bolds_short = Empfehlung: verwenden Sie bold/strong-Tags
+a1544_seo_bolds_long = Die Anzahl an bold/strong-Tags ist mit ###count### <span class="seocu-tooltip" title="Empfehlung: max. ###max###">sehr hoch</span>
+a1544_seo_bolds_opt = Die Anzahl an bold/strong-Tags ist optimal
+a1544_seo_bolds_empty = Es gibt leere bold/strong-Tags auf der Seite
+a1544_seo_bolds_length = Einige bold/strong-Tags sind <span class="seocu-tooltip" title="Empfehlung: max. 70 Zeichen">zu lang</span>
+a1544_seo_bolds_char = Z.
+
 a1544_seo_img_ok = Alle Bilder besitzen Alternativtexte
 a1544_seo_img_nok = ###count### Bild(er) ohne Alternativtext gefunden
 a1544_seo_img_notfound = Es konnten keine Bilder gefunden werden
+
 a1544_seo_flesch = Flesch-Reading Wert: ###score### (###result### lesbarer Text)
 a1544_seo_flesch_grade1 = sehr leicht
 a1544_seo_flesch_grade2 = leicht

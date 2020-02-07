@@ -3,6 +3,12 @@
 
 Changelog
 ---------
+<b>Version 1.3.4</b>
+- Neue Analyse: bold/strong-Tags
+- Anpassung der SERP-Snippet-Vorschau auf aktuelle Google-Ausgabe
+- FAQs in der Hilfe hinzugefügt
+- Bugfixing Darstellungsfehler
+
 <b>Version 1.3.3</b>
 - Bugfixing Zeichenlängenberechnung
 

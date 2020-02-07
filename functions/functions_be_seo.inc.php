@@ -2,8 +2,8 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Backend-Funktionen (SEO)
-	v1.3.3
-	by Falko Müller @ 2019
+	v1.3.4
+	by Falko Müller @ 2019-2020
 	package: redaxo5
 */
 
@@ -64,11 +64,9 @@ $panel .= <<<EOD
             </div>
         </div>
 	</div>
-	/*
 	<script type="text/javascript">$(function(){ var seocubtn = $(".seocheckup a");	$(".seocheckup form").on('submit', function(e){ e.preventDefault(); }); seocubtn.click(function(){ seocubtn.addClass("rotate"); 	
 	urldata = "rex-api-call=a1544_getSeocheckup&keyword="+encodeURIComponent($(".seocheckup input").val())+"&lasturl="+encodeURIComponent(window.location.href);
 	$("#seocheckup").load("", urldata, function(){ seocubtn.removeClass("rotate"); }); }); seocubtn.trigger('click'); $(document).on("rex:ready", function(){ seocubtn.trigger('click'); }); });</script>
-	*/
 EOD;
 
 	//SEO-Panel erstellen und ausgeben
@@ -212,12 +210,6 @@ function a1544_seocheckup()
 		
 		//Redaxo-Artikel bzw. Content holen
 		if (!$hasRedirect):
-			/*	
-			$art = new rex_article_content($actArt, $actClang);													
-			$artcnt_raw = trim($art->getArticle());											//macht Probleme, da bloecks-Slices trotz Frontedmode ausgegeben werden
-			unset($art);
-			*/
-			//Fallback aus FE-Content	-->		//nicht mehr nutzen, da sonst die Berechnung der Wortanzahl falsch ist (header, footer, nav Bereiche zählen sonst mit) !!!
 			$artcnt_raw = (empty($artcnt_raw)) ? preg_replace("/^[\s\S]*<body[^\>]*>([\s\S]*)<\/body>[\s\S]*$/im", "$1", $html) : $artcnt_raw;				
 		endif;
 		rex::setProperty('redaxo', true);
@@ -277,19 +269,6 @@ function a1544_seocheckup()
 		
 	
 		//Einleitung
-/*
-$cnt .= <<<EOD
-        <div class="modal fade bd-example-modal-lg" id="seocu-modal" tabindex="-1" role="dialog">
-        	<div class="modal-dialog modal-dialog-centered" role"document">
-            	<div class="modal-content">
-                	<div class="modal-header"><div class="modal-title">SEO-CheckUp</div></div>
-                    <div class="modal-body seocheckup">Analyse wird geladen ...</div>
-                    <div class="modal-footer"><button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button></div>
-                </div>
-            </div>
-        </div>
-EOD;
-*/		
     	$cnt .= '<span class="seocu-head seocu-first-head">'.rex_i18n::msg('a1544_seo_tests').'</span>';																	//<span class="seocu-result"></span>
         $cnt .= '<ul>';
 		$cnt .= '###detaillink###';
@@ -331,6 +310,9 @@ EOD;
 				$ogurl = (isset($matches[1])) ? trim(preg_replace("/\s\s+/", " ", $matches[1])) : '';
 				$ogurl_raw = aFM_unmaskQuotes($ogurl);
 		
+		preg_match_all("/<(b\b|strong\b)[^>]*>(.*)<\/(b|strong)>/isU", $artcnt_raw, $matches);																				//alle strong-tags holen (<strong>) --> U-Modifier, da sonst greedy
+			$bolds = (isset($matches[2])) ? $matches[2] : array();																											// \b = Nichtwortzeichen als Abgrenzung
+
 		preg_match_all("/<img([\w\W]+?)\/>/is", $artcnt_raw, $matches);																										//alle Bilder holen --> kein U-Modifier, da bereits non-greedy
 			$imgs = (isset($matches[1])) ? $matches[1] : array();																											//alt: /<img [^\/>]*\/>/isU
 			$imgcnt = (is_array($imgs)) ? implode(" ", $imgs) : $imgs;
@@ -528,6 +510,61 @@ EOD;
 		$checks++;
 		
 		
+		//bold-strong Tags -> Länge oder leer
+        $bcnt = "";
+		$berror = $bcount = $bempty = 0;
+		if (count($bolds) > 0):
+			$boldlist = '<div id="seocu-boldlist" class="seocu-infolist seocu-hide">';
+			
+			//Anzahl berechnen
+			$curbolds = count($bolds);
+			$maxbolds = ($wcount > 300) ? ceil($wcount / 54) : 6;
+			
+			//Inhalt prüfen
+			foreach ($bolds as $bold):
+				$bold = trim($bold);
+				if (empty($bold)) { $bempty++; }
+
+				$tmp = strlen(utf8_decode($bold));
+				if ($tmp > 70):
+					$bcount++;
+					$boldlist .= '<dl><dt>'.$tmp.' '.rex_i18n::msg('a1544_seo_bolds_char').'</dt><dd class="'.$col_nok.'">'.$bold.'</dd></dl>';
+				endif;
+			endforeach;
+			$boldlist .= '</div>';
+			
+			//Info: Anzahl
+			if (count($bolds) > $maxbolds):
+				$berror = 1;
+				$bcnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.str_replace(array("###count###", "###max###"), array($curbolds, $maxbolds), rex_i18n::rawmsg('a1544_seo_bolds_long')).'</li>';
+			else:
+				$bcnt .= ($showchecks) ? '<li><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_bolds_opt').'</li>' : '';
+			endif;
+			
+			//Info: leere Tags
+			if ($bempty > 0):
+				$berror = 1;
+				$bcnt .= '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_nok.'"></i>'.rex_i18n::msg('a1544_seo_bolds_empty').'</li>';
+			endif;
+			
+			//Info: Tags zu lang + Übersicht
+			if ($bcount > 0):
+				$berror = 1;
+				$bcnt .= '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_nok.'"></i><span class="seocu-infolistswitch" data-seocu-dst="#seocu-boldlist">'.str_replace("###count###", $bcount, rex_i18n::rawmsg('a1544_seo_bolds_length')).'&nbsp;<span class="rex-icon fa-caret-down"></span></span>'.$boldlist.'</li>';
+			endif;
+		endif;
+		unset($boldlist);
+		
+		if ($berror):
+        	$cnt .= $bcnt;
+        else:
+			$cnt .= ($showchecks) ? '<li><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_bolds_ok').'</li>' : '';
+			$cnt .= (count($bolds) <= 0) ? '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_info.'"></i>'.rex_i18n::msg('a1544_seo_bolds_short').'</li>' : '';
+			$checks_ok++;
+		endif;
+		$checks++;
+		
+		
 		//images
 		$acount = 0;
 		if (count($imgs) > 0):
@@ -565,7 +602,7 @@ EOD;
 
 					$lcount++;
 					if (stristr($link, $dom) || !preg_match("/^(http[s]?:\/\/)/i", $link)):
-						if (preg_match("/\.(jpg|jpeg|gif|png|svg)$/i", $link)):
+						if (preg_match("/\.(jpg|jpeg|gif|png|svg|webp)$/i", $link)):
 							$lcount_intimg++;
 						else:
 							$lcount_int++;
@@ -698,6 +735,7 @@ EOD;
 		$cnt .= (count($imgs) <= 0) ? '<li><i class="rex-icon '.$icon_info.'"></i>'.rex_i18n::msg('a1544_seo_img_notfound').'</li>' : '';
 		
 		
+		//Line-Spacer
 		$cnt .= (empty($keyword)) ? '<li>&nbsp;</li>' : '';
 		
 		
@@ -789,11 +827,14 @@ EOD;
 		$ptitle = trim($ptitle);
 		$ptitle .= ($ptitle < $title) ? ' ...' : '';
 		*/
+	$purl = $url;
+		$purl = preg_replace("#^http[s]?://#i", "", $purl);
+		$purl = str_replace("/", " › ", $purl);
 		
     $cnt .= '<div class="seocu-preview">';
 		$cnt .= '<span class="seocu-head">'.rex_i18n::msg('a1544_seo_preview').'</span>';
+		$cnt .= '<span class="seocu-preview-url">'.$purl.'</span>';
 		$cnt .= '<span class="seocu-preview-title">'.aFM_maskChar($ptitle).'</span>';
-		$cnt .= '<span class="seocu-preview-url">'.$url.'</span>';
 		$cnt .= '<span class="seocu-preview-desc">'.aFM_maskChar(aFM_revChar($desc)).'</span>';
     $cnt .= '</div>';
 

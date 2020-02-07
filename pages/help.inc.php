@@ -2,11 +2,16 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Verwaltung: Hilfe
-	v1.3.2
-	by Falko Müller @ 2019
+	v1.3.4
+	by Falko Müller @ 2019-2020
 	package: redaxo5
 */
 ?>
+
+<style>
+.faq { margin: 0px !important; cursor: pointer; }
+.faq + div { margin: 0px 0px 15px; }
+</style>
 
 <section class="rex-page-section">
 	<div class="panel panel-default">
@@ -15,17 +20,15 @@
         
 		<div class="panel-body">
 			<div class="rex-docs">
-	            <!--
 				<div class="rex-docs-sidebar">
                 	<nav class="rex-nav-toc">
                     	<ul>
-                        	<li><a href="#default">Allgemein</a>
-                            <li><a href="#tree">Strukturbaum</a>
-                            <li><a href="#seo">SEO-CheckUp</a>
+                        	<li><a href="#default"><?php echo $this->i18n('a1544_default'); ?></a>
+                            <li><a href="#seo"><?php echo $this->i18n('a1544_config'); ?></a>
+                            <li><a href="#faq">FAQ</a>
                       </ul>
                     </nav>
         	    </div>
-				-->
                 
 				<div class="rex-docs-content">
                 
@@ -124,10 +127,41 @@ Die Prüfung wird mit der Liveversion des Artikels durchgeführt, so dass ein ge
                           <td valign="top">Nutzung des Fokus-Keywords auch in Offline-Artikel prüfen</td>
                         </tr>
                   </table>
+<p>&nbsp;</p>                    
                     
-                                        
-	          </div>
-			</div>
+                    
+                    <!-- SEO-CheckUp -->
+                    <a name="faq"></a>
+                    <h3>FAQ:</h3>
+                  
+                    <p class="faq text-danger" data-toggle="collapse" data-target="#f001"><span class="caret"></span> Es wird keine H1-Überschrift gefunden, obwohl diese vorhanden ist.</p>
+                    <div id="f001" class="collapse">Die meisten Webseiten legen Ihre H1-Überschrift im Contentbereich ab.<br>
+                    Wenn sich die H1-Überschrift nun aber z.B. im Header befindet, dann sollte die Option zum Entfernen der &lt;header&gt;-Blöcke in den Einstellungen deaktiviert werden.</div>
+                    
+
+                    <p class="faq text-danger" data-toggle="collapse" data-target="#f002"><span class="caret"></span> Es wird eine rex_socket Fehlermeldung ausgegeben.</p>
+                    <div id="f002" class="collapse">Diese Meldung erscheint immer dann, wenn ein Fehler beim Abrufen der Liveversion aufgetreten ist. Gründe können z.B. Probleme bei der Erreichbarkeit der Seite sein.<br>
+In den meisten Fällen funktioniert der Abruf nach einer kurzen Zeit wieder wie gewohnt.</div>
+
+
+                    <p class="faq text-danger" data-toggle="collapse" data-target="#f003"><span class="caret"></span> Es werden keine oder falsche Ergebnisse angezeigt, wenn sich die Seite im Wartungsmodus (maintenance) befindet.</p>
+                    <div id="f003" class="collapse">Durch den Wartungsmodus werden alle öffentlichen Anfragen auf eine Wartungsseite umgelenkt. Der Aufruf der tatsächlichen Seite ist daher nicht möglich.<br>
+                    Auch eine Anmeldung im Redaxo-Backend macht da keinen Unterschied, da der Abruf des jeweiligen Artikels über einen eigenen Prozess erfolgt.<br>
+                    Abhilfe schaff hier u.U. die Umgehung  
+                    über die Definition der eigenen IP in den Einstellungen des Wartungsmodus.</div>
+
+
+                    <p class="faq text-danger" data-toggle="collapse" data-target="#f004"><span class="caret"></span> Meine Änderungen in der Arbeitsversion werden nicht berücksichtigt.</p>
+                    <div id="f004" class="collapse">Da der Checkup nur die Liveversion einer Seite prüft, müssen soeben gemachte Änderungen für eine korrekte Prüfung erst Live geschalten werden.</div>
+
+
+
+					<p>&nbsp;</p>
+                    
+                    <h3>Fragen, Wünsche, Probleme?</h3>
+                    Du hast einen Fehler gefunden oder ein nettes Feature parat?<br>
+				Lege ein Issue unter <a href="<?php echo $this->getProperty('supportpage'); ?>" target="_blank"><?php echo $this->getProperty('supportpage'); ?></a> an. </div>
+            </div>
 
 	  </div>
 	</div>
