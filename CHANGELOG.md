@@ -1,8 +1,21 @@
-﻿SEO-CheckUp
+SEO-CheckUp
 ===========
 
 Changelog
 ---------
+<b>Version 1.4</b>
+- Neue Analysen (WDF-Kalkulator, Position des Fokus-Keywords, erweiterte H1-Prüfungen)
+- Auswahl der gewünschten Prüfungen/Analysen
+- Auswahl zusätzlicher Ausgaben im Artikel-CheckUp und in der Sidebar
+- Unterstützung des Hyphenator-Addons
+- Bugfixing Verlinkungen
+- Designoptimierung/Codeoptimierung
+
+Hinweis: Bitte die Konfiguration nach Update auf v1.4 prüfen und speichern.
+
+<b>Version 1.3.5</b>
+- Codeoptimierung/Bugfixing
+
 <b>Version 1.3.4</b>
 - Neue Analyse: bold/strong-Tags
 - Anpassung der SERP-Snippet-Vorschau auf aktuelle Google-Ausgabe

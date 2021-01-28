@@ -2,8 +2,8 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Verwaltung: Hilfe
-	v1.3.4
-	by Falko Müller @ 2019-2020
+	v1.4
+	by Falko Müller @ 2019-2021
 	package: redaxo5
 */
 ?>
@@ -47,15 +47,15 @@
                   <p>In diesem Bereich können Sie die SEO-Analysen für alle Artikel der Homepage durchgeführen.</p>
                   <p>Zur Analyse des entsprechenden Artikels klicken Sie auf die Aktualisieren-Schaltfläche hinter dem Eingabefeld für das Fokus-Keyword.<br>
                     Sofern ein Fokus-Keyword* hinterlegt wird, umfasst die Analyse zusätzliche Prüfungen zur Verteilung des Suchbegriffes innerhalb von wichtigen SEO-Parametern.</p>
-                    <p>Zu den Analysen gehören u.A.: </p>
+                    <p>Zu den Analysen gehören u.A. (je nach Konfiguration): </p>
                   <ul>
                     <li>der Seitentitel (&lt;title&gt;)</li>
                       <li>die Seitenbeschreibung (&lt;meta description&gt;)</li>
                       <li>die H1-Überschrift</li>
                       <li>die Überschriftenstruktur</li>
                       <li>das Vorkommen des Fokus-Keywords in den einzelnen Bereichen</li>
-                      <li>die Keyword-Dichte</li>
-                      <li>das Vorhandensein von Bildern</li>
+                      <li>die Keyword-Dichte und die WDF-Kalkulation</li>
+                      <li>das Vorhandensein von Bildern und Verlinkungen</li>
                       <li>der Flesch-Wert des Seiteninhaltes</li>
                     </ul>
                   <p><br>
@@ -72,19 +72,24 @@ Die Prüfung wird mit der Liveversion des Artikels durchgeführt, so dass ein ge
                     <!-- SEO-CheckUp -->
                     <a name="seo"></a>
                   <h3>Bereich &quot;<?php echo $this->i18n('a1544_config'); ?>&quot;:</h3>
-                    <p>                      Über diesen Bereich können grundlegende Einstellungen für die Analysen definiert werden (z.B. Mindestlänge des Seitentitels), als auch die Anzeige des Schnelltestes in der Editieransicht eines Artikels aktiviert werden. Mit zusätzlichen Optionen kann das Ausgabeverhalten der Anzeige des Schnelltests beeinflusst werden.				</p>
-                    <p> Der Schnelltest nutzt dabei die gleichen Prüfungen wie im Bereich &quot;<?php echo $this->i18n('a1544_default'); ?>&quot; und gibt Auskunft über noch durchzuführende Verbesserungen.</p>
+                    <p>                      Über diesen Bereich können grundlegende Einstellungen für die Analysen definiert werden (z.B. Mindestlänge des Seitentitels), als auch die Anzeige des Schnelltestes in der Editieransicht eines Artikels aktiviert werden. Mit zusätzlichen Optionen kann das Ausgabeverhalten der Anzeige in der Sidebar und im <?php echo $this->i18n('a1544_default'); ?> beeinflusst werden.				</p>
+                    <p> Der Schnelltest nutzt  die gleichen Prüfungen wie im Bereich &quot;<?php echo $this->i18n('a1544_default'); ?>&quot; und gibt Auskunft über noch durchzuführende Verbesserungen.</p>
                     <p><br>
                     <strong>                    Konfiguration SEO-Prüfungen</strong></p>
 
                   <table width="100%" border="0" cellspacing="0" cellpadding="0">
                       <tr>
-                        <th scope="col">Eigenschaft</th>
+                        <th scope="col">Einstellung</th>
                         <th scope="col">Erklärung</th>
                     </tr>
                       <tr>
+                        <td valign="top"><strong>Prüfungen &amp; Analysen</strong></td>
+                        <td valign="top">Auswahl ob alle Prüfungen oder nur einzelne Gruppen durchgeführt werden sollen</td>
+                      </tr>
+                      <tr>
                         <td valign="top"><strong>Content aufbereiten</strong></td>
-                        <td valign="top">Festlegung des Umfanges des zu prüfenden Quellcodes des Contentbereiches (&lt;body&gt;...&lt;/body&gt;)</td>
+                        <td valign="top">Festlegung des prüfenden Quellcode-Umfanges  des Contentbereiches (&lt;body&gt;...&lt;/body&gt;).<br>
+                        Des Weiteren kann hier die Hyphenator-Trennung rückgängig gemacht werden.</td>
                       </tr>
                       <tr>
                         <td valign="top"><strong>Anzahl Zeichen Seitentitel</strong></td>
@@ -127,10 +132,33 @@ Die Prüfung wird mit der Liveversion des Artikels durchgeführt, so dass ein ge
                           <td valign="top">Nutzung des Fokus-Keywords auch in Offline-Artikel prüfen</td>
                         </tr>
                   </table>
-<p>&nbsp;</p>                    
+                  <p><br>
+                  <strong>                    Konfiguration WDF-Kalkulator</strong></p>
+
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <th width="200" scope="col">Einstellung</th>
+                        <th scope="col">Erklärung</th>
+                    </tr>
+                      <tr>
+                        <td valign="top"><strong>Stopwörter</strong></td>
+                        <td valign="top">Zeilenweise Hinterlegung Ihrer gewünschten Stopwörter, welche nicht in die Kalkulation einfließen sollen.<br>
+                          <br>
+                          Hinweis: Bei der Installation des Addons werden bereits erste Stopwörter eingefügt, welche jederzeit geändert werden können.</td>
+                      </tr>
+                      <tr>
+                        <td valign="top"><strong>Anzahl Wörter in WDF-Übersicht</strong></td>
+                        <td valign="top">Anzahl darzustellender Top-Keywords in der WDF-Übersicht.</td>
+                      </tr>
+                      <tr>
+                        <td valign="top"><strong>Kurze Wörter auslassen</strong></td>
+                        <td valign="top">Kurze Wörter (kleiner 4 Zeichen) aus der WDF-Kalkulation auslassen</td>
+                      </tr>
+                  </table>
+<p>&nbsp;</p>                   
                     
                     
-                    <!-- SEO-CheckUp -->
+<!-- SEO-CheckUp -->
                     <a name="faq"></a>
                     <h3>FAQ:</h3>
                   
@@ -160,7 +188,14 @@ In den meisten Fällen funktioniert der Abruf nach einer kurzen Zeit wieder wie 
                     
                     <h3>Fragen, Wünsche, Probleme?</h3>
                     Du hast einen Fehler gefunden oder ein nettes Feature parat?<br>
-				Lege ein Issue unter <a href="<?php echo $this->getProperty('supportpage'); ?>" target="_blank"><?php echo $this->getProperty('supportpage'); ?></a> an. </div>
+				Lege ein Issue unter <a href="<?php echo $this->getProperty('supportpage'); ?>" target="_blank"><?php echo $this->getProperty('supportpage'); ?></a> an. 
+                
+                
+                    
+                    <h3>Credits</h3>
+                    WDF-Kalkulator: <a href="https://github.com/rkemmere" target="_blank">Ronny Kemmereit</a>
+                
+                </div>
             </div>
 
 	  </div>

@@ -2,8 +2,8 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Verwaltung: index
-	v1.3.4
-	by Falko Müller @ 2019-2020
+	v1.4
+	by Falko Müller @ 2019-2021
 	package: redaxo5
 */
 
@@ -21,8 +21,22 @@ $subpage2 = rex_be_controller::getCurrentPagePart(3);						//2. Unterebene = dri
 	$subpage2 = preg_replace("/.*-([0-9])$/i", "$1", $subpage2);			//Auslesen der ClangID
 $func = rex_request('func', 'string');
 
+	
+//Addon-Config einlesen für Listenausgaben
 $config = $this->getConfig('config');
-	$config['be_seo_offlinearts'] = (!isset($config['be_seo_offlinearts'])) ? '' : $config['be_seo_offlinearts'];
+	$config['be_seo_offlinearts'] 			= (@$config['be_seo_offlinearts'] == 'checked') 					? true : false;
+	$config['be_seo_culist_title']			= (@$config['be_seo_culist_title'] == 'checked') 					? true : false;
+	$config['be_seo_culist_desc']			= (@$config['be_seo_culist_desc'] == 'checked') 					? true : false;
+	$config['be_seo_culist_snippet']		= (@$config['be_seo_culist_snippet'] == 'checked') 					? true : false;
+	$config['be_seo_culist_h1']				= (@$config['be_seo_culist_h1'] == 'checked') 						? true : false;
+	$config['be_seo_culist_h2']				= (@$config['be_seo_culist_h2'] == 'checked') 						? true : false;
+	$config['be_seo_culist_links']			= (@$config['be_seo_culist_links'] == 'checked') 					? true : false;
+	$config['be_seo_culist_words']			= (@$config['be_seo_culist_words'] == 'checked') 					? true : false;
+	
+	$is_allchecks							= (@$config['be_seo_checks_selection'] != 'checked') 				? true : false;
+	$config['be_seo_culist_wdf']			= (@$config['be_seo_culist_wdf'] == 'checked') 						? true : false;
+	$config['be_seo_checks_links']			= (@$config['be_seo_checks_links'] == 'checked' || $is_allchecks) 	? true : false;
+	$config['be_seo_checks_wdf']			= (@$config['be_seo_checks_wdf'] == 'checked' || $is_allchecks) 	? true : false;
 
 
 //Userrechte prüfen
@@ -62,11 +76,14 @@ td.name { position: relative; padding-right: 20px !important; }
 .daterangepicker { box-shadow: 3px 3px 10px 0px rgb(0,0,0, 0.2); }
 .daterangepicker .calendar-table th, .daterangepicker .calendar-table td { padding: 2px; }
 
+.form_2spaltig > div { display: inline-block; width: 49%; }
+
 .addon_failed, .addonfailed { color: #F00; font-weight: bold; margin-bottom: 15px; }
 .addon_search { width: 100%; background-color: #EEE; }
-.addon_search .searchholder { position: relative; }
-	.addon_search .searchholder a { position: absolute; top: -1px; right: 7px; cursor: pointer; }
-	@-moz-document url-prefix('') { .addon_search .searchholder a { top: -3px; } /* FF-only */ }
+.addon_search .searchholder { position: relative; display: inline-block; }
+	.addon_search .searchholder a { position: absolute; top: 0px; right: 3px; cursor: pointer; }
+		.addon_search .searchholder img { vertical-align: middle; }
+	@-moz-document url-prefix('') { .addon_search .searchholder a { top: 0px; } /* FF-only */ }
 .addon_search .border-top { border-top: 1px solid #DFE9E9; }
 .addon_search td { width: 46%; padding: 9px !important; font-size: 90%; color: #333; border: none !important; vertical-align: top !important; }
 	.addon_search td.td2 { width: 8%; text-align: center; }
@@ -97,6 +114,8 @@ td.name { position: relative; padding-right: 20px !important; }
 span.ajaxNav { display: inline-block; padding: 2px 4px; margin: 3px 2px 1px; cursor: pointer; }
 span.ajaxNav:hover { background-color: #666; color: #FFF; }
 span.ajaxNavSel { background-color: #CCC; }
+
+td.seoculist-keyword { width: 200px; }
 </style>
 
 

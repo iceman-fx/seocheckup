@@ -2,8 +2,8 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Globale-Funktionen
-	v1.3.4
-	by Falko Müller @ 2019-2020
+	v1.4
+	by Falko Müller @ 2019-2021
 	package: redaxo5
 */
 

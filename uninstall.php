@@ -2,8 +2,8 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Deinstallation
-	v1.3.4
-	by Falko Müller @ 2019-2020
+	v1.4
+	by Falko Müller @ 2019-2021
 	package: redaxo5
 */
 
@@ -17,6 +17,7 @@ rex_sql_table::get(rex::getTable('article'))
 	->removeColumn('seocu_keyword')
 	->removeColumn('seocu_result')
 	->removeColumn('seocu_data')
+	->removeColumn('seocu_updatedate')
     ->alter();
 
 

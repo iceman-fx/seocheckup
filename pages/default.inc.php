@@ -2,8 +2,8 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Verwaltung: Hauptseite (Default)
-	v1.3.4
-	by Falko Müller @ 2019-2020
+	v1.4
+	by Falko Müller @ 2019-2021
 	package: redaxo5
 */
 
@@ -92,14 +92,61 @@ $addpath = "index.php?page=".$page;
 
 
 		<!-- Liste -->
+        <?php
+		$cols = 0; $seo_cols = "";
+			if ($config['be_seo_culist_title']):
+				$cols++;
+				$seo_cols .= '<th>'.$this->i18n('a1544_bas_list_title').'</th>';
+			endif;
+			if ($config['be_seo_culist_desc']):
+				$cols++;
+				$seo_cols .= '<th>'.$this->i18n('a1544_bas_list_desc').'</th>';
+			endif;
+			if ($config['be_seo_culist_h1']):
+				$cols++;
+				$seo_cols .= '<th>'.$this->i18n('a1544_bas_list_h1').'</th>';
+			endif;
+			if ($config['be_seo_culist_h2']):
+				$cols++;
+				$seo_cols .= '<th>'.$this->i18n('a1544_bas_list_h2').'</th>';
+			endif;
+			if ($config['be_seo_culist_links'] && $config['be_seo_checks_links']):
+				$cols++;
+				$seo_cols .= '<th>'.$this->i18n('a1544_bas_list_links').'</th>';
+			endif;
+			if ($config['be_seo_culist_words']):
+				$cols++;
+				$seo_cols .= '<th>'.$this->i18n('a1544_bas_list_words').'</th>';
+			endif;						
+			if ($config['be_seo_culist_wdf'] && $config['be_seo_checks_wdf']):
+				$cols++;
+				$seo_cols .= '<th>'.$this->i18n('a1544_bas_list_wdf').'</th>';
+			endif;
+		?>        
+        
 		<table class="table table-striped table-hover">
 		<thead>
 		<tr>
 			<th class="rex-table-id">ID</th>
-			<th><?php echo $this->i18n('a1544_bas_list_name'); ?> <a class="db-order db-order-desc" id="db-order" data-order="asc"><i class="rex-icon fa-sort"></i></a></th>
-			<th><?php echo $this->i18n('a1544_bas_list_status'); ?></th>            
-            <th><?php echo $this->i18n('a1544_bas_list_result'); ?></th>
-            <th><?php echo $this->i18n('a1544_bas_list_focuskw'); ?></th>
+			<th class="seoculist-nowrap"><?php echo $this->i18n('a1544_bas_list_name'); ?> <a class="db-order db-order-desc" id="db-order" data-order="asc"><i class="rex-icon fa-sort"></i></a></th>
+
+            <?php
+			echo $seo_cols;
+			
+            if ($cols <= 3):
+                echo '<th class="seoculist-nowrap">'.$this->i18n('a1544_bas_list_result').'</th>';
+            endif;
+            ?>
+            
+            <th>
+				<?php
+                echo $this->i18n('a1544_bas_list_focuskw');
+                
+                if ($cols > 3):
+                    echo ' / '.$this->i18n('a1544_bas_list_result');
+                endif;
+                ?>
+            </th>
 		</tr>
 		</thead>
 
@@ -108,7 +155,7 @@ $addpath = "index.php?page=".$page;
 		</tbody>
 		</table>
         
-        <div class="modal fade bd-example-modal-lg" id="seocu-modal" tabindex="-1" role="dialog">
+        <div class="modal fade bd-example-modal-lg seocu-modal" id="seocu-modal" tabindex="-1" role="dialog">
         	<div class="modal-dialog modal-dialog-centered" role"document">
             	<div class="modal-content">
                 	<div class="modal-header"><div class="modal-title"><?php echo $this->i18n('a1544_seo_modal_title'); ?></div></div>
