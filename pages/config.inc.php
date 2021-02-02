@@ -2,7 +2,7 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Verwaltung: Einstellungen (config)
-	v1.4
+	v1.4.1
 	by Falko Müller @ 2019-2021
 	package: redaxo5
 */
@@ -21,6 +21,7 @@ if ($func == "save" && isset($_POST['submit'])):
 		'be_seo_showchecks'			=> rex_post('be_seo_showchecks'),
 		'be_seo_sidebar_wdf'		=> rex_post('be_seo_sidebar_wdf'),
 		'be_seo_sidebar_snippet'	=> rex_post('be_seo_sidebar_snippet'),
+		'be_seo_sidebar_priority'	=> rex_post('be_seo_sidebar_priority'),
 		'be_seo_offlinekeywords'	=> rex_post('be_seo_offlinekeywords'),
 		'be_seo_offlinearts'		=> rex_post('be_seo_offlinearts'),
 		'be_seo_culist_count'		=> rex_post('be_seo_culist_count', 'int'),
@@ -109,6 +110,17 @@ $config = $this->getConfig('config');
                     <div class="checkbox">
                     <label for="be_seo_opened">
                         <input name="be_seo_opened" type="checkbox" id="be_seo_opened" value="checked" <?php echo @$config['be_seo_opened']; ?> /> <?php echo $this->i18n('a1544_yes').', '.$this->i18n('a1544_config_seo_opened_info'); ?>
+                    </label>
+                    </div>
+                </dd>
+            </dl>
+             
+            <dl class="rex-form-group form-group">
+                <dt><label for=""><?php echo $this->i18n('a1544_config_seo_sidebar_priority'); ?></label></dt>
+                <dd>
+                    <div class="checkbox">
+                    <label for="be_seo_sidebar_priority">
+                        <input name="be_seo_sidebar_priority" type="checkbox" id="be_seo_sidebar_priority" value="checked" <?php echo @$config['be_seo_sidebar_priority']; ?> /> <?php echo $this->i18n('a1544_yes').', '.$this->i18n('a1544_config_seo_sidebar_priority_info'); ?>
                     </label>
                     </div>
                 </dd>

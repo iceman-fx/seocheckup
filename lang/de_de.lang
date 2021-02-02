@@ -1,4 +1,4 @@
-# addon: seocheckup de_de 1.4
+# addon: seocheckup de_de 1.4.1
 
 a1544_title = SEO-CheckUp
 
@@ -168,6 +168,8 @@ a1544_config_seo = SEO-CheckUp anzeigen
 a1544_config_seo_info = SEO-CheckUp in der Sidebar des Artikels anzeigen
 a1544_config_seo_opened = SEO-CheckUp geöffnet anzeigen
 a1544_config_seo_opened_info = SEO-CheckUp immer geöffnet anzeigen
+a1544_config_seo_sidebar_priority = SEO-CheckUp weiter unten anzeigen
+a1544_config_seo_sidebar_priority_info = SEO-CheckUp eher weiter unten in Sidebar anzeigen
 a1544_config_seo_showchecks = SEO-CheckUp Anzeigemodus
 a1544_config_seo_showchecks_info1 = nicht bestandene Tests / Detail-Schaltfläche
 a1544_config_seo_showchecks_info2 = alle Einzeltests immer anzeigen

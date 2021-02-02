@@ -2,7 +2,7 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Boot (weitere Konfigurationen)
-	v1.4
+	v1.4.1
 	by Falko Müller @ 2019-2021
 	package: redaxo5
 	
@@ -39,16 +39,14 @@ endif;
 
 //Funktionen einladen/definieren
 //Global für Backend+Frontend
+global $a1544_mypage;
+$a1544_mypage = $mypage;
+
 require_once(rex_path::addon($mypage)."/functions/functions.inc.php");
-	//Prüffunktionen einbinden
-	//rex_extension::register('PACKAGES_INCLUDED', 'a1XX_functionname');	
 
 //Backendfunktionen
 if (rex::isBackend() && rex::getUser()):
 	//Globale Einstellungen
-	//require_once(rex_path::addon($mypage)."/functions/functions_be.inc.php");
-	
-	
 	//Sprachauswahl zur Navigation hinzufügen
 	$page = $this->getProperty('page');
 		if (count(rex_clang::getAll(false)) > 1):
@@ -82,7 +80,14 @@ if (rex::isBackend() && rex::getUser()):
 	if (@$config['be_seo'] == "checked"):
 		//Sidebar-CheckUp
 		rex_extension::register('PACKAGES_INCLUDED', function($ep){
-			rex_extension::register('STRUCTURE_CONTENT_SIDEBAR', 'a1544_showSEO', rex_extension::EARLY);
+			global $a1544_mypage;
+			$config = rex_addon::get($a1544_mypage)->getConfig('config');
+			
+			if (@$config['be_seo_sidebar_priority'] == "checked"):
+				rex_extension::register('STRUCTURE_CONTENT_SIDEBAR', 'a1544_showSEO', rex_extension::LATE);
+			else:
+				rex_extension::register('STRUCTURE_CONTENT_SIDEBAR', 'a1544_showSEO', rex_extension::EARLY);
+			endif;
 			
 			//bei Contentänderung Info über URL bereitstellen
 			foreach(array("SLICE_ADDED", "SLICE_DELETED", "SLICE_UPDATED") as $e):

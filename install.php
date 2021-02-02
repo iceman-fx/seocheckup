@@ -2,7 +2,7 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Installation
-	v1.4
+	v1.4.1
 	by Falko Müller @ 2019-2021
 	package: redaxo5
 */
@@ -23,6 +23,7 @@ if (!$this->hasConfig()):
 		'be_seo_showchecks'			=> '',
 		'be_seo_sidebar_wdf'		=> 'checked',
 		'be_seo_sidebar_snippet'	=> 'checked',
+		'be_seo_sidebar_priority'	=> '',
 		'be_seo_offlinekeywords'	=> '',
 		'be_seo_offlinearts'		=> '',
 		'be_seo_culist_count'		=> '20',

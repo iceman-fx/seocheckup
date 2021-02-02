@@ -3,6 +3,9 @@ SEO-CheckUp
 
 Changelog
 ---------
+<b>Version 1.4.1</b>
+- Reihenfolge in Sidebar anpassbar
+
 <b>Version 1.4</b>
 - Neue Analysen (WDF-Kalkulator, Position des Fokus-Keywords, erweiterte H1-Prüfungen)
 - Auswahl der gewünschten Prüfungen/Analysen

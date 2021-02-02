@@ -2,7 +2,7 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Globale-Funktionen
-	v1.4
+	v1.4.1
 	by Falko Müller @ 2019-2021
 	package: redaxo5
 */
@@ -11,8 +11,8 @@
 
 
 //globale Variablen
-global $a1544_mypage;
-$a1544_mypage = $this->getProperty('package');
+//global $a1544_mypage;
+//$a1544_mypage = $this->getProperty('package');
 
 
 //Funktionen
