@@ -2,7 +2,7 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Deinstallation
-	v1.4
+	v1.4.1
 	by Falko Müller @ 2019-2021
 	package: redaxo5
 */

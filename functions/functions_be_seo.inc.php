@@ -2,7 +2,7 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Backend-Funktionen (SEO)
-	v1.4
+	v1.4.5
 	by Falko Müller @ 2019-2021
 	package: redaxo5
 */
@@ -141,6 +141,7 @@ function a1544_seocheckup()
             $keyword = $db->getValue('seocu_keyword');
 		endif;
 		unset($db);
+	$keyword = trim(preg_replace('/ {2,}/', ' ', $keyword));					//mehrfache Leerzeichen entfernen, da ein einzelnes Leerzeichen der primäre Worttrenner für den Test ist
 	$lasturl = urldecode(rex_request('lasturl'));
 	$showtests = (rex_request('showtests', 'int') == 1) ? true : false;
 		
@@ -386,12 +387,15 @@ function a1544_seocheckup()
 			$linknames = (isset($matches[2])) ? $matches[2] : array();
 		
 		
+		
 		// ----------------------------------------------------------------------------------------------------------------------------------- //
+			
 			
 			
 		//Prüfungen (title, desc, opengraph (title, desc, url), h1, content)
 		//title & desc
 		if ($config['be_seo_checks_titledesc']):
+		
 			//title
 			if (!empty($title)):
 				$cnt .= '<li class="'.$css_detailsonly.'"><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_title_ok').'</li>';
@@ -435,11 +439,14 @@ function a1544_seocheckup()
 				$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.rex_i18n::msg('a1544_seo_desc_nok').'</li>';
 			endif;
 			$checks++;
+			
 		endif;
+				
 				
 		
 		//opengraph (aus SEO-Sicht optional, da vorwiegend für SocialMedia)
 		if ($has_og && $config['be_seo_checks_opengraph']):
+		
 			$cnt .= '<li class="'.$css_detailsonly.'"><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_og_ok').'</li>';
 			
 			if (!empty($ogtitle)):
@@ -465,11 +472,14 @@ function a1544_seocheckup()
 				$cnt .= '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_nok.'"></i>'.rex_i18n::msg('a1544_seo_ogurl_nok').'</li>';
 			endif;
 			$checks++;
+			
 		endif;
+				
 				
 		
 		//URL
 		if ($config['be_seo_checks_url']):
+		
 			//URL Länge		
 			$tmp = preg_replace("/(http[s]?:\/\/|\/$)/i", "", str_replace($dom, "", $url));
 				$tmp = preg_replace("/^\//i", "", $tmp);
@@ -490,17 +500,21 @@ function a1544_seocheckup()
 				$cnt .= '<li class="'.$css_detailsonly.$css_sub.'"><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_url_depth_ok').'</li>';
 				$checks_ok++;
 			endif;
-			$checks++;		
+			$checks++;	
+				
 		endif;
 				
 		
+		
 		//Header
 		if ($config['be_seo_checks_header']):
+		
 			//H1
 			if (count($h1) > 1):
 				//mehrere H1 gefunden
 				$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.rex_i18n::msg('a1544_seo_h1multi').'</li>';
 			elseif (empty($h1[0])):
+			
 				//keine H1 gefunden
 				$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.rex_i18n::msg('a1544_seo_h1_nok').'</li>';
 			else:
@@ -523,7 +537,9 @@ function a1544_seocheckup()
 				$hxerror = ($hxlast != 1) ? true : false;
 	
 				$tmp = ($hxerror) ? $col_nok : '';
-				$hxlist = '<div id="seocu-hxlist" class="seocu-infolist seocu-hide">';
+				
+				//$hxlist = '<div id="seocu-hxlist" class="seocu-infolist seocu-hide">';
+				$hxlist = '';
 				$hxlist .= '<dl><dt>H'.$hx_types[0].'</dt><dd class="'.$tmp.'">'.$hx[0].'</dd></dl>';
 				for ($i=1; $i < $hxcount; $i++):
 					if ($hx_types[$i] != 1 && ($hx_types[$i] == $hxlast || $hx_types[$i] < $hxlast || $hx_types[$i] == ($hxlast+1))):
@@ -536,25 +552,31 @@ function a1544_seocheckup()
 					$hxlast = $hx_types[$i];					
 					$hxlist .= '<dl><dt>H'.$hx_types[$i].'</dt><dd class="'.$tmp.'">'.$hx[$i].'</dd></dl>';
 				endfor;
-				$hxlist .= '</div>';
+				//$hxlist .= '</div>';
 				
 				if (!$hxerror):
 					$cnt .= '<li class="'.$css_detailsonly.'"><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_hx_ok').'</li>';
 					$cnt .= ($hxcount < 2) ? '<li class="'.$css_detailsonly.$css_sub.'"><i class="rex-icon '.$icon_info.'"></i>'.rex_i18n::msg('a1544_seo_hx_short').'</li>' : '';			//Empfehlung: mehr als 1 Überschrift
 					$checks_ok++;
 				else:
-					$cnt .= '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_nok.'"></i><span class="seocu-infolistswitch" data-seocu-dst="#seocu-hxlist">'.rex_i18n::msg('a1544_seo_hx_nok').'&nbsp;<span class="rex-icon fa-caret-down"></span></span>'.$hxlist.'</li>';
+					$cnt .= '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_nok.'"></i>'.a1544_kwInfobox( rex_i18n::msg('a1544_seo_hx_nok'), $hxlist).'</li>';
+
+
+					//$cnt .= '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_nok.'"></i><span class="seocu-infolistswitch" data-seocu-dst="#seocu-hxlist">'.rex_i18n::msg('a1544_seo_hx_nok').'&nbsp;<span class="rex-icon fa-caret-down"></span></span>'.$hxlist.'</li>';
 				endif;
 				$checks++;
 			endif;
 			unset($hxlist, $hxerror);
+			
 		endif;
+				
 				
 		
 		//Content
 		//$wcount = (!empty($artcnt)) ? count(explode(" ", $artcnt)) : 0;		 	//(alt)
 		$wcount = (!empty($artcnt)) ? a1544_countWords($artcnt) : 0;
 		if ($config['be_seo_checks_content']):
+		
 			//Content-Länge
 			if ($wcount >= $config['be_seo_content_words']):
 				$cnt .= '<li class="'.$css_detailsonly.'"><i class="rex-icon '.$icon_ok.'"></i>'.str_replace("###words###", $wcount, rex_i18n::msg('a1544_seo_cnt_ok')).'</li>';
@@ -562,7 +584,7 @@ function a1544_seocheckup()
 			else:
 				$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.str_replace(array("###words###", "###cwords###"), array($wcount, $config['be_seo_content_words']), rex_i18n::msg('a1544_seo_cnt_short')).'</li>';
 			endif;
-			$checks++;
+			$checks++;			
 			
 			
 			//content -> gefundene title Wörter
@@ -577,7 +599,7 @@ function a1544_seocheckup()
 			else:
 				$cnt .= '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_nok.'"></i>'.rex_i18n::msg('a1544_seo_cnt_titlewords_nok').'</li>';
 			endif;
-			$checks++;
+			$checks++;			
 			
 			
 			//content -> gefundene H1 Wörter
@@ -592,14 +614,15 @@ function a1544_seocheckup()
 			else:
 				$cnt .= '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_nok.'"></i>'.rex_i18n::msg('a1544_seo_cnt_h1words_nok').'</li>';
 			endif;
-			$checks++;
+			$checks++;			
 			
 			
 			//bold-strong Tags -> Länge oder leer
 			$bcnt = "";
 			$berror = $bcount = $bempty = 0;
 			if (count($bolds) > 0):
-				$boldlist = '<div id="seocu-boldlist" class="seocu-infolist seocu-hide">';
+				//$boldlist = '<div id="seocu-boldlist" class="seocu-infolist seocu-hide">';
+				$boldlist = '';
 				
 				//Anzahl berechnen
 				$curbolds = count($bolds);
@@ -616,7 +639,7 @@ function a1544_seocheckup()
 						$boldlist .= '<dl><dt>'.$tmp.' '.rex_i18n::msg('a1544_seo_bolds_char').'</dt><dd class="'.$col_nok.'">'.$bold.'</dd></dl>';
 					endif;
 				endforeach;
-				$boldlist .= '</div>';
+				//$boldlist .= '</div>';
 				
 				//Info: Anzahl
 				if (count($bolds) > $maxbolds):
@@ -635,7 +658,9 @@ function a1544_seocheckup()
 				//Info: Tags zu lang + Übersicht
 				if ($bcount > 0):
 					$berror = 1;
-					$bcnt .= '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_nok.'"></i><span class="seocu-infolistswitch" data-seocu-dst="#seocu-boldlist">'.str_replace("###count###", $bcount, rex_i18n::rawmsg('a1544_seo_bolds_length')).'&nbsp;<span class="rex-icon fa-caret-down"></span></span>'.$boldlist.'</li>';
+					
+					$bcnt .= '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_nok.'"></i>'.a1544_kwInfobox( str_replace("###count###", $bcount, rex_i18n::rawmsg('a1544_seo_bolds_length')), $boldlist).'</li>';
+					//$bcnt .= '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_nok.'"></i><span class="seocu-infolistswitch" data-seocu-dst="#seocu-boldlist">'.str_replace("###count###", $bcount, rex_i18n::rawmsg('a1544_seo_bolds_length')).'&nbsp;<span class="rex-icon fa-caret-down"></span></span>'.$boldlist.'</li>';
 				endif;
 			endif;
 			unset($boldlist);
@@ -648,16 +673,20 @@ function a1544_seocheckup()
 				$checks_ok++;
 			endif;
 			$checks++;
+			
 		endif;
+		
 		
 		
 		//images
 		if ($config['be_seo_checks_images']):
+		
 			$acount = 0;
 			if (count($imgs) > 0):
 				$checks_ok++;
 				
-				$imglist = '<div id="seocu-imglist" class="seocu-infolist seocu-hide">';
+				//$imglist = '<div id="seocu-imglist" class="seocu-infolist seocu-hide">';
+				$imglist = '';
 				foreach ($imgs as $img):
 					preg_match("/alt\s*=\s*[\"']{1}([^\"']*)[\"']{1}/i", $img, $matches);
 					if (!isset($matches[1]) || empty($matches[1])):
@@ -667,10 +696,12 @@ function a1544_seocheckup()
 						$imglist .= (isset($matches[1]) && !empty($matches[1])) ? '<dl><dt>IMG</dt><dd class="'.$col_nok.'">'.$matches[1].'</dd></dl>' : '';
 					endif;
 				endforeach;
-				$imglist .= '</div>';
+				//$imglist .= '</div>';
 				
 				if ($acount > 0):
-					$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i><span class="seocu-infolistswitch" data-seocu-dst="#seocu-imglist">'.str_replace("###count###", $acount, rex_i18n::msg('a1544_seo_img_alt_nok')).'&nbsp;<span class="rex-icon fa-caret-down"></span></span>'.$imglist.'</li>';
+					$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.a1544_kwInfobox( str_replace("###count###", $acount, rex_i18n::msg('a1544_seo_img_alt_nok')), $imglist).'</li>';
+					
+					//$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i><span class="seocu-infolistswitch" data-seocu-dst="#seocu-imglist">'.str_replace("###count###", $acount, rex_i18n::msg('a1544_seo_img_alt_nok')).'&nbsp;<span class="rex-icon fa-caret-down"></span></span>'.$imglist.'</li>';
 				else:
 					$cnt .= '<li class="'.$css_detailsonly.'"><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_img_ok').'</li>';
 					$checks_ok++;
@@ -682,11 +713,14 @@ function a1544_seocheckup()
 				$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.rex_i18n::msg('a1544_seo_img_nok').'</li>';
 			endif;
 			$checks++;
+			
 		endif;
+		
 		
 		
 		//Links
 		if ($config['be_seo_checks_links']):
+		
 			//Anzahl Links
 			$lcount = $lcount_int = $lcount_ext = $lcount_intimg = 0;
 			if (count($links) > 0):
@@ -725,191 +759,407 @@ function a1544_seocheckup()
 						
 			//Broken Links (extern/intern) -> auf Code 200 prüfen
 			//später evtl.
+			
 		endif;
+		
 		
 		
 		// ----------------------------------------------------------------------------------------------------------------------------------- //
 			
+
 	
 		//Keyword-Prüfungen (title, desc, url, opengraph, h1, density, unique, content, ...)
 		if (!empty($keyword)):
+			//alle Keywords immer einzeln testen
+			$kws = explode(" ", $keyword);
+			$kwc = count($kws);
+
+		
 			//$cnt .= ($showchecks || $checks > $checks_ok) ? '<li>&nbsp;</li>' : '';
 			$cnt .= ($checks <= $checks_ok) ? '<li class="'.$css_detailsonly.'">&nbsp;</li>' : '';
 			$cnt .= ($checks > $checks_ok) ? '<li>&nbsp;</li>' : '';
 		
+		
 			//title & desc
 			if ($config['be_seo_checks_titledesc']):
+			
 				//title
-				if (mb_stristr($title_raw, $keyword)):
+				$kwlist = $kwslist = "";
+				foreach ($kws as $kw):
+				
+					if (mb_stristr($title_raw, $kw)):
+						//Vorhanden
+						//Keyword ist max. das 3.Wort --> später evtl. definierbar machen
+						if (count($title_words) > 0):
+							$found = false;
+							for ($w=0; $w<3; $w++):
+								if (mb_strtolower($title_words[$w]) == $kw) { $found = true; }
+							endfor;
+							
+							if (!$found):
+								$kwslist .= '<dl><dt>KW</dt><dd>'.$kw.'</dd></dl>';
+							endif;
+						endif;
+						
+					else:
+						$kwlist .= '<dl><dt>KW</dt><dd>'.$kw.'</dd></dl>';
+					endif;
+					
+				endforeach;
+				
+				if (empty($kwlist)):
+					//ok
 					$cnt .= '<li class="'.$css_detailsonly.'"><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_keytitle_ok').'</li>';
 					$checks_ok++;
 					
-					//Keyword ist max. das 3. Wort (definierbar)
-					if (count($title_words) > 0):
-						$found = false;
-						for ($w=0; $w<3; $w++):
-							if (mb_strtolower($title_words[$w]) == $keyword) { $found = true; }
-						endfor;
-						
-						if ($found):
+						//Keyword ist max. das 3.Wort
+						if (empty($kwslist)):
+							//ok
 							$checks_ok++;
+							
 						else:
-							$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.rex_i18n::msg('a1544_seo_keytitle_atstart_nok').'</li>';
+							//nok
+							$tmp = rex_i18n::msg('a1544_seo_keytitle_atstart_nok');
+							$tmp = ($kwc <= 1) ? $tmp : a1544_kwInfobox($tmp, $kwslist);
+							
+							$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.$tmp.'</li>';
 						endif;
 						$checks++;
-					endif;
 					
 				else:
-					$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.rex_i18n::msg('a1544_seo_keytitle_nok').'</li>';
+					//nok
+					$tmp = rex_i18n::msg('a1544_seo_keytitle_nok');
+					$tmp = ($kwc <= 1) ? $tmp : a1544_kwInfobox($tmp, $kwlist);
+
+					$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.$tmp.'</li>';
 				endif;
 				$checks++;
 				
 				
 				//desc
-				if (mb_stristr($desc_raw, $keyword)):
+				$kwlist = $kwslist = "";
+				foreach ($kws as $kw):
+				
+					if (mb_stristr($desc_raw, $kw)):
+						//Vorhanden
+						//Keyword in den ersten 120 Zeichen gefunden --> später evtl. definierbar machen !!!
+						if (!mb_stristr(mb_substr($desc_raw, 0,120), $kw)):
+							$kwslist .= '<dl><dt>KW</dt><dd>'.$kw.'</dd></dl>';
+						endif;
+						
+					else:
+						$kwlist .= '<dl><dt>KW</dt><dd>'.$kw.'</dd></dl>';
+					endif;
+					
+				endforeach;
+				
+				if (empty($kwlist)):
+					//ok
 					$cnt .= '<li class="'.$css_detailsonly.'"><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_keydesc_ok').'</li>';
 					$checks_ok++;
 					
-					//Keyword in den ersten 120 Zeichen gefunden (definierbar)
-					if (mb_stristr(mb_substr($desc_raw, 0,120), $keyword)):
-						$checks_ok++;
-					else:
-						$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.rex_i18n::msg('a1544_seo_keydesc_atstart_nok').'</li>';
-					endif;
-					$checks++;
+						//Keyword in den ersten 120 Zeichen gefunden
+						if (empty($kwslist)):
+							//ok
+							$checks_ok++;
+							
+						else:
+							//nok
+							$tmp = rex_i18n::msg('a1544_seo_keydesc_atstart_nok');
+							$tmp = ($kwc <= 1) ? $tmp : a1544_kwInfobox($tmp, $kwslist);
+		
+							$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.$tmp.'</li>';
+						endif;
+						$checks++;
 					
 				else:
-					$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.rex_i18n::msg('a1544_seo_keydesc_nok').'</li>';
+					//nok
+					$tmp = rex_i18n::msg('a1544_seo_keydesc_nok');
+					$tmp = ($kwc <= 1) ? $tmp : a1544_kwInfobox($tmp, $kwlist);
+
+					$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.$tmp.'</li>';
 				endif;
 				$checks++;
+
 			endif;
+			
 			
 			
 			//Header
 			if ($config['be_seo_checks_header']):
+			
 				//H1
-				if (mb_stristr($h1cnt, $keyword)):
+				$kwlist = $kwslist = "";
+				foreach ($kws as $kw):
+				
+					if (!mb_stristr($h1cnt, $kw)):
+						$kwlist .= '<dl><dt>KW</dt><dd>'.$kw.'</dd></dl>';
+					endif;
+					
+				endforeach;
+				
+				if (empty($kwlist)):
+					//ok
 					$cnt .= '<li class="'.$css_detailsonly.'"><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_keyh1_ok').'</li>';
 					$checks_ok++;
+					
 				else:
-					$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.rex_i18n::msg('a1544_seo_keyh1_nok').'</li>';
+					//nok
+					$tmp = rex_i18n::msg('a1544_seo_keyh1_nok');
+					$tmp = ($kwc <= 1) ? $tmp : a1544_kwInfobox($tmp, $kwlist);
+
+					$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.$tmp.'</li>';
 				endif;
-				$checks++;			
+				$checks++;
 				
 				
 				//H1-H6
 				if (count($hx) > 0):
-					$found = 0;
-					foreach ($hx as $h):
-						if (mb_stristr($h, $keyword)) { $found++; }
+					$kwlist = $kwslist = "";
+					foreach ($kws as $kw):
+					
+						$found = 0;
+						foreach ($hx as $h):
+							if (mb_stristr($h, $kw)) { $found++; }
+						endforeach;
+
+						if ($found < 2):
+							$kwlist .= '<dl><dt>KW</dt><dd>'.$kw.'</dd></dl>';
+						endif;
+						
 					endforeach;
 					
-					if ($found >= 2):
-						$cnt .= '<li class="'.$css_detailsonly.'"><i class="rex-icon '.$icon_ok.'"></i>'.str_replace("###count###", $found, rex_i18n::msg('a1544_seo_keyhx_ok')).'</li>';
+					if (empty($kwlist)):
+						//ok
+						$tmp = ($kwc <= 1) ? 'a1544_seo_keyhx_ok' : 'a1544_seo_keyhx_ok_multi';
+						$cnt .= '<li class="'.$css_detailsonly.'"><i class="rex-icon '.$icon_ok.'"></i>'.str_replace("###count###", $found, rex_i18n::msg($tmp)).'</li>';
 						$checks_ok++;
+						
 					else:
-						$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.rex_i18n::msg('a1544_seo_keyhx_nok').'</li>';
+						//nok
+						$tmp = rex_i18n::msg('a1544_seo_keyhx_nok');
+						$tmp = ($kwc <= 1) ? $tmp : a1544_kwInfobox($tmp, $kwlist);
+	
+						$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.$tmp.'</li>';
 					endif;
 					$checks++;
 				endif;
+				
 			endif;
+			
 			
 			
 			//Content
-			$kcountbody = (float)preg_match_all("/".$keyword."/iU", $artcnt);				//U-Modifier, da sonst greedy
+			$kcountbody = (float)preg_match_all("/".$keyword."/iU", $artcnt);				//für Keyword-Density bei Single-Keyword !!! (U-Modifier, da sonst greedy)
 			if ($config['be_seo_checks_content']):
+			
 				//content (Länge)
-				if ($kcountbody > 0):
-					$cnt .= '<li class="'.$css_detailsonly.'"><i class="rex-icon '.$icon_ok.'"></i>'.str_replace("###count###", $kcountbody, rex_i18n::msg('a1544_seo_keycnt_ok')).'</li>';
-					$checks_ok++;
-				else:
-					$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.rex_i18n::msg('a1544_seo_keycnt_nok').'</li>';
-				endif;
-				$checks++;
-	
+				$kwlist = $kwslist = $kwoklist = "";
+				foreach ($kws as $kw):
 				
-				//content (Keyword am Anfang)
-				if (count($content_words) > 0):
-					$found = false;
-					for ($w=0; $w<400; $w++):
-						if (mb_strtolower($content_words[$w]) == $keyword) { $found = true; }
-					endfor;
-					
-					if ($found):
-						$cnt .= '<li class="'.$css_detailsonly.'"><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_keycnt_atstart_ok').'</li>';
-						$checks_ok++;
+					$kcountbody = (float)preg_match_all("/".$kw."/iU", $artcnt);
+
+					if ($kcountbody > 0):
+						$kwoklist .= '<dl><dt>'.$kcountbody.'x</dt><dd>'.$kw.'</dd></dl>';
+						
+						
+						//content (Keyword am Anfang)
+						if (count($content_words) > 0):
+							$found = false;
+							for ($w=0; $w<400; $w++):
+								if (mb_strtolower($content_words[$w]) == $kw) { $found = true; }
+							endfor;
+
+							if (!$found):
+								$kwslist .= '<dl><dt>KW</dt><dd>'.$kw.'</dd></dl>';
+							endif;
+						endif;
+						
 					else:
-						$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.rex_i18n::msg('a1544_seo_keycnt_atstart_nok').'</li>';
+						$kwlist .= '<dl><dt>KW</dt><dd>'.$kw.'</dd></dl>';
 					endif;
 					
-					$checks++;
-				endif;							
-					
+				endforeach;
 				
+				if (empty($kwlist)):
+					//ok
+					$cnt .= ($kwc <= 1) ? '<li class="'.$css_detailsonly.'"><i class="rex-icon '.$icon_ok.'"></i>'.str_replace("###count###", $kcountbody, rex_i18n::msg('a1544_seo_keycnt_ok')).'</li>' : '';					
+					$cnt .= ($kwc >= 2) ? '<li class="'.$css_detailsonly.'"><i class="rex-icon '.$icon_ok.'"></i>'.a1544_kwInfobox( rex_i18n::msg('a1544_seo_keycnt_ok_multi'), $kwoklist).'</li>' : '';
+					$checks_ok++;
+					
+						//content (Keyword am Anfang)
+						if (empty($kwslist)):
+							//ok
+							$cnt .= '<li class="'.$css_detailsonly.$css_sub.'"><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_keycnt_atstart_ok').'</li>';					
+							$checks_ok++;
+							
+						else:
+							//nok
+							$tmp = rex_i18n::msg('a1544_seo_keycnt_atstart_nok');
+							$tmp = ($kwc <= 1) ? $tmp : a1544_kwInfobox($tmp, $kwslist);
+		
+							$cnt .= '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_nok.'"></i>'.$tmp.'</li>';
+						endif;
+						$checks++;
+					
+				else:
+					//nok
+					$tmp = rex_i18n::msg('a1544_seo_keycnt_nok');
+					$tmp = ($kwc <= 1) ? $tmp : a1544_kwInfobox($tmp, $kwlist);
+
+					$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.$tmp.'</li>';
+				endif;
+				$checks++;
+			
+
 				//Keyword in bold-Tags vorhanden, wenn bold-Tags vorhanden sind
 			
 			endif;
+
 			
 			
 			//URL
 			if ($config['be_seo_checks_url']):
-				if (!mb_stristr($url, $keyword)):
-					$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.rex_i18n::msg('a1544_seo_keyurl_nok').'</li>';
-				elseif (mb_substr_count($url, $keyword) > 1):
-					$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.rex_i18n::msg('a1544_seo_keyurl_multi').'</li>';
-				else:
+			
+				$kwlist = $kwslist = "";
+				foreach ($kws as $kw):
+				
+					if (!mb_stristr($url, $kw)):
+						//kein Vorkommen = fehlt
+						$kwlist .= '<dl><dt>KW</dt><dd>'.$kw.'</dd></dl>';
+						
+					else:
+						//Vorhanden
+						//mehrfaches Vorkommen prüfen
+						if (mb_substr_count($url, $kw) > 1):
+							$kwslist .= '<dl><dt>KW</dt><dd>'.$kw.'</dd></dl>';
+						endif;
+					endif;
+					
+				endforeach;				
+				
+				if (empty($kwlist)):
+					//ok
 					$cnt .= '<li class="'.$css_detailsonly.'"><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_keyurl_ok').'</li>';
 					$checks_ok++;
+					
+						//mehrfaches Vorkommen
+						if (empty($kwslist)):
+							//ok
+							$checks_ok++;
+						else:
+							//nok
+							$tmp = rex_i18n::msg('a1544_seo_keyurl_multi');
+							$tmp = ($kwc <= 1) ? $tmp : a1544_kwInfobox($tmp, $kwslist);
+		
+							$cnt .= '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_nok.'"></i>'.$tmp.'</li>';
+						endif;
+						$checks++;
+				
+				else:
+					//nok
+					$tmp = rex_i18n::msg('a1544_seo_keyurl_nok');
+					$tmp = ($kwc <= 1) ? $tmp : a1544_kwInfobox($tmp, $kwlist);
+
+					$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.$tmp.'</li>';
 				endif;
-				$checks++;
+				$checks++;	
+
 			endif;
+			
 						
 			
 			//Images (alt, title, src)
 			if (count($imgs) > 0 && $config['be_seo_checks_images']):
-				$found_alt = $found_title = $found_src = 0;
-				foreach ($imgs as $img):
-					preg_match("/alt\s*=\s*[\"']{1}([^\"']*)[\"']{1}/i", $img, $matches);
-					if (isset($matches[1]) && mb_stristr($matches[1], $keyword)) { $found_alt++; }
-						
-					preg_match("/title\s*=\s*[\"']{1}([^\"']*)[\"']{1}/i", $img, $matches);
-					if (isset($matches[1]) && mb_stristr($matches[1], $keyword)) { $found_title++; }
+			
+				$kwlist = $kwslist = $kwsslist = "";
+				foreach ($kws as $kw):
+				
+					$found_alt = $found_title = $found_src = 0;
+					foreach ($imgs as $img):
+						preg_match("/alt\s*=\s*[\"']{1}([^\"']*)[\"']{1}/i", $img, $matches);
+						if (isset($matches[1]) && mb_stristr($matches[1], $kw)) { $found_alt++; }
+							
+						preg_match("/title\s*=\s*[\"']{1}([^\"']*)[\"']{1}/i", $img, $matches);
+						if (isset($matches[1]) && mb_stristr($matches[1], $kw)) { $found_title++; }
+	
+						preg_match("/src\s*=\s*[\"']{1}([^\"']*)[\"']{1}/i", $img, $matches);
+						if (isset($matches[1]) && mb_stristr($matches[1], $kw)) { $found_src++; }
+					endforeach;
+				
+					//ALT
+					if ($found_alt <= 0):
+						$kwlist .= '<dl><dt>KW</dt><dd>'.$kw.'</dd></dl>';
+					endif;	
+									
+					
+					//TITLE
+					if ($found_title <= 0):
+						$kwslist .= '<dl><dt>KW</dt><dd>'.$kw.'</dd></dl>';
+					endif;
+					
 
-					preg_match("/src\s*=\s*[\"']{1}([^\"']*)[\"']{1}/i", $img, $matches);
-					if (isset($matches[1]) && mb_stristr($matches[1], $keyword)) { $found_src++; }
+					//SRC
+					if ($found_src <= 0):
+						$kwsslist .= '<dl><dt>KW</dt><dd>'.$kw.'</dd></dl>';
+					endif;
+					
 				endforeach;
 				
 				//ALT
-				if ($found_alt > 0):
+				if (empty($kwlist)):
+					//ok
 					$cnt .= '<li class="'.$css_detailsonly.'"><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_keyimg_alt_ok').'</li>';
 					$checks_ok++;
+					
 				else:
-					$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.rex_i18n::msg('a1544_seo_keyimg_alt_nok').'</li>';
-				endif;
-				$checks++;
+					//nok
+					$tmp = rex_i18n::msg('a1544_seo_keyimg_alt_nok');
+					$tmp = ($kwc <= 1) ? $tmp : a1544_kwInfobox($tmp, $kwlist);
 
+					$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.$tmp.'</li>';
+				endif;
+				$checks++;	
+							
+				
 				//TITLE
-				if ($found_title > 0):
+				if (empty($kwslist)):
+					//ok
 					$cnt .= '<li class="'.$css_detailsonly.'"><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_keyimg_title_ok').'</li>';
 					$checks_ok++;
+					
 				else:
-					$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.rex_i18n::msg('a1544_seo_keyimg_title_nok').'</li>';
+					//nok
+					$tmp = rex_i18n::msg('a1544_seo_keyimg_title_nok');
+					$tmp = ($kwc <= 1) ? $tmp : a1544_kwInfobox($tmp, $kwslist);
+
+					$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.$tmp.'</li>';
 				endif;
 				$checks++;
+				
 				
 				//SRC
-				if ($found_src > 0):
+				if (empty($kwsslist)):
+					//ok
 					$cnt .= '<li class="'.$css_detailsonly.'"><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_keyimg_src_ok').'</li>';
 					$checks_ok++;
+					
 				else:
-					$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.rex_i18n::msg('a1544_seo_keyimg_src_nok').'</li>';
+					//nok
+					$tmp = rex_i18n::msg('a1544_seo_keyimg_src_nok');
+					$tmp = ($kwc <= 1) ? $tmp : a1544_kwInfobox($tmp, $kwsslist);
+
+					$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.$tmp.'</li>';
 				endif;
 				$checks++;
-			endif;			
+				
+			endif;	
+					
 				
 					
-			//density
-			if ($config['be_seo_checks_density']):
+			//density (wird nur ausgegeben bei single-Keyword)
+			if ($config['be_seo_checks_density'] && $kwc <= 1):
+			
 				$tmp = ($wcount > 0) ? round( (float)($kcountbody / $wcount) * 100, 2) : 0;
 					$l = str_replace(array("###min###", "###max###", "###density###"), array($config['be_seo_density_min'], $config['be_seo_density_max'], $tmp), rex_i18n::rawmsg('a1544_seo_density_nok'));
 					
@@ -920,13 +1170,16 @@ function a1544_seocheckup()
 					$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.$l.'</li>';
 				endif;
 				$checks++;
+				
 			endif;
+			
 			
 				
 			$cnt .= '<li>&nbsp;</li>';
 			
 			
-			//Info: unique or multi keyword (Abfrage aus DB)
+			
+			//Info: unique or multi focus-keyword (Abfrage aus DB)
 			$artdom = rex_yrewrite::getDomainByArticleId($actArt);
 			$artdommp = intval($artdom->getMountId());
 				$path = ($artdommp > 0) ? "%|$artdommp|%" : "|%";
@@ -937,13 +1190,16 @@ function a1544_seocheckup()
 				$tmp = ($db->getRows() <= 1) ? rex_i18n::msg('a1544_seo_keyunique') : rex_i18n::msg('a1544_seo_keymulti');
 			$cnt .= '<li><i class="rex-icon '.$icon_info.'"></i>'.$tmp.'</li>';
 			unset($db);
+			
 		endif;
+		
 		
 		
 		/*	Bilder sind aus SEO-Sicht wichtig -> Prüfung oben daher jetzt als Pflicht
 		//Info: keine Bilder vorhanden
 		$cnt .= (count($imgs) <= 0 && $config['be_seo_checks_images']) ? '<li><i class="rex-icon '.$icon_info.'"></i>'.rex_i18n::msg('a1544_seo_img_notfound').'</li>' : '';
 		*/
+		
 		
 		
 		//Line-Spacer
@@ -1263,6 +1519,14 @@ function a1544_countWords($str, $op = "")
 	
 	return ($op == 'array') ? $words : $wc;
 }
+
+
+//Keyword-Infobox erstellen
+function a1544_kwInfobox($msg, $list)
+{	return (!empty($msg) && !empty($list)) ? '<span class="seocu-infolistswitch" data-seocu-dst="">'.$msg.'&nbsp;<span class="rex-icon fa-caret-down"></span></span><div id="" class="seocu-infolist seocu-hide">'.$list.'</div>' : '';
+}
+
+
 
 
 //rexAPI Klassen-Erweiterung (Ajax-Abfrage)

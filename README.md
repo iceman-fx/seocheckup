@@ -12,7 +12,7 @@ Features
 --------
 - Schnelltest in der Sidebar des Artikels
 - Anzeige des Ergebnisses bei zugeklapptem Sidebar-Panel
-- Test auf Fokus-Keyword
+- Test auf Fokus-Keyword(s)
 - SERP-Snippet
 - Konfiguration von Sidebar-Panel & Prüfkriterien
 - Konfigurierbare Übersichtsseite aller Artikel (nach Sprachen sortiert) mit Testfunktion

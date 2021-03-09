@@ -145,14 +145,14 @@ $addPath = "index.php?page=content/edit";
 							
 							$d_title = (empty($d_title)) ? '<span class="rex-offline">'.$this->i18n('a1544_seo_title_nok').'</span>' : $d_title;
 							$d_title = (empty($seo_data)) ? '-' : $d_title;
-							$seo_cols .= '<td class="seoculist-title"><div class="seocu-scroll">'.$d_title.'</div></td>';
+							$seo_cols .= '<td class="seoculist-title" data-title="'.$this->i18n('a1544_bas_list_title').'"><div class="seocu-scroll">'.$d_title.'</div></td>';
 						endif;
 						if ($config['be_seo_culist_desc']):
 							$cols++;
 							
 							$d_desc = (empty($d_desc)) ? '<span class="rex-offline">'.$this->i18n('a1544_seo_desc_nok').'</span>' : $d_desc;
 							$d_desc = (empty($seo_data)) ? '-' : $d_desc;
-							$seo_cols .= '<td class="seoculist-desc"><div class="seocu-scroll">'.$d_desc.'</div></td>';
+							$seo_cols .= '<td class="seoculist-desc" data-title="'.$this->i18n('a1544_bas_list_desc').'"><div class="seocu-scroll">'.$d_desc.'</div></td>';
 						endif;
 						if ($config['be_seo_culist_h1']):
 							$cols++;
@@ -160,26 +160,26 @@ $addPath = "index.php?page=content/edit";
 							$d_h1 = (is_array(@$seo_data['h1'])) ? implode("<br><br>", @$seo_data['h1']) : '';	
 							$d_h1 = (empty($d_h1)) ? '<span class="rex-offline">'.$this->i18n('a1544_seo_h1_nok').'</span>' : $d_h1;
 							$d_h1 = (empty($seo_data)) ? '-' : $d_h1;
-							$seo_cols .= '<td class="seoculist-h1"><div class="seocu-scroll">'.$d_h1.'</div></td>';
+							$seo_cols .= '<td class="seoculist-h1" data-title="'.$this->i18n('a1544_bas_list_h1').'"><div class="seocu-scroll">'.$d_h1.'</div></td>';
 						endif;
 						if ($config['be_seo_culist_h2']):
 							$cols++;
 							
 							$d_h2 = (is_array(@$seo_data['h2'])) ? implode("<br><br>", @$seo_data['h2']) : '';
 							$d_h2 = (empty($d_h2)) ? '-' : $d_h2;							
-							$seo_cols .= '<td class="seoculist-h2"><div class="seocu-scroll">'.$d_h2.'</div></td>';
+							$seo_cols .= '<td class="seoculist-h2" data-title="'.$this->i18n('a1544_bas_list_h2').'"><div class="seocu-scroll">'.$d_h2.'</div></td>';
 						endif;
 						if ($config['be_seo_culist_links'] && $config['be_seo_checks_links']):
 							$cols++;
 							
 							$d_links = (isset($seo_data['link_count_int']) || isset($seo_data['link_count_ext'])) ? @$seo_data['link_count_int'].'/'.@$seo_data['link_count_ext'] : '-';							
-							$seo_cols .= '<td class="seoculist-links">'.$d_links.'</td>';
+							$seo_cols .= '<td class="seoculist-links" data-title="'.$this->i18n('a1544_bas_list_links').'">'.$d_links.'</td>';
 						endif;
 						if ($config['be_seo_culist_words']):
 							$cols++;
 							
 							$d_words = (isset($seo_data['word_count'])) ? intval($seo_data['word_count']) : '-';							
-							$seo_cols .= '<td class="seoculist-words">'.$d_words.'</td>';
+							$seo_cols .= '<td class="seoculist-words" data-title="'.$this->i18n('a1544_bas_list_words').'">'.$d_words.'</td>';
 						endif;						
 						if ($config['be_seo_culist_wdf'] && $config['be_seo_checks_wdf']):
 							$cols++;
@@ -197,7 +197,7 @@ $addPath = "index.php?page=content/edit";
 							endif;
 							
 							$d_wdflist = (empty($seo_data)) ? '-' : $d_wdflist;
-							$seo_cols .= '<td class="seoculist-wdf">'.$d_wdflist.'</td>';
+							$seo_cols .= '<td class="seoculist-wdf" data-title="'.$this->i18n('a1544_bas_list_wdf').'">'.$d_wdflist.'</td>';
 						endif;
 						
 					
@@ -225,7 +225,7 @@ $addPath = "index.php?page=content/edit";
                         
                     <tr id="entry<?php echo $eid; ?>">
                         <td class="rex-table-id"><?php echo $eid; ?></td>
-                        <td class="seoculist-name"><a href="<?php echo $editPath; ?>" target="_blank" <?php echo $status.$statusinfo; ?>><?php echo $name; ?></a><?php echo $d_url.$d_snippet; ?></td>
+                        <td class="seoculist-name" data-title="<?php echo $this->i18n('a1544_bas_list_name'); ?>"><a href="<?php echo $editPath; ?>" target="_blank" <?php echo $status.$statusinfo; ?>><?php echo $name; ?></a><?php echo $d_url.$d_snippet; ?></td>
                         
                         <?php
 						echo $seo_cols;

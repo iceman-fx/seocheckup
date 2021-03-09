@@ -3,6 +3,10 @@ SEO-CheckUp
 
 Changelog
 ---------
+<b>Version 1.4.5</b>
+- mehrere Focus-Keywords prüfbar
+- Bugfixing Javascript
+
 <b>Version 1.4.1</b>
 - Reihenfolge in Sidebar anpassbar
 

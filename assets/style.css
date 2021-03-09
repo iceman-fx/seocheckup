@@ -1,6 +1,6 @@
 @charset "utf-8";
 /* CSS Document for SEO-CheckUp */
-/* v1.4 */
+/* v1.4.5 */
 
 .seocu-title { position: relative; padding-right: 35px; }
 .seocu-head { display: block; font-weight: bold !important; margin: 20px 0px 5px; }
@@ -13,13 +13,13 @@ form.seoculist-form a.rotate i, .seocheckup a.rotate i, .seocu-result-refresh.ro
 	.seocheckup li.seocu-noicon { padding-left: 0px; }
 	.seocheckup li.seocu-indent { padding-left: 40px; }
 	.seocheckup li.seocu-detailsonly { display: none; }
-.seocheckup li i { position: absolute; left: 0px; top: 3px; }
+.seocheckup li i { position: absolute; left: 0px; top: 4px; }
 	.seocheckup li.seocu-indent i { left: 20px; }
 .seocheckup .seocu-infolist { font-size: 0.9em; margin: 0px 0px 10px; }
 	.seocheckup .seocu-infolist dl { position: relative; display: block; margin: 5px 0px 0px; }
 	.seocheckup .seocu-infolist dl > * {}
 		.seocheckup .seocu-infolist dt { position: absolute; top: 0px; left: 0px; padding: 1px 5px 1px; background: #dfe3e9; border-radius: 3px; font-size: 0.9em; }
-		.seocheckup .seocu-infolist dd { padding: 2px 0px 0px 35px; word-break: break-word; word-wrap: break-word; }
+		.seocheckup .seocu-infolist dd { padding: 0px 0px 0px 35px; word-break: break-word; word-wrap: break-word; }
 			.seocheckup #seocu-boldlist dd { padding-left: 50px; }
 
 .seocu-result { display: inline-block; background: none; color: #FFF; border-radius: 2px; font-size: 12px; font-weight: normal; padding: 3px 8px; width: auto; line-height: normal; margin: 0px 0px 0px 10px; }
@@ -116,6 +116,6 @@ div.seoculist-preview .seocu-head { font-size: 0.85em; }
 @media screen and (max-width: 767px){
 	.rex-page rextree-left table.seoculist-metadata td { display: inherit; }
 	
-	.table>tbody#ajax_jlist>tr>td { padding-left: 8px; }
+	.table>tbody#ajax_jlist>tr>td { /*padding-left: 8px;*/ }
 	.addon_search td.td3 { text-align: left !important; }
 }

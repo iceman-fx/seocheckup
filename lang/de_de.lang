@@ -1,4 +1,4 @@
-# addon: seocheckup de_de 1.4.1
+# addon: seocheckup de_de 1.4.5
 
 a1544_title = SEO-CheckUp
 
@@ -28,7 +28,7 @@ a1544_seo_modal_artnotfound = Artikel nicht gefunden
 a1544_seo_head = SEO-CheckUp der Liveversion
 a1544_seo_details = Details ...
 a1544_seo_more = Mehr ...
-a1544_seo_keyword = Fokus-Keyword
+a1544_seo_keyword = Fokus-Keyword(s)
 a1544_seo_refresh = aktualisieren
 a1544_seo_tests = Analyse
 a1544_seo_nottested = Analyse noch nicht durchgeführt.
@@ -112,30 +112,32 @@ a1544_seo_flesch_grade5 = sehr schwer
 a1544_seo_density_ok = Keyword-Dichte liegt bei ###density###%
 a1544_seo_density_nok = Keyword-Dichte liegt bei <span class="seocu-tooltip" title="Empfehlung: ###min###-###max### Prozent">###density###%</span>
 a1544_seo_keyunique = Fokus-Keyword wird nur auf dieser Seite genutzt
-a1544_seo_keymulti = Fokus-Keyword wird auf mehreren Seiten genutzt
+a1544_seo_keymulti = Fokus-Keyword(s) wird auf mehreren Seiten genutzt
 a1544_seo_keycount = Keyword ###count###x auf der Seite gefunden
 a1544_seo_keycnt_ok = Keyword ###count###x im Content gefunden
+a1544_seo_keycnt_ok_multi = Keywords im Content gefunden
 a1544_seo_keycnt_nok = Keyword fehlt im Content
-a1544_seo_keycnt_atstart_ok = Keyword gut im Content platziert
+a1544_seo_keycnt_atstart_ok = Keyword(s) gut im Content platziert
 a1544_seo_keycnt_atstart_nok = Keyword kommt erst spät im Content vor
-a1544_seo_keytitle_ok = Keyword im Seitentitel gefunden
+a1544_seo_keytitle_ok = Keyword(s) im Seitentitel gefunden
 a1544_seo_keytitle_nok = Keyword fehlt im Seitentitel
 a1544_seo_keytitle_atstart_nok = Keyword kommt erst spät im Seitentitel vor
-a1544_seo_keydesc_ok = Keyword in der Seitenbeschreibung gefunden
+a1544_seo_keydesc_ok = Keyword(s) in der Seitenbeschreibung gefunden
 a1544_seo_keydesc_nok = Keyword fehlt in der Seitenbeschreibung
 a1544_seo_keydesc_atstart_nok = Keyword kommt erst spät in der Seitenbeschreibung vor
-a1544_seo_keyurl_ok = Keyword in der URL gefunden
+a1544_seo_keyurl_ok = Keyword(s) in der URL gefunden
 a1544_seo_keyurl_nok = Keyword fehlt in der URL
 a1544_seo_keyurl_multi = Keyword kommt mehrfach in der URL vor
-a1544_seo_keyh1_ok = Keyword in der H1-Überschrift gefunden
+a1544_seo_keyh1_ok = Keyword(s) in der H1-Überschrift gefunden
 a1544_seo_keyh1_nok = Keyword fehlt in der H1-Überschrift
 a1544_seo_keyhx_ok = Keyword kommt in ###count### Überschriften vor
+a1544_seo_keyhx_ok_multi = Keywords kommen in ###count### Überschriften vor
 a1544_seo_keyhx_nok = Keyword kommt in weniger als 2 Überschriften vor
-a1544_seo_keyimg_alt_ok = Keyword im Alternativtext von Bildern gefunden
+a1544_seo_keyimg_alt_ok = Keyword(s) im Alternativtext von Bildern gefunden
 a1544_seo_keyimg_alt_nok = Keyword fehlt im Alternativtext von Bildern
-a1544_seo_keyimg_title_ok = Keyword im Title-Text von Bildern gefunden
+a1544_seo_keyimg_title_ok = Keyword(s) im Title-Text von Bildern gefunden
 a1544_seo_keyimg_title_nok = Keyword fehlt im Title-Text von Bildern
-a1544_seo_keyimg_src_ok = Keyword im Dateinamen von Bildern gefunden
+a1544_seo_keyimg_src_ok = Keyword(s) im Dateinamen von Bildern gefunden
 a1544_seo_keyimg_src_nok = Keyword fehlt im Dateinamen von Bildern
 
 a1544_seo_wdf_notfound = Keine WDF-Analyse zu diesem Artikel gefunden.

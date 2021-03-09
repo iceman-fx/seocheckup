@@ -1,5 +1,5 @@
 // SEO-CheckUp Scripts
-// v1.4
+// v1.4.5
 
 $(function(){
 	$seocu_multicount = 0;
@@ -16,7 +16,7 @@ $(function(){
 	$("body").on("click", ".seocu-result-refresh", function(e){ $(this).addClass("rotate"); dst = $("form.seoculist-form input"); $seocu_multicount = dst.length; dst.each(function(){ var a = $(this).parent().find("a"); a.addClass("rotate"); setTimeout(function(){ refreshSeoculist(a, false, false); }, 250); }); });
 	
 	//switch infolist
-	$("body").on("click", ".seocu-infolistswitch", function(e){ dst = $(this).attr('data-seocu-dst'); $(this).next("div").toggle(); /*$(dst).toggle();*/ });
+	$("body").on("click", ".seocu-infolistswitch", function(e){ /*dst = $(this).attr('data-seocu-dst');*/ $(this).next("div").toggle(); /*$(dst).toggle();*/ });
 });
 
 	
@@ -84,7 +84,11 @@ function refreshSeoculist(btn)
 				//WDF
 				wdflist = "";
 				wdf = data["wdf"];									//object
-					if (typeof wdf === "object") {
+				
+				//alert(typeof wdf);
+				//alert(wdf);
+				
+					if (wdf !== null && typeof wdf === "object") {
 						wdf_k = Object.keys(wdf);
 						wdf_v = Object.values(wdf);
 						
