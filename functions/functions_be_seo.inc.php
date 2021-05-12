@@ -1722,7 +1722,11 @@ function a1544_seocuWDF($content = "")
 				if (!in_array($word, $stopwords) && !is_numeric($word) && preg_match("/\p{L}+/i", $word)):			//mind. 1 Buchstabe muss im Wort vorkommen -> Prüfung auch in countWords()
 					if ($config['be_seo_wdf_skipshortwords'] && mb_strlen($word) < 4) { continue; }
 					
-					$wc_token[$word]++; 									//gefundene Wörter
+					if (isset($wc_token[$word])) {
+						$wc_token[$word]++; 									//gefundene Wörter
+					} else {
+						$wc_token[$word] = 1;
+					}
 					$wc_wostops++;											//Anzahl Wörter ohne Stopwörter > nur zur Information, falls irgendwann mal benötigt
 				endif;
 
