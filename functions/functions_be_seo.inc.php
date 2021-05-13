@@ -2,7 +2,7 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Backend-Funktionen (SEO)
-	v1.4.5
+	v1.4.6
 	by Falko Müller @ 2019-2021
 	package: redaxo5
 */
@@ -1722,7 +1722,13 @@ function a1544_seocuWDF($content = "")
 				if (!in_array($word, $stopwords) && !is_numeric($word) && preg_match("/\p{L}+/i", $word)):			//mind. 1 Buchstabe muss im Wort vorkommen -> Prüfung auch in countWords()
 					if ($config['be_seo_wdf_skipshortwords'] && mb_strlen($word) < 4) { continue; }
 					
-					$wc_token[$word]++; 									//gefundene Wörter
+					//gefundene Wörter
+					if (isset($wc_token[$word])):
+						$wc_token[$word]++;
+					else:
+						$wc_token[$word] = 1;
+					endif;
+					
 					$wc_wostops++;											//Anzahl Wörter ohne Stopwörter > nur zur Information, falls irgendwann mal benötigt
 				endif;
 

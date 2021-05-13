@@ -3,6 +3,9 @@ SEO-CheckUp
 
 Changelog
 ---------
+<b>Version 1.4.6</b>
+- Bugfixing index-Notice
+
 <b>Version 1.4.5</b>
 - mehrere Focus-Keywords prüfbar
 - Bugfixing Javascript

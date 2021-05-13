@@ -2,7 +2,7 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Verwaltung: index
-	v1.4
+	v1.4.6
 	by Falko Müller @ 2019-2021
 	package: redaxo5
 */
@@ -81,8 +81,8 @@ td.name { position: relative; padding-right: 20px !important; }
 .addon_failed, .addonfailed { color: #F00; font-weight: bold; margin-bottom: 15px; }
 .addon_search { width: 100%; background-color: #EEE; }
 .addon_search .searchholder { position: relative; display: inline-block; }
-	.addon_search .searchholder a { position: absolute; top: 0px; right: 3px; cursor: pointer; }
-		.addon_search .searchholder img { vertical-align: middle; }
+	.addon_search .searchholder a { position: absolute; top: 0px; right: 0px; bottom: 0px; cursor: pointer; padding: 4px 3px 0px; }
+		.addon_search .searchholder img { vertical-align: top; }
 	@-moz-document url-prefix('') { .addon_search .searchholder a { top: 0px; } /* FF-only */ }
 .addon_search .border-top { border-top: 1px solid #DFE9E9; }
 .addon_search td { width: 46%; padding: 9px !important; font-size: 90%; color: #333; border: none !important; vertical-align: top !important; }
@@ -95,7 +95,7 @@ td.name { position: relative; padding-right: 20px !important; }
 	.addon_search select.multiple { height: 60px !important; }
 	.addon_search select.form_auto { width: auto !important; max-width: 634px; }
 .addon_search input.checkbox { display: inline-block; width: auto; margin: 0px 6px !important; padding: 0px !important; height: auto !important; }
-.addon_search input.button { font-weight: bold; margin: 0px !important; margin-left: 5px !important; width: auto; padding: 0px 2px 0px 2px !important; height: 21px !important; }
+.addon_search input.button { font-weight: bold; margin: 0px !important; width: auto; padding: 0px 4px !important; height: 20px !important; font-size: 0.9em; background: #FFF; border: 1px solid #323232; }
 .addon_search label { display: inline-block; width: 90px !important; font-weight: normal; }
 	.addon_search label.multiple { vertical-align: top !important; }
 	.addon_search label.form_auto { width: auto !important; }
