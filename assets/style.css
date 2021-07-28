@@ -1,6 +1,6 @@
 @charset "utf-8";
 /* CSS Document for SEO-CheckUp */
-/* v1.4.5 */
+/* v1.4.7 */
 
 .seocu-title { position: relative; padding-right: 35px; }
 .seocu-head { display: block; font-weight: bold !important; margin: 20px 0px 5px; }
@@ -74,6 +74,9 @@ Design bis 2019
 .seoculist-data .seocu-result, .seoculist-analysis .seocu-result { margin: 0px 5px 2px 0px; }
 	.seoculist-data .seocu-result-info, .seoculist-analysis .seocu-result-info { background: rgba(0,0,0, 0.1); color: rgba(0,0,0, 0.6); }
 .seoculist-data .seocu-resultbar, .seoculist-analysis .seocu-resultbar { display: none; margin: 10px 0px 0px; }
+
+.seoculist-hideFlesch .seoculist-data .seocu-result-info { display: none; }
+	
 /* Spaltenbreiten */
 .seoculist-name { min-width: 130px; }
 .seoculist-form input.form-control { min-width: 80px; }

@@ -2,7 +2,7 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Verwaltung: AJAX Loader - SEO-CheckUp-Liste
-	v1.4
+	v1.4.7
 	by Falko Müller @ 2019-2021
 	package: redaxo5
 */
@@ -211,8 +211,10 @@ $addPath = "index.php?page=content/edit";
 							$resultcol = ($seo_result <= 30) ? "#D9534F" : $resultcol;
 						
 						$d_result .= '<div class="seocu-result" style="background:'.$resultcol.'">'.$seo_result.'/100</div>';
+							$cssFlesch = 'seoculist-hideFlesch';
 							if (@$config['be_seo_checks_flesch'] == 'checked' || @$config['be_seo_checks_selection'] != 'checked'):
 								$d_result .= '<div class="seocu-result seocu-result-info">'.$this->i18n('a1544_seo_modal_legibility').': '.$d_flesch.'</div>';
+								$cssFlesch = '';
 							endif;
 						$d_result .= '<br /><a class="seoculist-detail" data-toggle="modal" data-target="#seocu-modal" data-seocu-aid="'.$eid.'" data-seocu-cid="'.$cid.'" data-seocu-aname="'.htmlspecialchars($name).'">'.$this->i18n('a1544_seo_details').'</a>';
 					else:
@@ -223,7 +225,7 @@ $addPath = "index.php?page=content/edit";
 					//Ausgabe
                     ?>
                         
-                    <tr id="entry<?php echo $eid; ?>">
+                    <tr id="entry<?php echo $eid; ?>" class="<?php echo $cssFlesch; ?>">
                         <td class="rex-table-id"><?php echo $eid; ?></td>
                         <td class="seoculist-name" data-title="<?php echo $this->i18n('a1544_bas_list_name'); ?>"><a href="<?php echo $editPath; ?>" target="_blank" <?php echo $status.$statusinfo; ?>><?php echo $name; ?></a><?php echo $d_url.$d_snippet; ?></td>
                         

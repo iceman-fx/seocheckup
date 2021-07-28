@@ -3,6 +3,9 @@ SEO-CheckUp
 
 Changelog
 ---------
+<b>Version 1.4.7</b>
+- Bugfixing Anzeige Flesch-Wert
+
 <b>Version 1.4.6</b>
 - Bugfixing index-Notice
 
