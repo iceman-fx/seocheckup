@@ -1,8 +1,9 @@
-# addon: seocheckup de_de 1.4.5
+# addon: seocheckup de_de 1.5
 
 a1544_title = SEO-CheckUp
 
 a1544_default = Artikel-CheckUp
+a1544_urlcheckup = URL-Addon-CheckUp
 a1544_help = Hilfe
 a1544_config = Einstellungen
 
@@ -13,7 +14,7 @@ a1544_head_help = Onlinehilfe
 
 a1544_subheader_config1 = Einstellungen Sidebar
 a1544_subheader_config2 = Konfiguration SEO-Prüfungen
-a1544_subheader_config3 = Einstellungen Artikel-CheckUp
+a1544_subheader_config3 = Einstellungen Artikel- & URL-Addon-CheckUp
 a1544_subheader_config4 = Konfiguration WDF-Kalkulator
 
 
@@ -35,10 +36,12 @@ a1544_seo_nottested = Analyse noch nicht durchgeführt.
 a1544_seo_cannottest = Analyse kann nicht durchgeführt werden.
 a1544_seo_tests_ok = Test(s) erfolgreich
 a1544_seo_preview = Vorschau SERP-Snippet:
-a1544_seo_nohtml = <span class="rex-offline">Fehler beim Abruf des Artikels!</span><br />"###error###".
+a1544_seo_nohtml = <span class="rex-offline">Abruf des Artikels fehlgeschlagen!</span>
+a1544_seo_errhtml = <span class="rex-offline">Fehler beim Abruf des Artikels!</span><br />"###error###"
 a1544_seo_artoffline = <span class="rex-offline">Artikel ist offline!</span><br />Analyse daher nur eingeschränkt möglich.</span>
 a1544_seo_artchanged = <span class="rex-offline">Artikel wurde geändert!</span><br />Schalten Sie die Änderung live, um die Analyse zu komplettieren.</span>
 a1544_seo_artredirect = <span class="rex-offline">Aktive Weiterleitung entdeckt!</span><br />Korrekte Analyse für diesen Artikel nicht möglich.</span>
+a1544_seo_art404 = <span class="rex-offline">Statuscode: 404</span><br />Korrekte Analyse für diesen Artikel nicht möglich.</span>
 a1544_seo_nochecksselected = <span class="rex-offline">Es wurden keine Prüfungen ausgewählt!</span>
 
 a1544_seo_title_ok = Seitentitel ist gesetzt
@@ -160,9 +163,10 @@ a1544_bas_list_links = Links (int./ext.)
 a1544_bas_list_words = Anzahl Wörter
 a1544_bas_list_wdf = WDF Top5
 a1544_bas_list_status = Status
-a1544_bas_list_result = SEO-Analyse
+a1544_bas_list_result = Analyse
 a1544_bas_list_focuskw = Fokus-Keyword
 a1544_bas_list_refreshall = angezeigte Artikel analysieren
+a1544_bas_list_url = URL
 
 
 # Seite: Einstellungen
@@ -179,8 +183,8 @@ a1544_config_seo_sidebar_wdf = WDF-Top5 anzeigen
 a1544_config_seo_sidebar_snippet = SERP-Snippet anzeigen
 
 a1544_config_seo_offlinearts = Offline-Artikel auflisten
-a1544_config_seo_offlinearts_info = auch alle Offline-Artikel in der Liste aufführen
-a1544_config_seo_culist_count = Artikel je Seite
+a1544_config_seo_offlinearts_info = auch alle Offline-Artikel in der Liste aufführen (nur Artikel-CheckUp)
+a1544_config_seo_culist_count = Einträge je Seite
 a1544_config_seo_culist_cols = Zusatzinformationen ausgeben
 a1544_config_seo_culist_cols_title = Seitentitel anzeigen
 a1544_config_seo_culist_cols_desc = Seitenbeschreibung anzeigen
@@ -203,6 +207,7 @@ a1544_config_seo_url_depths = URL-Verzeichnistiefe
 a1544_config_seo_links = Anz. interne Verlinkungen
 a1544_config_seo_offlinekeywords = Keyword in Offline-Artikeln
 a1544_config_seo_offlinekeywords_info = die Verwendung des Fokus-Keywords auch in Offline-Artikeln prüfen
+a1544_config_seo_content_words_dec = Korrekturabzug Wörter Content
 
 a1544_config_seo_removeblock = Content aufbereiten
 a1544_config_seo_removeblock_header = <header>-Blöcke entfernen

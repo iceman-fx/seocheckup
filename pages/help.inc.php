@@ -2,7 +2,7 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Verwaltung: Hilfe
-	v1.4
+	v1.5
 	by Falko Müller @ 2019-2021
 	package: redaxo5
 */
@@ -24,6 +24,7 @@
                 	<nav class="rex-nav-toc">
                     	<ul>
                         	<li><a href="#default"><?php echo $this->i18n('a1544_default'); ?></a>
+                            <li><a href="#urlcheckup"><?php echo $this->i18n('a1544_urlcheckup'); ?></a>
                             <li><a href="#seo"><?php echo $this->i18n('a1544_config'); ?></a>
                             <li><a href="#faq">FAQ</a>
                       </ul>
@@ -40,14 +41,15 @@
 <p>&nbsp;</p>
                   <h2>Erklärung wichtiger Eigenschaften</h2>
               
+              
                     
-                    <!-- Allgemein -->
+                    <!-- Allgemein (Artikel-Checkup) -->
                     <a name="default"></a>
                     <h3>Bereich &quot;<?php echo $this->i18n('a1544_default'); ?>&quot;:</h3>
                   <p>In diesem Bereich können Sie die SEO-Analysen für alle Artikel der Homepage durchgeführen.</p>
                   <p>Zur Analyse des entsprechenden Artikels klicken Sie auf die Aktualisieren-Schaltfläche hinter dem Eingabefeld für das Fokus-Keyword.<br>
                     Sofern ein Fokus-Keyword* hinterlegt wird, umfasst die Analyse zusätzliche Prüfungen zur Verteilung des Suchbegriffes innerhalb von wichtigen SEO-Parametern.</p>
-                    <p>Zu den Analysen gehören u.A. (je nach Konfiguration): </p>
+                  <p>Zu den Analysen gehören u.A. (je nach Konfiguration): </p>
                   <ul>
                     <li>der Seitentitel (&lt;title&gt;)</li>
                       <li>die Seitenbeschreibung (&lt;meta description&gt;)</li>
@@ -56,12 +58,32 @@
                       <li>das Vorkommen des Fokus-Keywords in den einzelnen Bereichen</li>
                       <li>die Keyword-Dichte und die WDF-Kalkulation</li>
                       <li>das Vorhandensein von Bildern und Verlinkungen</li>
+                      <li>die WDF-Kalkulation</li>
                       <li>der Flesch-Wert des Seiteninhaltes</li>
-                    </ul>
+                  </ul>
                   <p><br>
-                    Um die Analyse des jeweiligen Artikels zu starten, klicken Sie auf die Aktualisieren-Schaltfläche hinter dem Eingabefeld für das Fokus-Keyword. <br>
-                  Nach Abschluss der Analyse erscheint das Ergebnis in der Übersicht.Weitere Informationen können über die Details-Schaltfläche angezeigt werden.</p>
+                  Um die Analyse des jeweiligen Artikels zu starten, klicken Sie auf die Aktualisieren-Schaltfläche hinter dem Eingabefeld für das Fokus-Keyword.                  Nach Abschluss der Analyse erscheint das Ergebnis in der Übersicht.<br>
+                  Weitere Informationen können über die Details-Schaltfläche angezeigt werden.</p>
 <p>&nbsp;</p>
+                  <p><strong>Hinweis:</strong><br>
+Die Prüfung wird mit der Liveversion des Artikels durchgeführt, so dass ein geänderter Artikel für eine korrekte Analyse live geschalten werden muss.</p>
+<p>* Fokus-Keyword = der Suchbegriff, auf welchen der jeweilige Artikel optimiert wird/wurde</p>
+<p>&nbsp;</p>
+              
+              
+                    
+                    <!-- URL-Addon-Checkup -->
+                    <a name="urlcheckup"></a>
+                    <h3>Bereich &quot;<?php echo $this->i18n('a1544_urlcheckup'); ?>&quot;:</h3>
+                  <p>In diesem Bereich können Sie die SEO-Analysen für alle generierten URLs des URL-Addon (ab Version 2) durchgeführen.<br>
+                  Die Analysen umfassen dabei den Umfang des Artikel-CheckUp, mit Ausnahme der mehrfachen Nutzung des Fokus-Keyword innerhalb der gesamten Webseite.</p>
+                  <p>                    Um die Analyse der jeweiligen URL zu starten, klicken Sie auf die Aktualisieren-Schaltfläche hinter dem Eingabefeld für das Fokus-Keyword. 
+                  Nach Abschluss der Analyse erscheint das Ergebnis in der Übersicht.<br>
+                  Weitere Informationen können über die Details-Schaltfläche angezeigt werden.</p>
+                  <p><strong>Beachten Sie:</strong><br>
+                    <strong>Alle gespeicherten CheckUp-Werte der  jeweilgen URL (Fokus-Keyword sowie frühere Ergebnisse)  gehen beim Neugenerieren der URLs verloren.</strong>                  Dies ist kein Fehler des SEO-CheckUp, sondern wird durch das URL-Addon selbst vorgenommen.
+                  </p>
+                  <p>&nbsp;</p>
                   <p><strong>Hinweis:</strong><br>
 Die Prüfung wird mit der Liveversion des Artikels durchgeführt, so dass ein geänderter Artikel für eine korrekte Analyse live geschalten werden muss.</p>
 <p>* Fokus-Keyword = der Suchbegriff, auf welchen der jeweilige Artikel optimiert wird/wurde</p>
@@ -88,8 +110,8 @@ Die Prüfung wird mit der Liveversion des Artikels durchgeführt, so dass ein ge
                       </tr>
                       <tr>
                         <td valign="top"><strong>Content aufbereiten</strong></td>
-                        <td valign="top">Festlegung des prüfenden Quellcode-Umfanges  des Contentbereiches (&lt;body&gt;...&lt;/body&gt;).<br>
-                        Des Weiteren kann hier die Hyphenator-Trennung rückgängig gemacht werden.</td>
+                        <td valign="top">Festlegung des zu prüfenden Quellcode-Umfanges  des Contentbereiches (&lt;body&gt;...&lt;/body&gt;).<br>
+                        Des Weiteren kann hier die Hyphenator-Trennung für die Prüfung rückgängig gemacht werden.</td>
                       </tr>
                       <tr>
                         <td valign="top"><strong>Anzahl Zeichen Seitentitel</strong></td>
@@ -110,6 +132,10 @@ Die Prüfung wird mit der Liveversion des Artikels durchgeführt, so dass ein ge
                         <tr>
                           <td valign="top"><strong>Anzahl Wörter Content</strong></td>
                           <td valign="top">Minimale Anzahl an Wörtern   für einen erfolgreichen Test</td>
+                        </tr>
+                        <tr>
+                          <td valign="top"><strong>Korrekturabzug Wörter Content</strong></td>
+                          <td valign="top">                          Über den  Korrekturabzug kann die ermittelte Anzahl der gefunden Contentwörter um diesen Wert reduziert werden.</td>
                         </tr>
                         <tr>
                           <td width="200" valign="top"><strong>Anzahl interne Verlinkungen</strong></td>

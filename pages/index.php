@@ -2,7 +2,7 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Verwaltung: index
-	v1.4.6
+	v1.5
 	by Falko Müller @ 2019-2021
 	package: redaxo5
 */
@@ -81,26 +81,40 @@ td.name { position: relative; padding-right: 20px !important; }
 .addon_failed, .addonfailed { color: #F00; font-weight: bold; margin-bottom: 15px; }
 .addon_search { width: 100%; background-color: #EEE; }
 .addon_search .searchholder { position: relative; display: inline-block; }
-	.addon_search .searchholder a { position: absolute; top: 0px; right: 0px; bottom: 0px; cursor: pointer; padding: 4px 3px 0px; }
+	.addon_search .searchholder a { position: absolute; top: 0px; right: 0px; bottom: 0px; cursor: pointer; padding: 5px 3px 0px; }
 		.addon_search .searchholder img { vertical-align: top; }
 	@-moz-document url-prefix('') { .addon_search .searchholder a { top: 0px; } /* FF-only */ }
 .addon_search .border-top { border-top: 1px solid #DFE9E9; }
 .addon_search td { width: 46%; padding: 9px !important; font-size: 90%; color: #333; border: none !important; vertical-align: top !important; }
 	.addon_search td.td2 { width: 8%; text-align: center; }
-	.addon_search td.td3 { text-align: right;	}
-.addon_search input { width: 84px; margin: 0px !important; padding: 2px !important; height: 20px !important; }
-	.addon_search input.sbeg { width: 84px; padding: 2px 18px 2px 2px !important; }
+	.addon_search td.td3 { text-align: right; }
+
+.addon_search .form-control { padding: 1px 8px; font-size: 13px; float: none; }
+.addon_search .form-control-btn { padding: 2px 8px; font-size: 12px; }
+
+.addon_search input { }
+.addon_search input.sbeg { max-width: 150px; }
+		
 .addon_search select { margin: 0px !important; padding: 0px 10px 0px 0px !important; height: 20px !important; min-width: 230px; max-width: 230px; }
 	.addon_search select option { margin-right: -10px; padding-right: 10px; }
 	.addon_search select.multiple { height: 60px !important; }
 	.addon_search select.form_auto { width: auto !important; max-width: 634px; }
 .addon_search input.checkbox { display: inline-block; width: auto; margin: 0px 6px !important; padding: 0px !important; height: auto !important; }
-.addon_search input.button { font-weight: bold; margin: 0px !important; width: auto; padding: 0px 4px !important; height: 20px !important; font-size: 0.9em; background: #FFF; border: 1px solid #323232; }
+.addon_search input.button { font-weight: bold; margin: 0px !important; width: auto; padding: 0px 4px !important; height: 22px !important; font-size: 0.9em; background: #FFF; border: 1px solid #323232; }
 .addon_search label { display: inline-block; width: 90px !important; font-weight: normal; }
 	.addon_search label.multiple { vertical-align: top !important; }
 	.addon_search label.form_auto { width: auto !important; }
 .addon_search a.moreoptions { display: inline-block; vertical-align: sub; }
 .addon_search .rightmargin { margin-right: 7px !important; }
+
+.addon_inlinegroup { display: inline-block; }
+.addon_input-group { display: table; }
+	.addon_input-group > * { display: table-cell; border-radius: 0px; border: 1px solid #7586a0; margin-left: -1px; }
+	.addon_input-group > *:first-child { margin: 0px; }
+	.addon_input-group > *:last-child { border-radius: 0px 2px 2px 0px; }
+	
+.addon_input-group-field {}
+.addon_input-group-btn {}
 
 .db-order { display: inline; /*width: 20px; height: 10px;*/ padding: 0px 5px; margin-left: 0px; cursor: pointer; }
 .db-order-desc { background-position: center bottom; }
@@ -111,11 +125,9 @@ td.name { position: relative; padding-right: 20px !important; }
 	.info-red { background: #900; color: #FFF; }
 .infoblock { display: block; font-size: 0.825em; margin-top: 7px; }
 
-span.ajaxNav { display: inline-block; padding: 2px 4px; margin: 3px 2px 1px; cursor: pointer; }
+span.ajaxNav { /*display: inline-block; padding: 2px 4px; margin: 3px 2px 1px;*/ cursor: pointer; }
 span.ajaxNav:hover { background-color: #666; color: #FFF; }
 span.ajaxNavSel { background-color: #CCC; }
-
-td.seoculist-keyword { width: 200px; }
 </style>
 
 
@@ -141,21 +153,29 @@ function loadAJAX(params, dst, paramNav)
 <?php
 //Unterseite einbinden
 switch($subpage):
-	case "load-seoculist":	//AJAX Loader : Default-Liste
-							require_once("ajax.load-seoculist.inc.php");
-							break;
+	case "load-articlelist":	//AJAX Loader : Default-Liste (Artikel)
+								require_once("ajax.load-articlelist.inc.php");
+								break;
 
-	case "help":			//Hilfe
-							require_once("help.inc.php");
-							break;				
+	case "load-urllist":		//AJAX Loader : URL-Addon-Liste
+								require_once("ajax.load-urllist.inc.php");
+								break;
 
-	case "config":			//Einstellungen
-							require_once("config.inc.php");
-							break;				
+	case "urlcheckup":			//URL-Addon-Checkup
+								require_once("urlcheckup.inc.php");
+								break;				
 
-	default:				//Index = Standardwerte
-							require_once("default.inc.php");
-							break;
+	case "help":				//Hilfe
+								require_once("help.inc.php");
+								break;				
+
+	case "config":				//Einstellungen
+								require_once("config.inc.php");
+								break;				
+
+	default:					//Index = Artikel-Checkup
+								require_once("default.inc.php");
+								break;
 endswitch;
 ?>
 

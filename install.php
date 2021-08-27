@@ -2,7 +2,7 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Installation
-	v1.4.1
+	v1.5
 	by Falko Müller @ 2019-2021
 	package: redaxo5
 */
@@ -42,6 +42,7 @@ if (!$this->hasConfig()):
 		'be_seo_desc_max'			=> '160',
 		'be_seo_desc_words'			=> '12',
 		'be_seo_content_words'		=> '300',
+		'be_seo_content_words_dec'	=> '0',
 		'be_seo_density_min'		=> '2',
 		'be_seo_density_max'		=> '4',
 		'be_seo_url_max'			=> '55',

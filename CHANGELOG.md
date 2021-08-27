@@ -3,6 +3,13 @@ SEO-CheckUp
 
 Changelog
 ---------
+<b>Version 1.5</b>
+- neuer CheckUp für URLs des URL-Addons (v2)
+- optionaler Korrekturabzug für Content-Wortzählung
+- Abfrage auf 404-Statuscode
+- Anpassung Design an Redaxo 5.12
+- kleinere Bugfixes
+
 <b>Version 1.4.7</b>
 - Bugfixing Anzeige Flesch-Wert
 

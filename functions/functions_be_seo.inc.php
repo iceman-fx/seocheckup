@@ -2,7 +2,7 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Backend-Funktionen (SEO)
-	v1.4.6
+	v1.5
 	by Falko Müller @ 2019-2021
 	package: redaxo5
 */
@@ -121,23 +121,51 @@ function a1544_seocheckup()
 		$actCat = ($actArt > 0) ? 0 : $actCat;
 	$actClang = rex_request('clang', 'int');
 	
+	$testurl = aFM_textOnly(urldecode(rex_request('url')));
+	$checkurl = (rex_request('checkupmode') == 'url' && !empty($testurl)) ? true : false;
+	
+	
+	//Prüfen, ob zu prüfender Artikel existiert
+	$sqlTable = ($checkurl) ? 'url_generator_url' : 'article';
+	$db = rex_sql::factory();
+	$db->setQuery("SELECT id FROM ".rex::getTable($sqlTable)." WHERE id = '".$actArt."'");
+	
+	if ($db->getRows() <= 0):
+		return 'ERROR: Article-ID '.$actArt.' could not be found';
+		exit();
+	endif;
+	
+	
+	//Ausgabemodus + Cache
     $mode = (rex_request('mode') == 'json') ? 'json' : 'show';
 	$getcache = (rex_request('getcache', 'int') == true) ? true : false;
 		if ($getcache):
+			$sql = ($checkurl) ? "SELECT seocu_data FROM ".rex::getTable('url_generator_url')." WHERE id = '".$actArt."'" : "SELECT seocu_data FROM ".rex::getTable('article')." WHERE id = '".$actArt."' AND clang_id = '".$actClang."'";
+			
 			$db = rex_sql::factory();
-			$db->setQuery("SELECT seocu_data FROM ".rex::getTable('article')." WHERE id = '".$actArt."' AND clang_id = '".$actClang."'");
+			$db->setQuery($sql);
 			if (!empty($db->getValue('seocu_data'))) { return json_encode(unserialize($db->getValue('seocu_data'))); }
 			unset($db);
 		endif;
+		
 	
+	//Focus-Keyword setzen	
 	$keyword = mb_strtolower(urldecode(rex_request('keyword')));	
 		//Keyword speichern oder einladen
         $db = rex_sql::factory();
         if (isset($_REQUEST['keyword'])):
-			$db->setQuery("UPDATE ".rex::getTable('article')." SET seocu_keyword = '".aFM_maskSql($keyword)."' WHERE id = '".$actArt."' AND clang_id = '".$actClang."'");
+			if ($checkurl):
+				$db->setQuery("UPDATE ".rex::getTable('url_generator_url')." SET seocu_keyword = '".aFM_maskSql($keyword)."' WHERE id = '".$actArt."'");
+			else:
+				$db->setQuery("UPDATE ".rex::getTable('article')." SET seocu_keyword = '".aFM_maskSql($keyword)."' WHERE id = '".$actArt."' AND clang_id = '".$actClang."'");
+			endif;
 		else:
         	//DB-Keyword einladen
-            $db->setQuery("SELECT seocu_keyword FROM ".rex::getTable('article')." WHERE id = '".$actArt."' AND clang_id = '".$actClang."'");
+			if ($checkurl):
+            	$db->setQuery("SELECT seocu_keyword FROM ".rex::getTable('url_generator_url')." WHERE id = '".$actArt."'");
+			else:
+				$db->setQuery("SELECT seocu_keyword FROM ".rex::getTable('article')." WHERE id = '".$actArt."' AND clang_id = '".$actClang."'");
+			endif;
             $keyword = $db->getValue('seocu_keyword');
 		endif;
 		unset($db);
@@ -160,7 +188,9 @@ function a1544_seocheckup()
 		$config['be_seo_desc_min'] 				= (!isset($config['be_seo_desc_min'])) 									? '130' : intval($config['be_seo_desc_min']);
 		$config['be_seo_desc_max'] 				= (!isset($config['be_seo_desc_max'])) 									? '160' : intval($config['be_seo_desc_max']);
 		$config['be_seo_desc_words'] 			= (!isset($config['be_seo_desc_words'])) 								? '12' : intval($config['be_seo_desc_words']);
+		
 		$config['be_seo_content_words'] 		= (!isset($config['be_seo_content_words'])) 							? '300' : intval($config['be_seo_content_words']);
+		$config['be_seo_content_words_dec'] 	= (!isset($config['be_seo_content_words_dec'])) 						? '0' : intval($config['be_seo_content_words_dec']);
 		$config['be_seo_density_min'] 			= (!isset($config['be_seo_density_min'])) 								? '300' : intval($config['be_seo_density_min']);
 		$config['be_seo_density_max'] 			= (!isset($config['be_seo_density_max'])) 								? '4' : intval($config['be_seo_density_max']);
 		$config['be_seo_url_max'] 				= (!isset($config['be_seo_url_max'])) 									? '55' : intval($config['be_seo_url_max']);
@@ -178,6 +208,7 @@ function a1544_seocheckup()
 		$config['be_seo_checks_density']		= (@$config['be_seo_checks_density'] == 'checked' || $is_allchecks) 	? true : false;
 		$config['be_seo_checks_wdf']			= (@$config['be_seo_checks_wdf'] == 'checked' || $is_allchecks) 		? true : false;
 		$config['be_seo_checks_flesch']			= (@$config['be_seo_checks_flesch'] == 'checked' || $is_allchecks) 		? true : false;
+		
 		$is_nochecks = (!$config['be_seo_checks_titledesc'] && !$config['be_seo_checks_opengraph'] && !$config['be_seo_checks_url'] && !$config['be_seo_checks_header'] && !$config['be_seo_checks_content'] && !$config['be_seo_checks_links'] && !$config['be_seo_checks_images'] && !$config['be_seo_checks_density'] && !$config['be_seo_checks_wdf'] && !$config['be_seo_checks_flesch']) ? true : false;
 		
 	
@@ -196,11 +227,11 @@ function a1544_seocheckup()
     //SEO+HTML-Daten vorbereiten
 	$yr = array();
 	$prot = 'http://';																								//TODO: Protokoll aus Aufruf bereits auslesen, falls kein yRewrite genutzt wird
-	$dom = $_SERVER['SERVER_NAME'];
-	$url = $prot.$_SERVER['SERVER_NAME'].rex_getUrl($actArt, $actClang);
+	$dom = ($checkurl) ? preg_replace('/http[s]?:\/\/(.*?[^\/]*)\/.*/i', '$1', $testurl) : $_SERVER['SERVER_NAME'];
+	$url = ($checkurl) ? $testurl : $prot.$_SERVER['SERVER_NAME'].rex_getUrl($actArt, $actClang);
 
 		//mit Daten aus yRewrite abgleichen
-		if (rex_addon::get('yrewrite')->isAvailable()):
+		if (rex_addon::get('yrewrite')->isAvailable() && !$checkurl):
 			$yrs = new rex_yrewrite_seo();
 				$yr['title'] = $yrs->getTitle();
 				$yr['titletag'] = $yrs->getTitleTag();
@@ -221,6 +252,9 @@ function a1544_seocheckup()
 		$html = $httpheader = $sockerror = $hasRedirect = $artcnt = $artcnt_raw = $artcnt_wo_h1 = "";	
 		
 		
+		//$cnt .= "$testurl<br><br>";
+		
+		
 		//Live-Artikel holen & auf aktive Redirects testen
 		$htmlloaded = false;
 		try {
@@ -236,7 +270,8 @@ function a1544_seocheckup()
 		} catch(rex_socket_exception $e) { $sockerror = $e->getMessage(); }
 		
 		$httpheader = (is_array($httpheader)) ? implode("|", $httpheader) : str_replace(array("\r\n", "\n"), "|", $httpheader);
-		$hasRedirect = (preg_match("/http[\/0-9\.]* 30[0-9]{1,1}/i", $httpheader) && mb_stripos($httpheader, "|location:") !== false) ? true : false;
+			$has404 = (preg_match("/http[\/0-9\.]* 404/i", $httpheader)) ? true : false;
+			$hasRedirect = (preg_match("/http[\/0-9\.]* 30[0-9]{1,1}/i", $httpheader) && mb_stripos($httpheader, "|location:") !== false) ? true : false;
 		unset($httpheader);
 		
 		
@@ -249,9 +284,9 @@ function a1544_seocheckup()
 			$html = preg_replace("/".$hyphen."/im", "", $html);
 		endif;
 		
-		
+				
 		//Redaxo-Artikel bzw. Content holen
-		if (!$hasRedirect):
+		if (!$hasRedirect && !$has404):
 			$artcnt_raw = (empty($artcnt_raw)) ? preg_replace("/^[\s\S]*<body[^\>]*>([\s\S]*)<\/body>[\s\S]*$/im", "$1", $html) : $artcnt_raw;				
 		endif;
 		rex::setProperty('redaxo', true);
@@ -298,21 +333,28 @@ function a1544_seocheckup()
     
     $cnt .= '<div class="seocu-check">';
 	
+		//Statusmeldungen ausgeben
+		//Hinweis auf Socketfehler beim Einlesen
+		$cnt .= (!empty($sockerror)) ? '<span class="seocu-head seocu-status-head">'.str_replace("###error###", $sockerror, rex_i18n::rawmsg('a1544_seo_errhtml')).'</span>' : '';	
+
 		//Hinweis auf Einlesen nicht möglich
-		$cnt .= (!empty($sockerror)) ? '<span class="seocu-head">'.str_replace("###error###", $sockerror, rex_i18n::rawmsg('a1544_seo_nohtml')).'</span>' : '';	
+		$cnt .= (empty($sockerror) && empty($artcnt_raw)) ? '<span class="seocu-head seocu-status-head">'.rex_i18n::rawmsg('a1544_seo_nohtml').'</span>' : '';	
+		
+		//Hinweis auf 404-Status = Einlesen nicht möglich
+		$cnt .= ($has404) ? '<span class="seocu-head seocu-status-head">'.rex_i18n::rawmsg('a1544_seo_art404').'</span>' : '';
 		
 		//Hinweis auf aktive Weiterleitung im Artikel
-		$cnt .= ($hasRedirect) ? '<span class="seocu-head">'.rex_i18n::rawmsg('a1544_seo_artredirect').'</span>' : '';
+		$cnt .= ($hasRedirect) ? '<span class="seocu-head seocu-status-head">'.rex_i18n::rawmsg('a1544_seo_artredirect').'</span>' : '';
 	
 		//Hinweis auf offline-Artikel
-		$cnt .= ($htmlloaded && !$art->isOnline()) ? '<span class="seocu-head">'.rex_i18n::rawmsg('a1544_seo_artoffline').'</span>' : '';
+		$cnt .= (!$checkurl && $htmlloaded && !$art->isOnline()) ? '<span class="seocu-head seocu-status-head">'.rex_i18n::rawmsg('a1544_seo_artoffline').'</span>' : '';
 		
 		//Hinweis auf geänderten Artikel
-		$artChanged = ($art->isOnline() && preg_match("/(seocucnt=changed|bloecks=status)/i", $lasturl)) ? true : false;
-		$cnt .= ($artChanged) ? '<span class="seocu-head">'.rex_i18n::rawmsg('a1544_seo_artchanged').'</span>' : '';
-				
-	
-		//Einleitung
+		$artChanged = (!$checkurl && $art->isOnline() && preg_match("/(seocucnt=changed|bloecks=status)/i", $lasturl)) ? true : false;
+		$cnt .= ($artChanged) ? '<span class="seocu-head seocu-status-head">'.rex_i18n::rawmsg('a1544_seo_artchanged').'</span>' : '';
+		
+
+		//Einleitung Analays-Ergebnis
     	$cnt .= '<span class="seocu-head seocu-first-head">'.rex_i18n::msg('a1544_seo_tests').'</span>';																	
 			//Hinweis auf fehlende Auswahl von Prüfungen
 			$cnt .= ($is_nochecks) ? '<span class="seocu-head" style="margin-top: 0px;">'.rex_i18n::rawmsg('a1544_seo_nochecksselected').'</span>' : '';
@@ -322,7 +364,7 @@ function a1544_seocheckup()
         
 		//Einzelwerte aufbereiten
 		preg_match("/<title[^>]*>(.*?)<\/title>/is", $arthead, $matches);																										//Title holen --> kein U-Modifier, da bereits non-greedy
-			$title = (!isset($matches[1]) || empty($matches[1])) ? $yrs->getTitle() : $matches[1];
+			$title = (!$checkurl && (!isset($matches[1]) || empty($matches[1])) ) ? $yrs->getTitle() : $matches[1];
 			$title = trim(preg_replace("/\s\s+/", " ", $title));
 			$title_raw = aFM_unmaskQuotes(aFM_revChar($title));
 			//$title_words = (!empty($title_raw)) ? explode(" ", trim(preg_replace($regex_wspace, " ", preg_replace($regex_pmarks, " ", $title_raw))) ) : array();				//Wörter in title finden (alt)
@@ -330,7 +372,7 @@ function a1544_seocheckup()
 			
 			
 		preg_match("/<meta name\s*=\s*[\"']{1}description[\"']{1}[ ]+content\s*=\s*[\"']{1}([^\"']*)[\"']{1}[^>]*>/is", $arthead, $matches);									//Description holen
-			$desc = (!isset($matches[1]) || empty($matches[1])) ? $yrs->getDescription() : $matches[1];
+			$desc = (!$checkurl && (!isset($matches[1]) || empty($matches[1])) ) ? $yrs->getDescription() : $matches[1];
 			$desc = trim(preg_replace("/\s\s+/", " ", $desc));
 			$desc_raw = aFM_unmaskQuotes(aFM_revChar($desc));
 
@@ -480,9 +522,10 @@ function a1544_seocheckup()
 		//URL
 		if ($config['be_seo_checks_url']):
 		
-			//URL Länge		
 			$tmp = preg_replace("/(http[s]?:\/\/|\/$)/i", "", str_replace($dom, "", $url));
-				$tmp = preg_replace("/^\//i", "", $tmp);
+			$tmp = preg_replace("/^\//i", "", $tmp);
+			
+			//URL Länge		
 			if (mb_strlen(utf8_decode($tmp)) > $config['be_seo_url_max']):
 				$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.str_replace(array("###max###"), array($config['be_seo_url_max']), rex_i18n::rawmsg('a1544_seo_url_length_nok')).'</li>';
 			else:
@@ -560,9 +603,6 @@ function a1544_seocheckup()
 					$checks_ok++;
 				else:
 					$cnt .= '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_nok.'"></i>'.a1544_kwInfobox( rex_i18n::msg('a1544_seo_hx_nok'), $hxlist).'</li>';
-
-
-					//$cnt .= '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_nok.'"></i><span class="seocu-infolistswitch" data-seocu-dst="#seocu-hxlist">'.rex_i18n::msg('a1544_seo_hx_nok').'&nbsp;<span class="rex-icon fa-caret-down"></span></span>'.$hxlist.'</li>';
 				endif;
 				$checks++;
 			endif;
@@ -573,10 +613,14 @@ function a1544_seocheckup()
 				
 		
 		//Content
-		//$wcount = (!empty($artcnt)) ? count(explode(" ", $artcnt)) : 0;		 	//(alt)
 		$wcount = (!empty($artcnt)) ? a1544_countWords($artcnt) : 0;
-		if ($config['be_seo_checks_content']):
+			if ($config['be_seo_content_words_dec'] > 0):
+				$wcount -= $config['be_seo_content_words_dec'];			//Korrekturwert abziehen wenn > 0
+				$wcount = ($wcount < 0) ? 0 : $wcount;
+			endif;
 		
+		if ($config['be_seo_checks_content']):
+
 			//Content-Länge
 			if ($wcount >= $config['be_seo_content_words']):
 				$cnt .= '<li class="'.$css_detailsonly.'"><i class="rex-icon '.$icon_ok.'"></i>'.str_replace("###words###", $wcount, rex_i18n::msg('a1544_seo_cnt_ok')).'</li>';
@@ -621,7 +665,6 @@ function a1544_seocheckup()
 			$bcnt = "";
 			$berror = $bcount = $bempty = 0;
 			if (count($bolds) > 0):
-				//$boldlist = '<div id="seocu-boldlist" class="seocu-infolist seocu-hide">';
 				$boldlist = '';
 				
 				//Anzahl berechnen
@@ -639,7 +682,6 @@ function a1544_seocheckup()
 						$boldlist .= '<dl><dt>'.$tmp.' '.rex_i18n::msg('a1544_seo_bolds_char').'</dt><dd class="'.$col_nok.'">'.$bold.'</dd></dl>';
 					endif;
 				endforeach;
-				//$boldlist .= '</div>';
 				
 				//Info: Anzahl
 				if (count($bolds) > $maxbolds):
@@ -659,8 +701,7 @@ function a1544_seocheckup()
 				if ($bcount > 0):
 					$berror = 1;
 					
-					$bcnt .= '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_nok.'"></i>'.a1544_kwInfobox( str_replace("###count###", $bcount, rex_i18n::rawmsg('a1544_seo_bolds_length')), $boldlist).'</li>';
-					//$bcnt .= '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_nok.'"></i><span class="seocu-infolistswitch" data-seocu-dst="#seocu-boldlist">'.str_replace("###count###", $bcount, rex_i18n::rawmsg('a1544_seo_bolds_length')).'&nbsp;<span class="rex-icon fa-caret-down"></span></span>'.$boldlist.'</li>';
+					$bcnt .= '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_nok.'"></i>'.a1544_kwInfobox( str_replace("###count###", $bcount, rex_i18n::rawmsg('a1544_seo_bolds_length')), $boldlist, 'seocu-boldlist' ).'</li>';
 				endif;
 			endif;
 			unset($boldlist);
@@ -685,7 +726,6 @@ function a1544_seocheckup()
 			if (count($imgs) > 0):
 				$checks_ok++;
 				
-				//$imglist = '<div id="seocu-imglist" class="seocu-infolist seocu-hide">';
 				$imglist = '';
 				foreach ($imgs as $img):
 					preg_match("/alt\s*=\s*[\"']{1}([^\"']*)[\"']{1}/i", $img, $matches);
@@ -696,12 +736,9 @@ function a1544_seocheckup()
 						$imglist .= (isset($matches[1]) && !empty($matches[1])) ? '<dl><dt>IMG</dt><dd class="'.$col_nok.'">'.$matches[1].'</dd></dl>' : '';
 					endif;
 				endforeach;
-				//$imglist .= '</div>';
 				
 				if ($acount > 0):
 					$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.a1544_kwInfobox( str_replace("###count###", $acount, rex_i18n::msg('a1544_seo_img_alt_nok')), $imglist).'</li>';
-					
-					//$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i><span class="seocu-infolistswitch" data-seocu-dst="#seocu-imglist">'.str_replace("###count###", $acount, rex_i18n::msg('a1544_seo_img_alt_nok')).'&nbsp;<span class="rex-icon fa-caret-down"></span></span>'.$imglist.'</li>';
 				else:
 					$cnt .= '<li class="'.$css_detailsonly.'"><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_img_ok').'</li>';
 					$checks_ok++;
@@ -967,7 +1004,7 @@ function a1544_seocheckup()
 						if (count($content_words) > 0):
 							$found = false;
 							for ($w=0; $w<400; $w++):
-								if (mb_strtolower($content_words[$w]) == $kw) { $found = true; }
+								if (isset($content_words[$w]) && mb_strtolower($content_words[$w]) == $kw) { $found = true; }
 							endfor;
 
 							if (!$found):
@@ -1176,30 +1213,26 @@ function a1544_seocheckup()
 			
 				
 			$cnt .= '<li>&nbsp;</li>';
-			
+
 			
 			
 			//Info: unique or multi focus-keyword (Abfrage aus DB)
-			$artdom = rex_yrewrite::getDomainByArticleId($actArt);
-			$artdommp = intval($artdom->getMountId());
-				$path = ($artdommp > 0) ? "%|$artdommp|%" : "|%";
-
-			$db = rex_sql::factory();
-				$offkeys = ($config['be_seo_offlinekeywords']) ? "" : " AND status = '1'";
-			$db->setQuery("SELECT id FROM ".rex::getTable('article')." WHERE seocu_keyword = '".aFM_maskSql($keyword)."' AND path LIKE '".$path."'".$offkeys);
-				$tmp = ($db->getRows() <= 1) ? rex_i18n::msg('a1544_seo_keyunique') : rex_i18n::msg('a1544_seo_keymulti');
-			$cnt .= '<li><i class="rex-icon '.$icon_info.'"></i>'.$tmp.'</li>';
-			unset($db);
+			if (!$checkurl):
+			
+				$artdom = rex_yrewrite::getDomainByArticleId($actArt);						//Domain des Artikel holen
+				$artdommp = intval($artdom->getMountId());									//Prüfung auf Domain-Mountpoints eigrenzen, sofern notwendig
+					$path = ($artdommp > 0) ? "%|$artdommp|%" : "|%";
+	
+				$db = rex_sql::factory();
+					$offkeys = ($config['be_seo_offlinekeywords']) ? "" : " AND status = '1'";
+				$db->setQuery("SELECT id FROM ".rex::getTable('article')." WHERE seocu_keyword = '".aFM_maskSql($keyword)."' AND path LIKE '".$path."'".$offkeys);
+					$tmp = ($db->getRows() <= 1) ? rex_i18n::msg('a1544_seo_keyunique') : rex_i18n::msg('a1544_seo_keymulti');
+				$cnt .= '<li><i class="rex-icon '.$icon_info.'"></i>'.$tmp.'</li>';
+				unset($db);
+				
+			endif;
 			
 		endif;
-		
-		
-		
-		/*	Bilder sind aus SEO-Sicht wichtig -> Prüfung oben daher jetzt als Pflicht
-		//Info: keine Bilder vorhanden
-		$cnt .= (count($imgs) <= 0 && $config['be_seo_checks_images']) ? '<li><i class="rex-icon '.$icon_info.'"></i>'.rex_i18n::msg('a1544_seo_img_notfound').'</li>' : '';
-		*/
-		
 		
 		
 		//Line-Spacer
@@ -1219,13 +1252,9 @@ function a1544_seocheckup()
 			$asl = ($sents > 0) ? (float)($wcount / $sents) : 0;
 			$asw = ($wcount > 0) ? (float)($sylls / $wcount) : 0;
 			
-			//echo "ASL: $asl / ASW: $asw\n";
-			
 			$flesch_score = (preg_match("/(de|dede|de-de|de_de|deu|ger|deutsch|german)/i", rex_clang::get($actClang)->getCode())) ? round((180 - $asl - (58.5 * $asw)), 1) : round((206.835 - (1.015 * $asl) - (84.6 * $asw)), 1);			//deutsch / englisch
 				$flesch_score = ($flesch_score <= 0 || empty($artcnt)) ? 0 : $flesch_score;
 				$flesch_score = ($flesch_score >= 100) ? 100 : $flesch_score;
-				
-			//echo "FSCORE: $flesch_score\n";
 			
 			$flesch_result = rex_i18n::msg('a1544_seo_flesch_grade1');
 				$flesch_result = ($flesch_score >= 75 && $flesch_score < 90) ? rex_i18n::msg('a1544_seo_flesch_grade2') : $flesch_result;
@@ -1250,7 +1279,7 @@ function a1544_seocheckup()
 
 	//Ausgabe WDF-Tabelle
 	if ($config['be_seo_checks_wdf']):
-		$wdf = a1544_seocuWDF($artcnt);
+		$wdf = a1544_seocuWDF($artcnt);		
 		
 		//Ausgabe in Sidebar & in Details
 		if ($showchecks || $config['be_seo_sidebar_wdf']):
@@ -1293,25 +1322,6 @@ function a1544_seocheckup()
 	endif;
 			
 	
-	
-	//Testausgaben : START (FALKO)
-	/*
-	echo "Wörter Title: ".count($title_words)."<br>";
-	echo "Wörter H1: ".count($h1_words)."<br>";
-	
-	$tmp = a1544_countWords($artcnt, 'array');
-	echo "Wörter Content (old): ".$wcount."<br>";
-	echo "Wörter Content: ".count($tmp)."<br>";
-	dump($title_words);
-	dump($h1_words);
-	dump($tmp);
-	
-	exit();
-	*/
-	//Testausgaben : ENDE
-	
-	
-	
 	//Resultat aufbereiten
 	$result = ($checks > 0) ? round( (float)($checks_ok * 100 / $checks), 0) : 0;
 	$resultcol = "#3BB594";
@@ -1323,15 +1333,20 @@ function a1544_seocheckup()
 	$cnt .= '<script type="text/javascript">$(function(){ seocuqi = $(".seocu-quickinfo"); seocuqi.css({ color: "'.$resultcol.'"}); if ($(".seocu-quickinfo").parents("header.panel-heading").next("div").attr("aria-expanded") == "true") { seocuqi.html("<span>'.$result.'%</span>"); } else { seocuqi.html(\''.$quick.'\'); } $(".seocu-resultbar").css({ background: "'.$resultcol.'"}).animate({ width: "'.$result.'%" }); });</script>';
 	
 	
+	//Modalnamen setzen (URL oder Artikelname)
+	$modalname = ($checkurl) ? aFM_maskChar($testurl) : $art->getName();
+	$modalname = htmlspecialchars(a1544_removeTags($modalname));
+	
+	
 	//Erfolgreiche Tests ausgeben + Detailbutton
-	$detaillink = (!$showchecks && $checks_ok > 0) ? '<li class="seocu-noicon"><div class="seocu-result" style="background: '.$resultcol.';">'.$checks_ok.' '.rex_i18n::msg('a1544_seo_tests_ok').'</div> <a class="seoculist-detail" data-toggle="modal" data-target="#seocu-modal" data-seocu-aid="'.$actArt.'" data-seocu-cid="'.$actClang.'" data-seocu-aname="'.htmlspecialchars(a1544_removeTags($art->getName())).'">'.rex_i18n::msg('a1544_seo_details').'</a></li><li>&nbsp;</li>' : '';
+	$detaillink = (!$showchecks && $checks_ok > 0) ? '<li class="seocu-noicon"><div class="seocu-result" style="background: '.$resultcol.';">'.$checks_ok.' '.rex_i18n::msg('a1544_seo_tests_ok').'</div> <a class="seoculist-detail" data-toggle="modal" data-target="#seocu-modal" data-seocu-aid="'.$actArt.'" data-seocu-cid="'.$actClang.'" data-seocu-aname="'.$modalname.'">'.rex_i18n::msg('a1544_seo_details').'</a></li><li>&nbsp;</li>' : '';
 	$cnt 		= str_replace("###detaillink###", $detaillink, $cnt);
 	$analysis	= str_replace("###detaillink###", '', $analysis);
 
 
 	//WDF-Button ausgeben
 	$wdflink_name = rex_i18n::msg('a1544_seo_more');
-	$wdflink_data = 'data-seocu-aid="'.$actArt.'" data-seocu-cid="'.$actClang.'" data-seocu-aname="'.htmlspecialchars(a1544_removeTags($art->getName())).'"';
+	$wdflink_data = 'data-seocu-aid="'.$actArt.'" data-seocu-url="'.aFM_noQuote($testurl).'" data-seocu-cid="'.$actClang.'" data-seocu-aname="'.$modalname.'"';
 	$wdflink_modal = ($showtests == 1) ? '' : 'data-toggle="modal" data-target="#seocu-modal"';
 		$wdflink = '<a class="seoculist-morewdf seoculist-morewdf-sidebar" '.$wdflink_data.' '.$wdflink_modal.'>'.$wdflink_name.'</a>';
 		$wdflink_detail = '<a class="seoculist-morewdf seoculist-morewdf-sidebar" '.$wdflink_data.'>'.$wdflink_name.'</a>';
@@ -1349,12 +1364,12 @@ function a1544_seocheckup()
 	$db = rex_sql::factory();
 		unset($data);
 		$data['article_id'] = $actArt;
-		$data['article_name'] = $art->getName();
+		$data['article_name'] = $modalname;
 		$data['cat_id'] = $actCat;
 		$data['clang_id'] = $actClang;
 		$data['keyword'] = $keyword;
 		$data['result'] = $result;
-		$data['analysis'] = $analysis;											//HTML-Code (Details)
+		$data['analysis'] = $analysis;												//HTML-Code (Details)
 		$data['flesch'] = @$flesch_score;
 		$data['wdf'] = @$wdf;
 		$data['seo_title'] = $title_raw;
@@ -1371,8 +1386,12 @@ function a1544_seocheckup()
 		$data['mem_end'] = $mem_end;
 		$data['time_start'] = $time_start;
 		$data['time_end'] = $time_end;
-		
-	$db->setQuery("UPDATE ".rex::getTable('article')." SET seocu_result = '".aFM_maskSql($result)."', seocu_data = '".aFM_maskSql(serialize($data))."', seocu_updatedate = '".time()."'  WHERE id = '".$actArt."' AND clang_id = '".$actClang."'");
+	
+	if ($checkurl):
+		$db->setQuery("UPDATE ".rex::getTable('url_generator_url')." SET seocu_result = '".aFM_maskSql($result)."', seocu_data = '".aFM_maskSql(serialize($data))."', seocu_updatedate = '".time()."'  WHERE id = '".$actArt."'");
+	else:
+		$db->setQuery("UPDATE ".rex::getTable('article')." SET seocu_result = '".aFM_maskSql($result)."', seocu_data = '".aFM_maskSql(serialize($data))."', seocu_updatedate = '".time()."'  WHERE id = '".$actArt."' AND clang_id = '".$actClang."'");
+	endif;
 	unset($db);
 	
     
@@ -1463,12 +1482,6 @@ function a1544_removeTags($str)
 	$str = strip_tags($str);	
 	$str = trim(preg_replace('/ {2,}/', ' ', $str));
 	
-	/*
-	echo "NACHHER:<br>";
-	dump($str);
-	exit();
-	*/
-	
 	return $str;
 }
 
@@ -1522,8 +1535,8 @@ function a1544_countWords($str, $op = "")
 
 
 //Keyword-Infobox erstellen
-function a1544_kwInfobox($msg, $list)
-{	return (!empty($msg) && !empty($list)) ? '<span class="seocu-infolistswitch" data-seocu-dst="">'.$msg.'&nbsp;<span class="rex-icon fa-caret-down"></span></span><div id="" class="seocu-infolist seocu-hide">'.$list.'</div>' : '';
+function a1544_kwInfobox($msg, $list, $id = "")
+{	return (!empty($msg) && !empty($list)) ? '<span class="seocu-infolistswitch" data-seocu-dst="">'.$msg.'&nbsp;<span class="rex-icon fa-caret-down"></span></span><div id="'.$id.'" class="seocu-infolist seocu-hide">'.$list.'</div>' : '';
 }
 
 
@@ -1557,11 +1570,26 @@ class rex_api_a1544_getSeocheckupWDF extends rex_api_function
 	{	//Variablen
 		$actArt = rex_request('article_id', 'int');
 		$actClang = rex_request('clang', 'int');
-	
+		
+		$testurl = aFM_textOnly(urldecode(rex_request('url')));
+		$checkurl = (rex_request('checkupmode') == 'url' && !empty($testurl)) ? true : false;
+		
+		
+		//Prüfen, ob zu prüfender Artikel existiert
+		$sqlTable = ($checkurl) ? 'url_generator_url' : 'article';
+		$db = rex_sql::factory();
+		$db->setQuery("SELECT id FROM ".rex::getTable($sqlTable)." WHERE id = '".$actArt."'");
+		
+		if ($db->getRows() <= 0):
+			return 'ERROR: Article-ID '.$actArt.' could not be found';
+			exit();
+		endif;
+		
+		
 		$op = "";
 	
 		//WDF einladen und ausgeben		
-		$sql = "SELECT seocu_data FROM ".rex::getTable('article')." WHERE id = '".$actArt."' AND clang_id = '".$actClang."' limit 0,1";
+		$sql = ($checkurl) ? "SELECT seocu_data FROM ".rex::getTable('url_generator_url')." WHERE id = '".$actArt."' limit 0,1" : "SELECT seocu_data FROM ".rex::getTable('article')." WHERE id = '".$actArt."' AND clang_id = '".$actClang."' limit 0,1";
 		$db = rex_sql::factory();
 		$db->setQuery($sql);
 
@@ -1765,13 +1793,6 @@ function a1544_seocuWDF($content = "")
 			if ($i == $count) break; 
 		endforeach;
 	endif;	
-	
-	/*
-	echo "$wc<br>";
-	echo "$wc_wostops<br>";
-	dump($wdflist);
-	exit();
-	*/
 	
 	return $wdflist;	
 }

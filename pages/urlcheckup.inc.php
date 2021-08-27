@@ -1,8 +1,8 @@
 <?php
 /*
 	Redaxo-Addon SEO-CheckUp
-	Verwaltung: Hauptseite (Default)
-	v1.4.5
+	Verwaltung: URL-Addon-Checkup
+	v1.5
 	by Falko Müller @ 2019-2021
 	package: redaxo5
 */
@@ -12,7 +12,7 @@ $mode = rex_request('mode');
 $id = intval(rex_request('id'));
 $form_error = 0;
 
-$_SESSION['as_sbeg_seoculist'] = (!isset($_SESSION['as_sbeg_seoculist'])) ? "" : $_SESSION['as_sbeg_seoculist'];
+$_SESSION['as_sbeg_urllist'] = (!isset($_SESSION['as_sbeg_urllist'])) ? "" : $_SESSION['as_sbeg_urllist'];
 
 
 //Datumsformate
@@ -23,7 +23,14 @@ $format_online = 'd.m.Y H:i';
 //Übersichtsliste laden + ausgeben
 // --> wird per AJAX nachgeladen !!!
 
-$addpath = "index.php?page=".$page;
+
+//DB-Spalten des URL-Addons auf SEOCU prüfen & ggf. erweitern
+rex_sql_table::get(rex::getTable('url_generator_url'))
+	->ensureColumn(new rex_sql_column('seocu_keyword', 'varchar(255)'))
+	->ensureColumn(new rex_sql_column('seocu_result', 'varchar(100)'))
+	->ensureColumn(new rex_sql_column('seocu_data', 'text'))
+	->ensureColumn(new rex_sql_column('seocu_updatedate', 'varchar(50)'))
+    ->alter();
 ?>
 
 
@@ -41,7 +48,7 @@ $addpath = "index.php?page=".$page;
 			jQuery('#s_sbeg').focus();
 		
 			//Liste - Filtern
-			var params = 'page=<?php echo $page; ?>&subpage=load-articlelist&sbeg=';
+			var params = 'page=<?php echo $page; ?>&subpage=load-urllist&sbeg=';
 			var dst = '#ajax_jlist';
 			
 			jQuery('#db-order').click(function() {
@@ -80,7 +87,7 @@ $addpath = "index.php?page=".$page;
 			<td class="td3">
             
                 <div class="input-group">
-                    <input class="form-control sbeg" type="text" name="s_sbeg" id="s_sbeg" maxlength="50" value="<?php echo aFM_maskChar($_SESSION['as_sbeg_seoculist']); ?>" placeholder="Suchbegriff">
+                    <input class="form-control sbeg" type="text" name="s_sbeg" id="s_sbeg" maxlength="50" value="<?php echo aFM_maskChar($_SESSION['as_sbeg_urllist']); ?>" placeholder="Suchbegriff">
                     <span class="input-group-btn">
                         <a class="btn btn-popup form-control-btn" title="Suche zurücksetzen ..." id="s_resetsbeg"><i class="rex-icon fa-close"></i></a>
                     </span>
@@ -131,7 +138,7 @@ $addpath = "index.php?page=".$page;
 		<thead>
 		<tr>
 			<th class="rex-table-id">ID</th>
-			<th class="seoculist-nowrap"><?php echo $this->i18n('a1544_bas_list_name'); ?> <a class="db-order db-order-desc" id="db-order" data-order="asc"><i class="rex-icon fa-sort"></i></a></th>
+			<th class="seoculist-nowrap"><?php echo $this->i18n('a1544_bas_list_url'); ?> <a class="db-order db-order-desc" id="db-order" data-order="asc"><i class="rex-icon fa-sort"></i></a></th>
 
             <?php
 			echo $seo_cols;

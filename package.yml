@@ -1,7 +1,7 @@
 # Alle hier gesetzten Werte können über $addon->getProperty($key) abgefragt werden
 
 package: seocheckup																							#Pflichtfeld
-version: '1.4.7'																							#Pflichtfeld
+version: '1.5'																							#Pflichtfeld
 author: © Falko Müller
 supportpage: https://github.com/iceman-fx/seocheckup
 
@@ -11,8 +11,9 @@ page:
     icon: rex-icon fa-stethoscope
     subpages:
         default: { title: 'translate:a1544_default' }
+        urlcheckup: { title: 'translate:a1544_urlcheckup' }													#URL-Addon-CheckUp
         config: { title: 'translate:a1544_config', perm: 'seocheckup[config]', icon: rex-icon fa-wrench }	#config-Seite mit separaten Rechten
         help: { title: 'translate:a1544_help', icon: rex-icon fa-info-circle, itemclass: pull-right }
 
 requires:
-    redaxo: '^5.3.0' 																						#benötigt mindestens REDAXO 5.3
+    redaxo: '^5.12.0' 																						#benötigt mindestens REDAXO 5.12

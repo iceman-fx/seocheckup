@@ -2,7 +2,7 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Verwaltung: Einstellungen (config)
-	v1.4.1
+	v1.5
 	by Falko Müller @ 2019-2021
 	package: redaxo5
 */
@@ -40,6 +40,7 @@ if ($func == "save" && isset($_POST['submit'])):
 		'be_seo_desc_max'			=> rex_post('be_seo_desc_max', 'int'),
 		'be_seo_desc_words'			=> rex_post('be_seo_desc_words', 'int'),
 		'be_seo_content_words'		=> rex_post('be_seo_content_words', 'int'),
+		'be_seo_content_words_dec'	=> rex_post('be_seo_content_words_dec', 'int'),
 		'be_seo_density_min'		=> rex_post('be_seo_density_min', 'int'),
 		'be_seo_density_max'		=> rex_post('be_seo_density_max', 'int'),
 		'be_seo_url_max'			=> rex_post('be_seo_url_max', 'int'),
@@ -170,7 +171,7 @@ $config = $this->getConfig('config');
                     <select size="1" name="be_seo_culist_count" class="form-control" id="be_seo_culist_count">
                         <?php
 						$config['be_seo_culist_count'] = (@$config['be_seo_culist_count'] == '') ? 25 : intval(@$config['be_seo_culist_count']);		//Fallback zu alten Versionen vor 1.4
-                        for ($i=10; $i<=30; $i=$i+5):
+                        for ($i=10; $i<=50; $i=$i+5):
                             $sel = ($config['be_seo_culist_count'] == $i) ? 'selected' : '';
                             echo '<option value="'.$i.'" '.$sel.'>'.$i.'</option>';
                         endfor;
@@ -434,6 +435,14 @@ $config = $this->getConfig('config');
                         <input type="text" size="25" name="be_seo_content_words" id="be_seo_content_words" value="<?php echo @$config['be_seo_content_words']; ?>" maxlength="3" class="form-control" />
                     </dd>
                 </dl>
+
+            
+                <dl class="rex-form-group form-group">
+                    <dt><label for="be_seo_content_words_dec"><?php echo $this->i18n('a1544_config_seo_content_words_dec'); ?></label></dt>
+                    <dd>
+                        <input type="text" size="25" name="be_seo_content_words_dec" id="be_seo_content_words_dec" value="<?php echo @$config['be_seo_content_words_dec']; ?>" maxlength="4" class="form-control" />
+                    </dd>
+                </dl>
                 
             
                 <dl class="rex-form-group form-group">
@@ -479,6 +488,7 @@ $config = $this->getConfig('config');
     
                     </dd>
                 </dl>
+                
     
                 <dl class="rex-form-group form-group">
                     <dt><label for=""><?php echo $this->i18n('a1544_config_seo_offlinekeywords'); ?></label></dt>

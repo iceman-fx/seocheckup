@@ -1,5 +1,5 @@
 // SEO-CheckUp Scripts
-// v1.4.5
+// v1.5
 
 $(function(){
 	$seocu_multicount = 0;
@@ -16,15 +16,14 @@ $(function(){
 	$("body").on("click", ".seocu-result-refresh", function(e){ $(this).addClass("rotate"); dst = $("form.seoculist-form input"); $seocu_multicount = dst.length; dst.each(function(){ var a = $(this).parent().find("a"); a.addClass("rotate"); setTimeout(function(){ refreshSeoculist(a, false, false); }, 250); }); });
 	
 	//switch infolist
-	$("body").on("click", ".seocu-infolistswitch", function(e){ /*dst = $(this).attr('data-seocu-dst');*/ $(this).next("div").toggle(); /*$(dst).toggle();*/ });
+	$("body").on("click", ".seocu-infolistswitch", function(e){ $(this).next("div").toggle(); });
 });
 
 	
 function showSeocumodal(clicker, content)
 {	//fill the modalbox with the results/tests
 	var msel = "#seocu-modal";
-		api = (content == 'wdf' ? 'a1544_getSeocheckupWDF' : 'a1544_getSeocheckup');
-	
+		
 	if (clicker.length) {
 		dst = $("#seocu-modal");
 			if (!$('body > '+msel).length) { dst.appendTo("body"); }
@@ -32,13 +31,20 @@ function showSeocumodal(clicker, content)
 		if (content == 'wdf') { dst.addClass('seocu-modal-large'); }
 		else { dst.removeClass('seocu-modal-large'); }		
 			
-		aid = parseInt(clicker.attr('data-seocu-aid'));
-		cid = parseInt(clicker.attr('data-seocu-cid'));
+		var aid = parseInt(clicker.attr('data-seocu-aid'));
+		var cid = parseInt(clicker.attr('data-seocu-cid'));
 			cid = (cid > 0 ? cid : 1);
-		aname = clicker.attr('data-seocu-aname');
+		var aname = clicker.attr('data-seocu-aname');
+		var url = clicker.attr('data-seocu-url');
+			url = (url != undefined && url.length > 10 ? url : false);
+
+		//console.log("URL: " +url);
 		
-		if (aid > 0) {
-			dst.find(".modal-title").html(seoculang_modal.title+": "+aname+" ["+aid+"]");
+		var api = (content == 'wdf' ? 'a1544_getSeocheckupWDF' : 'a1544_getSeocheckup');
+			api += (url ? '&checkupmode=url&url='+encodeURIComponent(url) : '');
+		
+		if (aid > 0 || url) {
+			dst.find(".modal-title").html("<strong>"+seoculang_modal.title+"</strong><br>"+aname+" ["+aid+"]");
 			dst.find(".modal-body").html('<img src="/assets/addons/'+seoculang_modal.addonname+'/indicator.gif" width="16" height="16" border="0" id="ajax_loading" style="display: block; margin: 0px auto;" />').load("", "rex-api-call="+api+"&article_id="+aid+"&clang="+cid+"&showtests=1", function(){  });
 		} else { dst.find(".modal-title").html(seoculang_modal.artnotfound); }
 		
@@ -62,13 +68,21 @@ function refreshSeoculist(btn)
 		var inp = btn.parents("form.seoculist-form").find("input");
 		var aid = parseInt(inp.attr('data-seocu-aid'));
 		var cid = parseInt(inp.attr('data-seocu-cid'));
-		cid = (cid > 0 ? cid : 1);
+			cid = (cid > 0 ? cid : 1);
+		var url = inp.attr('data-seocu-url');
+			url = (url != undefined && url.length > 10 ? url : false);
 		
 		//console.log("AID: " +aid+ " / CID: " +cid+ " / getcache: " +getcache+ " / async: " +async);
+		//console.log("URL: " +url);
 		
-		if (aid > 0) {
+		var api = 'a1544_getSeocheckup';
+			api += (url ? '&checkupmode=url&url='+encodeURIComponent(url) : '');
+		
+		if (aid > 0 || url) {
 			if (!getcache) { btn.addClass("rotate"); }
-			urldata = "rex-api-call=a1544_getSeocheckup&article_id="+aid+"&clang="+cid+"&keyword="+encodeURIComponent(inp.val())+"&mode=json&getcache="+getcache;
+			urldata = "rex-api-call="+api+"&article_id="+aid+"&clang="+cid+"&keyword="+encodeURIComponent(inp.val())+"&mode=json&getcache="+getcache;
+			
+			//console.log(urldata);
 			
 			$.ajax({ url: "", async: async, data: urldata, dataType: "json" })
 			.done(function(data){
@@ -82,65 +96,66 @@ function refreshSeoculist(btn)
 				//console.log(data);
 				
 				//WDF
-				wdflist = "";
-				wdf = data["wdf"];									//object
-				
-				//alert(typeof wdf);
-				//alert(wdf);
+				var wdflist = "";
+				var wdf = data["wdf"];									//object
 				
 					if (wdf !== null && typeof wdf === "object") {
 						wdf_k = Object.keys(wdf);
 						wdf_v = Object.values(wdf);
 						
-						if (wdf_k.length > 0) {
-							for (var i=0; i<5; i++) {
+						maxwdf = wdf_k.length;
+						if (maxwdf > 0) {
+							maxwdf = (maxwdf >= 5 ? 5 : maxwdf);
+							
+							for (var i=0; i<maxwdf; i++) {
+								//console.log(wdf_k[i] +" > "+ wdf_v[i]['count']);
 								wdflist += wdf_k[i]+'&nbsp;('+wdf_v[i]['count']+')<br>';
 							}
 							
-							wdflist += '<br /><a class="seoculist-morewdf" data-toggle="modal" data-target="#seocu-modal" data-seocu-aid="'+aid+'" data-seocu-cid="'+cid+'" data-seocu-aname="'+data["article_name"]+'">'+seoculang_modal.more+'</a>';
+							wdflist += '<br /><a class="seoculist-morewdf" data-toggle="modal" data-target="#seocu-modal" data-seocu-aid="'+aid+'" data-seocu-url="'+url+'" data-seocu-cid="'+cid+'" data-seocu-aname="'+data["article_name"]+'">'+seoculang_modal.more+'</a>';
 						}
 					}
 				dst.find('.seoculist-wdf').html(wdflist);				
 				
 				//Title
-				title = data["seo_title"];							//string
+				title = escapeSeocuHtml(data["seo_title"]);							//string
 					title = (title.length < 1 ? '<span class="rex-offline">'+seoculang_modal.title_nok+'</span>' : title);
 					title = '<div class="seocu-scroll">'+title+'</div>';
 				dst.find('.seoculist-title').html(title);
 				
 				//Desc
-				desc = data["seo_desc"];							//string
+				desc = escapeSeocuHtml(data["seo_desc"]);							//string
 					desc = (desc.length < 1 ? '<span class="rex-offline">'+seoculang_modal.desc_nok+'</span>' : desc);
 					desc = '<div class="seocu-scroll">'+desc+'</div>';
 				dst.find('.seoculist-desc').html(desc);
 				
 				//H1
-				h1 = data["h1"];									//array
+				h1 = data["h1"];													//array
 					h1 = (Array.isArray(h1) && h1.length > 0 ? h1.join('<br><br>') : '<span class="rex-offline">'+seoculang_modal.h1_nok+'</span>');
 					h1 = '<div class="seocu-scroll">'+h1+'</div>';
 				dst.find('.seoculist-h1').html(h1);
 				
 				//H2
-				h2 = data["h2"];									//array
+				h2 = data["h2"];													//array
 					h2 = (Array.isArray(h2) && h2.length > 0 ? h2.join('<br><br>') : '-');
 					h2 = '<div class="seocu-scroll">'+h2+'</div>';
 				dst.find('.seoculist-h2').html(h2);
 				
 				//Links
-				links_int = parseInt(data["link_count_int"]);		//int
-				links_ext = parseInt(data["link_count_ext"]);		//int
+				links_int = parseInt(data["link_count_int"]);						//int
+				links_ext = parseInt(data["link_count_ext"]);						//int
 				dst.find('.seoculist-links').html(links_int+"/"+links_ext);
 				
 				//Words
-				words = parseInt(data["word_count"]);				//int
+				words = parseInt(data["word_count"]);								//int
 				dst.find('.seoculist-words').html(words);
 				
 				//Flesch
-				flesch = parseFloat(data["flesch"]);				//float
+				flesch = parseFloat(data["flesch"]);								//float
 					flesch = (isNaN(flesch) ? 0 : flesch);
 				
 				//SEO-Result
-				result = parseFloat(data["result"]);				//float
+				result = parseFloat(data["result"]);								//float
 					resultcol = "#3BB594";
 						resultcol = (result > 70 && result < 90 ? "#CEB964" : resultcol);
 						resultcol = (result >= 50 && result <= 70 ? "#F90" : resultcol);
@@ -148,7 +163,7 @@ function refreshSeoculist(btn)
 						resultcol = (result <= 30 ? "#D9534F" : resultcol);
 						
 				rhtml = '<div class="seocu-result" style="background: '+resultcol+';">'+result+'/100</div> <div class="seocu-result seocu-result-info">'+seoculang_modal.legibility+': '+flesch+'</div>';
-					rhtml += '<br /><a class="seoculist-detail" data-toggle="modal" data-target="#seocu-modal" data-seocu-aid="'+aid+'" data-seocu-cid="'+cid+'" data-seocu-aname="'+data["article_name"]+'">'+seoculang_modal.detail+'</a>';
+					rhtml += '<br /><a class="seoculist-detail" data-toggle="modal" data-target="#seocu-modal" data-seocu-aid="'+aid+'" data-seocu-url="'+url+'" data-seocu-cid="'+cid+'" data-seocu-aname="'+data["article_name"]+'">'+seoculang_modal.detail+'</a>';
 				dst.find('.seoculist-data').html(rhtml);
 				
 				//Snippet
@@ -167,25 +182,6 @@ function createSeocuchart()
 	
 	if ($(csel).length > 0) {
 		var ctx = $(csel);
-		/* BAR-Chart */
-		/*
-		var wdfplot = new Chart(ctx, {
-			type: 'bar',
-			data: {
-		        labels: wdf_names,
-				datasets: [{
-		            label: 'WDF',
-					backgroundColor: 'rgb(75, 154, 217)',
-					data: wdf_counts
-        		}]
-			},
-			options: {
-				legend: { display: false },
-				scales: { yAxes: [{ ticks: { beginAtZero: true } }] },
-				responsive: true
-			}
-		});
-		*/		
 		
 		/* LINE-Chart */
 		var wdfplot = new Chart(ctx, {
@@ -212,4 +208,14 @@ function createSeocuchart()
 			}
 		});
 	}
+}
+
+
+function escapeSeocuHtml(str) {
+  return str
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
 }

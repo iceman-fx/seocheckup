@@ -46,22 +46,51 @@ require_once(rex_path::addon($mypage)."/functions/functions.inc.php");
 
 //Backendfunktionen
 if (rex::isBackend() && rex::getUser()):
-	//Globale Einstellungen
-	//Sprachauswahl zur Navigation hinzufügen
+	//Navigation bearbeiten
 	$page = $this->getProperty('page');
+	
+		//Sprachauswahl zur Navigation hinzufügen
 		if (count(rex_clang::getAll(false)) > 1):
 			$cids = rex_clang::getAll();
+			
 			foreach ($cids as $id => $cid):
 				if (rex::getUser()->getComplexPerm('clang')->hasPerm($id)):
 					$page['subpages']['default']['subpages']['clang-'.$id] = ['title' => $cid->getName()];
 				endif;
 			endforeach;
 		endif;
+		
+		
+		// rex_string::versionCompare( preg_replace("/[^0-9\.]+/i", "", rex_addon::get('url')->getVersion() ), '2.0.0', '>=')
+		
+		//URL-Addon in Navigation berücksichtigen
+		if ( rex_addon::get('url')->isAvailable() && rex_string::versionCompare( rex_addon::get('url')->getVersion(), '2.0.0-dev', '>=') ):
+			//URL-Addon-Profile als Subnavi ausgeben
+			$sql = "SELECT DISTINCT(t1.profile_id), t2.namespace FROM ".rex::getTable('url_generator_url')." AS t1 INNER JOIN ".rex::getTable('url_generator_profile')." AS t2 ON t1.profile_id = t2.id ORDER BY t2.namespace ASC, t1.profile_id ASC";
+			$db = rex_sql::factory();
+			$db->setQuery($sql);
+
+			if ($db->getRows() > 0):
+				for ($i=0; $i < $db->getRows(); $i++):
+					$eid = intval($db->getValue('t1.profile_id'));
+					$title = aFM_maskChar($db->getValue('t2.namespace'));
+					
+					$page['subpages']['urlcheckup']['subpages']['urlprofile-'.$eid] = ['title' => $title];
+					
+					$db->next();
+				endfor;
+			endif;
+			
+		else:
+			//URL-Addon ab v2.x nicht verfügbar
+			unset($page['subpages']['urlcheckup']);
+		endif;
+		
 	$this->setProperty('page', $page);
 	
 	
 	//AJAX anbinden
-	$ajaxPages = array('load-seoculist');
+	$ajaxPages = array('load-articlelist', 'load-urllist');
 		if (rex_be_controller::getCurrentPagePart(1) == $mypage && in_array(rex_request('subpage', 'string'), $ajaxPages)):
 			rex_extension::register('OUTPUT_FILTER', 'aFM_bindAjax');
 		endif;	
