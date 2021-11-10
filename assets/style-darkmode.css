@@ -1,0 +1,44 @@
+@charset "utf-8";
+/* CSS Document for SEO-CheckUp - DarkMode */
+/* v1.6 */
+
+
+@media (prefers-color-scheme: dark){
+
+	body:not(.rex-theme-light) .seocu-result-refresh, 
+	body:not(.rex-theme-light) .seoculist-data .seocu-result-info, 
+	body:not(.rex-theme-light) .seoculist-analysis .seocu-result-info 
+		{ background: #2e3b4a; color: rgba(255, 255, 255, 0.75); }
+	
+	body:not(.rex-theme-light) .seocu-modal .modal-header { background: inherit; }
+	
+	
+	body:not(.rex-theme-light) .seocu-result-col5 { color: #e0332e; }
+	body:not(.rex-theme-light) .seocu-result-col5bg { background: #e0332e; }
+
+
+	body:not(.rex-theme-light) .seocu-quickinfo > span { background: rgba(255, 255, 255, 0.75); color: #000 !important; }
+
+	body:not(.rex-theme-light) .seocu-preview-url,
+	body:not(.rex-theme-light) .seocu-preview-title,
+	body:not(.rex-theme-light) .seocu-preview-desc
+		{ color: rgba(255, 255, 255, 0.75); }
+
+
+	body:not(.rex-theme-light) .checkbox.toggle label input,
+	body:not(.rex-theme-light) .radio.toggle label input
+		{ background: #202b35; }
+	body:not(.rex-theme-light) .checkbox.toggle label input::after, 
+	body:not(.rex-theme-light) .radio.toggle label input::after, 
+	body:not(.rex-theme-light) .radio.switch label input::before
+		{ background: #CCC; }
+
+	body:not(.rex-theme-light) .checkbox.toggle label input:checked,
+	body:not(.rex-theme-light) .radio.toggle label input:checked 
+		{ background: #409be4; }
+	body:not(.rex-theme-light) .checkbox.toggle label input:checked::after, 
+	body:not(.rex-theme-light) .radio.toggle label input:checked::after, 
+	body:not(.rex-theme-light) .radio.switch label input:checked::before
+		{ background: #EEE; }
+
+}

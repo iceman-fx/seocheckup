@@ -192,13 +192,13 @@ $addPath = "index.php?page=content/edit";
 					//Kurz-Analyse
 					$d_result = "";
 					if (!empty($seo_data)):
-						$resultcol = "#3BB594";
-							$resultcol = ($seo_result > 70 && $seo_result < 90) ? "#CEB964" : $resultcol;
-							$resultcol = ($seo_result >= 50 && $seo_result <= 70) ? "#F90" : $resultcol;
-							$resultcol = ($seo_result > 30 && $seo_result < 50) ? "#EC7627" : $resultcol;
-							$resultcol = ($seo_result <= 30) ? "#D9534F" : $resultcol;
+						$resultcol = "col1";
+							$resultcol = ($seo_result > 70 && $seo_result < 90) 	? "col2" : $resultcol;
+							$resultcol = ($seo_result >= 50 && $seo_result <= 70) 	? "col3" : $resultcol;
+							$resultcol = ($seo_result > 30 && $seo_result < 50) 	? "col4" : $resultcol;
+							$resultcol = ($seo_result <= 30) 						? "col5" : $resultcol;
 						
-						$d_result .= '<div class="seocu-result" style="background:'.$resultcol.'">'.$seo_result.'/100</div>';
+						$d_result .= '<div class="seocu-result seocu-result-'.$resultcol.'bg">'.$seo_result.'/100</div>';
 							$cssFlesch = 'seoculist-hideFlesch';
 							if (@$config['be_seo_checks_flesch'] == 'checked' || @$config['be_seo_checks_selection'] != 'checked'):
 								$d_result .= '<div class="seocu-result seocu-result-info">'.$this->i18n('a1544_seo_modal_legibility').': '.$d_flesch.'</div>';

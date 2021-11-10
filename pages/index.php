@@ -2,7 +2,7 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Verwaltung: index
-	v1.5
+	v1.6
 	by Falko Müller @ 2019-2021
 	package: redaxo5
 */
@@ -92,8 +92,8 @@ td.name { position: relative; padding-right: 20px !important; }
 .addon_search .form-control { padding: 1px 8px; font-size: 13px; float: none; }
 .addon_search .form-control-btn { padding: 2px 8px; font-size: 12px; }
 
-.addon_search input { }
-.addon_search input.sbeg { max-width: 150px; }
+.addon_search .input-group.sbeg { margin-left: auto; }
+@media (min-width: 768px){ .addon_search .input-group.sbeg { max-width: 180px; } }
 		
 .addon_search select { margin: 0px !important; padding: 0px 10px 0px 0px !important; height: 20px !important; min-width: 230px; max-width: 230px; }
 	.addon_search select option { margin-right: -10px; padding-right: 10px; }
@@ -128,6 +128,24 @@ td.name { position: relative; padding-right: 20px !important; }
 span.ajaxNav { /*display: inline-block; padding: 2px 4px; margin: 3px 2px 1px;*/ cursor: pointer; }
 span.ajaxNav:hover { background-color: #666; color: #FFF; }
 span.ajaxNavSel { background-color: #CCC; }
+
+.checkbox.toggle label input, .radio.toggle label input { -webkit-appearance: none; -moz-appearance: none; appearance: none; width: 3em; height: 1.5em; background: #ddd; vertical-align: middle; border-radius: 1.6em; position: relative; outline: 0; margin-top: -3px; margin-right: 10px; cursor: pointer; transition: background 0.1s ease-in-out; }
+	.checkbox.toggle label input::after, .radio.toggle label input::after, .radio.switch label input::before { content: ''; width: 1.5em; height: 1.5em; background: white; position: absolute; border-radius: 1.2em; transform: scale(0.7); left: 0; box-shadow: 0 1px rgba(0, 0, 0, 0.5); transition: left 0.1s ease-in-out; }
+.checkbox.toggle label input:checked, .radio.toggle label input:checked { background: #5791CE; }
+	.checkbox.toggle label input:checked::after { left: 1.5em; }
+
+.radio.switch label { margin-right: 1.5em; }
+.radio.switch label input { width: 1.5em; margin-right: 5px; }
+	.radio.switch label input:checked::after { transform: scale(0.5); }
+.radio.switch label input::before { background: #5791CE; opacity: 0; box-shadow: none; }
+	.radio.switch label input:checked::before { animation: radioswitcheffect 0.65s; }
+@keyframes radioswitcheffect { 0% { opacity: 0.75; } 100% { opacity: 0; transform: scale(2.5); } }
+
+.optionsblock { display: inline-block; vertical-align: top; min-width: 182px; margin: 0px 23px 18px 0px; padding: 7px 14px; transition: all .3s ease; }
+	.optionsblock:hover { background: #FFF; }
+.optionsblock label { margin-right: 0px !important; }
+.optionsblock ul { list-style: none; margin: 0px; padding: 0px;}
+.optionsblock li { margin: 0px 0px 5px; }
 </style>
 
 

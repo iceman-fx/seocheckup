@@ -3,6 +3,13 @@ SEO-CheckUp
 
 Changelog
 ---------
+
+<b>Version 1.6</b>
+- Anpassung für DarkMode
+- Designanpassungen
+- Bugfixing Prüfung yRewrite-Daten
+- Standard Title-Länge in den Einstellungen angepasst
+
 <b>Version 1.5</b>
 - neuer CheckUp für URLs des URL-Addons (v2)
 - optionaler Korrekturabzug für Content-Wortzählung

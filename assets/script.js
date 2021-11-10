@@ -1,5 +1,5 @@
 // SEO-CheckUp Scripts
-// v1.5
+// v1.6
 
 $(function(){
 	$seocu_multicount = 0;
@@ -95,6 +95,7 @@ function refreshSeoculist(btn)
 				
 				//console.log(data);
 				
+				
 				//WDF
 				var wdflist = "";
 				var wdf = data["wdf"];									//object
@@ -117,11 +118,13 @@ function refreshSeoculist(btn)
 					}
 				dst.find('.seoculist-wdf').html(wdflist);				
 				
+				
 				//Title
 				title = escapeSeocuHtml(data["seo_title"]);							//string
 					title = (title.length < 1 ? '<span class="rex-offline">'+seoculang_modal.title_nok+'</span>' : title);
 					title = '<div class="seocu-scroll">'+title+'</div>';
 				dst.find('.seoculist-title').html(title);
+				
 				
 				//Desc
 				desc = escapeSeocuHtml(data["seo_desc"]);							//string
@@ -129,11 +132,13 @@ function refreshSeoculist(btn)
 					desc = '<div class="seocu-scroll">'+desc+'</div>';
 				dst.find('.seoculist-desc').html(desc);
 				
+				
 				//H1
 				h1 = data["h1"];													//array
 					h1 = (Array.isArray(h1) && h1.length > 0 ? h1.join('<br><br>') : '<span class="rex-offline">'+seoculang_modal.h1_nok+'</span>');
 					h1 = '<div class="seocu-scroll">'+h1+'</div>';
 				dst.find('.seoculist-h1').html(h1);
+				
 				
 				//H2
 				h2 = data["h2"];													//array
@@ -141,30 +146,35 @@ function refreshSeoculist(btn)
 					h2 = '<div class="seocu-scroll">'+h2+'</div>';
 				dst.find('.seoculist-h2').html(h2);
 				
+				
 				//Links
 				links_int = parseInt(data["link_count_int"]);						//int
 				links_ext = parseInt(data["link_count_ext"]);						//int
 				dst.find('.seoculist-links').html(links_int+"/"+links_ext);
 				
+				
 				//Words
 				words = parseInt(data["word_count"]);								//int
 				dst.find('.seoculist-words').html(words);
 				
+				
 				//Flesch
 				flesch = parseFloat(data["flesch"]);								//float
 					flesch = (isNaN(flesch) ? 0 : flesch);
+					
 				
 				//SEO-Result
 				result = parseFloat(data["result"]);								//float
-					resultcol = "#3BB594";
-						resultcol = (result > 70 && result < 90 ? "#CEB964" : resultcol);
-						resultcol = (result >= 50 && result <= 70 ? "#F90" : resultcol);
-						resultcol = (result > 30 && result < 50 ? "#EC7627" : resultcol);
-						resultcol = (result <= 30 ? "#D9534F" : resultcol);
+					resultcol = "col1";
+						resultcol = (result > 70 && result < 90 	? "col2" : resultcol);
+						resultcol = (result >= 50 && result <= 70 	? "col3" : resultcol);
+						resultcol = (result > 30 && result < 50 	? "col4" : resultcol);
+						resultcol = (result <= 30 					? "col5" : resultcol);
 						
-				rhtml = '<div class="seocu-result" style="background: '+resultcol+';">'+result+'/100</div> <div class="seocu-result seocu-result-info">'+seoculang_modal.legibility+': '+flesch+'</div>';
+				rhtml = '<div class="seocu-result seocu-result-'+$resultcol+'bg">'+result+'/100</div> <div class="seocu-result seocu-result-info">'+seoculang_modal.legibility+': '+flesch+'</div>';
 					rhtml += '<br /><a class="seoculist-detail" data-toggle="modal" data-target="#seocu-modal" data-seocu-aid="'+aid+'" data-seocu-url="'+url+'" data-seocu-cid="'+cid+'" data-seocu-aname="'+data["article_name"]+'">'+seoculang_modal.detail+'</a>';
 				dst.find('.seoculist-data').html(rhtml);
+				
 				
 				//Snippet
 				

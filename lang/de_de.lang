@@ -1,4 +1,4 @@
-# addon: seocheckup de_de 1.5
+# addon: seocheckup de_de 1.6
 
 a1544_title = SEO-CheckUp
 
@@ -36,7 +36,7 @@ a1544_seo_nottested = Analyse noch nicht durchgeführt.
 a1544_seo_cannottest = Analyse kann nicht durchgeführt werden.
 a1544_seo_tests_ok = Test(s) erfolgreich
 a1544_seo_preview = Vorschau SERP-Snippet:
-a1544_seo_nohtml = <span class="rex-offline">Abruf des Artikels fehlgeschlagen!</span>
+a1544_seo_nohtml = <span class="rex-offline">Abruf des Artikels fehlgeschlagen oder kein Seiteninhalt gefunden!</span>
 a1544_seo_errhtml = <span class="rex-offline">Fehler beim Abruf des Artikels!</span><br />"###error###"
 a1544_seo_artoffline = <span class="rex-offline">Artikel ist offline!</span><br />Analyse daher nur eingeschränkt möglich.</span>
 a1544_seo_artchanged = <span class="rex-offline">Artikel wurde geändert!</span><br />Schalten Sie die Änderung live, um die Analyse zu komplettieren.</span>

@@ -2,7 +2,7 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Boot (weitere Konfigurationen)
-	v1.4.1
+	v1.6
 	by Falko Müller @ 2019-2021
 	package: redaxo5
 	
@@ -41,6 +41,10 @@ endif;
 //Global für Backend+Frontend
 global $a1544_mypage;
 $a1544_mypage = $mypage;
+
+global $a1544_darkmode;
+$a1544_darkmode = (rex_string::versionCompare(rex::getVersion(), '5.13.0-dev', '>=')) ? true : false;
+
 
 require_once(rex_path::addon($mypage)."/functions/functions.inc.php");
 
@@ -100,6 +104,8 @@ if (rex::isBackend() && rex::getUser()):
 	require_once(rex_path::addon($mypage)."/functions/functions_be_seo.inc.php");
 	
 	rex_view::addCssFile($this->getAssetsUrl('style.css'));
+	if ($a1544_darkmode) { rex_view::addCssFile($this->getAssetsUrl('style-darkmode.css')); }
+	
 	rex_view::addJsFile($this->getAssetsUrl('script.js'));
 	rex_view::addCssFile($this->getAssetsUrl('chartjs/Chart.min.css'));
 	rex_view::addJsFile($this->getAssetsUrl('chartjs/Chart.min.js'));

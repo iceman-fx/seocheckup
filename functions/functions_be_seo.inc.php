@@ -2,7 +2,7 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Backend-Funktionen (SEO)
-	v1.5
+	v1.6
 	by Falko Müller @ 2019-2021
 	package: redaxo5
 */
@@ -64,7 +64,7 @@ $panel .= <<<EOD
             	<div class="modal-content">
                 	<div class="modal-header"><div class="modal-title">$l3</div></div>
                     <div class="modal-body seocheckup">$l4</div>
-                    <div class="modal-footer"><button type="button" class="btn btn-secondary" data-dismiss="modal">$l5</button></div>
+                    <div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">$l5</button></div>
                 </div>
             </div>
         </div>
@@ -183,7 +183,7 @@ function a1544_seocheckup()
 		
 		$config['be_seo_offlinekeywords'] 		= (@$config['be_seo_offlinekeywords'] == 'checked') 					? true : false;
 		$config['be_seo_title_min'] 			= (!isset($config['be_seo_title_min']))									? '50' : intval($config['be_seo_title_min']);
-		$config['be_seo_title_max'] 			= (!isset($config['be_seo_title_max']))									? '65' : intval($config['be_seo_title_max']);
+		$config['be_seo_title_max'] 			= (!isset($config['be_seo_title_max']))									? '60' : intval($config['be_seo_title_max']);
 		$config['be_seo_title_words'] 			= (!isset($config['be_seo_title_words'])) 								? '6' : intval($config['be_seo_title_words']);
 		$config['be_seo_desc_min'] 				= (!isset($config['be_seo_desc_min'])) 									? '130' : intval($config['be_seo_desc_min']);
 		$config['be_seo_desc_max'] 				= (!isset($config['be_seo_desc_max'])) 									? '160' : intval($config['be_seo_desc_max']);
@@ -228,7 +228,7 @@ function a1544_seocheckup()
 	$yr = array();
 	$prot = 'http://';																								//TODO: Protokoll aus Aufruf bereits auslesen, falls kein yRewrite genutzt wird
 	$dom = ($checkurl) ? preg_replace('/http[s]?:\/\/(.*?[^\/]*)\/.*/i', '$1', $testurl) : $_SERVER['SERVER_NAME'];
-	$url = ($checkurl) ? $testurl : $prot.$_SERVER['SERVER_NAME'].rex_getUrl($actArt, $actClang);
+	$url = ($checkurl) ? $testurl : $prot.str_replace("//", "/", $_SERVER['SERVER_NAME'].preg_replace("#^\.\./#", "/", rex_getUrl($actArt, $actClang)));
 
 		//mit Daten aus yRewrite abgleichen
 		if (rex_addon::get('yrewrite')->isAvailable() && !$checkurl):
@@ -252,7 +252,15 @@ function a1544_seocheckup()
 		$html = $httpheader = $sockerror = $hasRedirect = $artcnt = $artcnt_raw = $artcnt_wo_h1 = "";	
 		
 		
-		//$cnt .= "$testurl<br><br>";
+		/*
+		$cnt .= "PROTOKOLL: $prot<br>";
+		$cnt .= "SERVER_NAME: ".$_SERVER['SERVER_NAME']."<br>";
+		$cnt .= "rex_getUrl: ".rex_getUrl($actArt, $actClang)."<br>";
+		$cnt .= "TESTURL: $testurl<br>";
+		$cnt .= "CHECKURL: $checkurl<br>";
+		$cnt .= "URL: $url<br>";
+		$cnt .= "<br>";
+		*/
 		
 		
 		//Live-Artikel holen & auf aktive Redirects testen
@@ -364,7 +372,7 @@ function a1544_seocheckup()
         
 		//Einzelwerte aufbereiten
 		preg_match("/<title[^>]*>(.*?)<\/title>/is", $arthead, $matches);																										//Title holen --> kein U-Modifier, da bereits non-greedy
-			$title = (!$checkurl && (!isset($matches[1]) || empty($matches[1])) ) ? $yrs->getTitle() : $matches[1];
+			$title = (!$checkurl && (!isset($matches[1]) || empty($matches[1])) ) ? $yr['title'] : $matches[1];
 			$title = trim(preg_replace("/\s\s+/", " ", $title));
 			$title_raw = aFM_unmaskQuotes(aFM_revChar($title));
 			//$title_words = (!empty($title_raw)) ? explode(" ", trim(preg_replace($regex_wspace, " ", preg_replace($regex_pmarks, " ", $title_raw))) ) : array();				//Wörter in title finden (alt)
@@ -372,7 +380,7 @@ function a1544_seocheckup()
 			
 			
 		preg_match("/<meta name\s*=\s*[\"']{1}description[\"']{1}[ ]+content\s*=\s*[\"']{1}([^\"']*)[\"']{1}[^>]*>/is", $arthead, $matches);									//Description holen
-			$desc = (!$checkurl && (!isset($matches[1]) || empty($matches[1])) ) ? $yrs->getDescription() : $matches[1];
+			$desc = (!$checkurl && (!isset($matches[1]) || empty($matches[1])) ) ? $yr['desc'] : $matches[1];
 			$desc = trim(preg_replace("/\s\s+/", " ", $desc));
 			$desc_raw = aFM_unmaskQuotes(aFM_revChar($desc));
 
@@ -637,7 +645,7 @@ function a1544_seocheckup()
 				if (mb_stristr($artcnt_wo_h1, $word)) { $found++; }
 			endforeach;
 			
-			if (count($title_words) == $found):
+			if (count($title_words) > 0 && count($title_words) == $found):
 				$cnt .= '<li class="'.$css_detailsonly.$css_sub.'"><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_cnt_titlewords_ok').'</li>';
 				$checks_ok++;
 			else:
@@ -652,7 +660,7 @@ function a1544_seocheckup()
 				if (mb_stristr($artcnt_wo_h1, $word)) { $found++; }
 			endforeach;
 			
-			if (count($h1_words) == $found):
+			if (count($h1_words) > 0 && count($h1_words) == $found):
 				$cnt .= '<li class="'.$css_detailsonly.$css_sub.'"><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_cnt_h1words_ok').'</li>';
 				$checks_ok++;
 			else:
@@ -1217,7 +1225,7 @@ function a1544_seocheckup()
 			
 			
 			//Info: unique or multi focus-keyword (Abfrage aus DB)
-			if (!$checkurl):
+			if (rex_addon::get('yrewrite')->isAvailable() && !$checkurl):
 			
 				$artdom = rex_yrewrite::getDomainByArticleId($actArt);						//Domain des Artikel holen
 				$artdommp = intval($artdom->getMountId());									//Prüfung auf Domain-Mountpoints eigrenzen, sofern notwendig
@@ -1324,13 +1332,14 @@ function a1544_seocheckup()
 	
 	//Resultat aufbereiten
 	$result = ($checks > 0) ? round( (float)($checks_ok * 100 / $checks), 0) : 0;
-	$resultcol = "#3BB594";
-		$resultcol = ($result > 70 && $result < 90) ? "#CEB964" : $resultcol;
-		$resultcol = ($result >= 50 && $result <= 70) ? "#F90" : $resultcol;
-		$resultcol = ($result > 30 && $result < 50) ? "#EC7627" : $resultcol;
-		$resultcol = ($result <= 30) ? "#D9534F" : $resultcol;
+	$resultcol = "col1";
+		$resultcol = ($result > 70 && $result < 90) 	? "col2" : $resultcol;
+		$resultcol = ($result >= 50 && $result <= 70) 	? "col3" : $resultcol;
+		$resultcol = ($result > 30 && $result < 50) 	? "col4" : $resultcol;
+		$resultcol = ($result <= 30) 					? "col5" : $resultcol;
+
 	$quick = ($artChanged) ? '<span class="info"><i class="rex-icon fa-exclamation-triangle"></i></span>' : '<span>'.$result.'%</span>';
-	$cnt .= '<script type="text/javascript">$(function(){ seocuqi = $(".seocu-quickinfo"); seocuqi.css({ color: "'.$resultcol.'"}); if ($(".seocu-quickinfo").parents("header.panel-heading").next("div").attr("aria-expanded") == "true") { seocuqi.html("<span>'.$result.'%</span>"); } else { seocuqi.html(\''.$quick.'\'); } $(".seocu-resultbar").css({ background: "'.$resultcol.'"}).animate({ width: "'.$result.'%" }); });</script>';
+	$cnt .= '<script type="text/javascript">$(function(){ seocuqi = $(".seocu-quickinfo"); seocuqi.addClass("seocu-result-'.$resultcol.'"); if ($(".seocu-quickinfo").parents("header.panel-heading").next("div").attr("aria-expanded") == "true") { seocuqi.html("<span>'.$result.'%</span>"); } else { seocuqi.html(\''.$quick.'\'); } $(".seocu-resultbar").addClass("seocu-result-'.$resultcol.'bg").animate({ width: "'.$result.'%" }); });</script>';
 	
 	
 	//Modalnamen setzen (URL oder Artikelname)
@@ -1339,7 +1348,7 @@ function a1544_seocheckup()
 	
 	
 	//Erfolgreiche Tests ausgeben + Detailbutton
-	$detaillink = (!$showchecks && $checks_ok > 0) ? '<li class="seocu-noicon"><div class="seocu-result" style="background: '.$resultcol.';">'.$checks_ok.' '.rex_i18n::msg('a1544_seo_tests_ok').'</div> <a class="seoculist-detail" data-toggle="modal" data-target="#seocu-modal" data-seocu-aid="'.$actArt.'" data-seocu-cid="'.$actClang.'" data-seocu-aname="'.$modalname.'">'.rex_i18n::msg('a1544_seo_details').'</a></li><li>&nbsp;</li>' : '';
+	$detaillink = (!$showchecks && $checks_ok > 0) ? '<li class="seocu-noicon"><div class="seocu-result seocu-result-'.$resultcol.'bg">'.$checks_ok.' '.rex_i18n::msg('a1544_seo_tests_ok').'</div> <a class="seoculist-detail" data-toggle="modal" data-target="#seocu-modal" data-seocu-aid="'.$actArt.'" data-seocu-cid="'.$actClang.'" data-seocu-aname="'.$modalname.'">'.rex_i18n::msg('a1544_seo_details').'</a></li><li>&nbsp;</li>' : '';
 	$cnt 		= str_replace("###detaillink###", $detaillink, $cnt);
 	$analysis	= str_replace("###detaillink###", '', $analysis);
 
@@ -1745,6 +1754,7 @@ function a1544_seocuWDF($content = "")
 		$wc_token = array();
 
 		$words = a1544_countWords($content, 'array');
+
 		foreach ($words as $word):
 			if ($word != ""):
 				if (!in_array($word, $stopwords) && !is_numeric($word) && preg_match("/\p{L}+/i", $word)):			//mind. 1 Buchstabe muss im Wort vorkommen -> Prüfung auch in countWords()
@@ -1781,13 +1791,16 @@ function a1544_seocuWDF($content = "")
 			//WDF
 			$w1 = (log($val+1, 2));
 			$w2 = (log($wc, 2));
-			$wdf = round($w1/$w2, 10);
+			
+			$wdf = ($w2 > 0) ? round($w1/$w2, 10) : 1;						//wenn nur 1 Wort existiert, dann ist WDF = 1 (maximum)
 			$wdf = number_format($wdf, 5, '.', '');
 			
 			//Ergebnis speichern
 			$wdflist[$key]['count'] = $val;
 			$wdflist[$key]['kd'] = $kd;
 			$wdflist[$key]['wdf'] = $wdf;
+			
+			//dump($wdf);
 		
 			$i++; 
 			if ($i == $count) break; 

@@ -1,6 +1,6 @@
 @charset "utf-8";
 /* CSS Document for SEO-CheckUp */
-/* v1.5 */
+/* v1.6 */
 
 .seocu-title { position: relative; padding-right: 35px; }
 .seocu-head { display: block; font-weight: bold !important; margin: 20px 0px 5px; }
@@ -65,6 +65,17 @@ form.seoculist-form a.rotate i, .seocheckup a.rotate i, .seocu-result-refresh.ro
 .seoculist-data .seocu-result, .seoculist-analysis .seocu-result { margin: 0px 5px 2px 0px; }
 	.seoculist-data .seocu-result-info, .seoculist-analysis .seocu-result-info { background: rgba(0,0,0, 0.1); color: rgba(0,0,0, 0.6); }
 .seoculist-data .seocu-resultbar, .seoculist-analysis .seocu-resultbar { display: none; margin: 10px 0px 0px; }
+
+.seocu-result-col1 { color: #3BB594; }
+.seocu-result-col2 { color: #CEB964; }
+.seocu-result-col3 { color: #F90; }
+.seocu-result-col4 { color: #EC7627; }
+.seocu-result-col5 { color: #D9534F; }
+.seocu-result-col1bg { background: #3BB594; }
+.seocu-result-col2bg { background: #CEB964; }
+.seocu-result-col3bg { background: #F90; }
+.seocu-result-col4bg { background: #EC7627; }
+.seocu-result-col5bg { background: #D9534F; }
 
 .seoculist-hideFlesch .seoculist-data .seocu-result-info { display: none; }
 	

@@ -2,7 +2,7 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Verwaltung: Einstellungen (config)
-	v1.5
+	v1.6
 	by Falko Müller @ 2019-2021
 	package: redaxo5
 */
@@ -97,7 +97,7 @@ $config = $this->getConfig('config');
             <dl class="rex-form-group form-group">
                 <dt><label for=""><?php echo $this->i18n('a1544_config_seo'); ?></label></dt>
                 <dd>
-                    <div class="checkbox">
+                    <div class="checkbox toggle">
                     <label for="be_seo">
                         <input name="be_seo" type="checkbox" id="be_seo" value="checked" <?php echo @$config['be_seo']; ?> /> <?php echo $this->i18n('a1544_yes').', '.$this->i18n('a1544_config_seo_info'); ?>
                     </label>
@@ -108,7 +108,7 @@ $config = $this->getConfig('config');
             <dl class="rex-form-group form-group">
                 <dt><label for=""><?php echo $this->i18n('a1544_config_seo_opened'); ?></label></dt>
                 <dd>
-                    <div class="checkbox">
+                    <div class="checkbox toggle">
                     <label for="be_seo_opened">
                         <input name="be_seo_opened" type="checkbox" id="be_seo_opened" value="checked" <?php echo @$config['be_seo_opened']; ?> /> <?php echo $this->i18n('a1544_yes').', '.$this->i18n('a1544_config_seo_opened_info'); ?>
                     </label>
@@ -119,7 +119,7 @@ $config = $this->getConfig('config');
             <dl class="rex-form-group form-group">
                 <dt><label for=""><?php echo $this->i18n('a1544_config_seo_sidebar_priority'); ?></label></dt>
                 <dd>
-                    <div class="checkbox">
+                    <div class="checkbox toggle">
                     <label for="be_seo_sidebar_priority">
                         <input name="be_seo_sidebar_priority" type="checkbox" id="be_seo_sidebar_priority" value="checked" <?php echo @$config['be_seo_sidebar_priority']; ?> /> <?php echo $this->i18n('a1544_yes').', '.$this->i18n('a1544_config_seo_sidebar_priority_info'); ?>
                     </label>
@@ -130,7 +130,7 @@ $config = $this->getConfig('config');
             <dl class="rex-form-group form-group">
                 <dt><label for=""><?php echo $this->i18n('a1544_config_seo_showchecks'); ?></label></dt>
                 <dd>
-                    <div class="radio">
+                    <div class="radio toggle switch">
                     <label for="seomode1">
                         <input name="be_seo_showchecks" type="radio" value="none" id="seomode1" <?php echo (@$config['be_seo_showchecks'] != "checked") ? 'checked' : ''; ?> /> <?php echo $this->i18n('a1544_config_seo_showchecks_info1'); ?>
                     </label>
@@ -145,13 +145,13 @@ $config = $this->getConfig('config');
                 <dt><label for=""><?php echo $this->i18n('a1544_config_seo_culist_cols'); ?></label></dt>
                 <dd>
 
-                    <div class="checkbox">
+                    <div class="checkbox toggle">
                     <label for="be_seo_sidebar_wdf">
                         <input name="be_seo_sidebar_wdf" type="checkbox" id="be_seo_sidebar_wdf" value="checked" <?php echo @$config['be_seo_sidebar_wdf']; ?> /> <?php echo $this->i18n('a1544_config_seo_sidebar_wdf').' '.$this->i18n('a1544_config_seo_culist_checkmustactive'); ?>
                     </label>
                     </div>
 
-                    <div class="checkbox">
+                    <div class="checkbox toggle">
                     <label for="be_seo_sidebar_snippet">
                         <input name="be_seo_sidebar_snippet" type="checkbox" id="be_seo_sidebar_snippet" value="checked" <?php echo @$config['be_seo_sidebar_snippet']; ?> /> <?php echo $this->i18n('a1544_config_seo_sidebar_snippet'); ?>
                     </label>
@@ -183,7 +183,7 @@ $config = $this->getConfig('config');
             <dl class="rex-form-group form-group">
                 <dt><label for=""><?php echo $this->i18n('a1544_config_seo_offlinearts'); ?></label></dt>
                 <dd>
-                    <div class="checkbox">
+                    <div class="checkbox toggle">
                     <label for="be_seo_offlinearts">
                         <input name="be_seo_offlinearts" type="checkbox" id="be_seo_offlinearts" value="checked" <?php echo @$config['be_seo_offlinearts']; ?> /> <?php echo $this->i18n('a1544_yes').', '.$this->i18n('a1544_config_seo_offlinearts_info'); ?>
                     </label>
@@ -194,50 +194,50 @@ $config = $this->getConfig('config');
             <dl class="rex-form-group form-group">
                 <dt><label for=""><?php echo $this->i18n('a1544_config_seo_culist_cols'); ?></label></dt>
                 <dd>
-                    <div class="checkbox">
+                    <div class="checkbox toggle">
                     <label for="be_seo_culist_title">
                         <input name="be_seo_culist_title" type="checkbox" id="be_seo_culist_title" value="checked" <?php echo @$config['be_seo_culist_title']; ?> /> <?php echo $this->i18n('a1544_config_seo_culist_cols_title'); ?>
                     </label>
                     </div>
 
-                    <div class="checkbox">
+                    <div class="checkbox toggle">
                     <label for="be_seo_culist_desc">
                         <input name="be_seo_culist_desc" type="checkbox" id="be_seo_culist_desc" value="checked" <?php echo @$config['be_seo_culist_desc']; ?> /> <?php echo $this->i18n('a1544_config_seo_culist_cols_desc'); ?>
                     </label>
                     </div>
 
-                    <div class="checkbox">
+                    <div class="checkbox toggle">
                     <label for="be_seo_culist_h1">
                         <input name="be_seo_culist_h1" type="checkbox" id="be_seo_culist_h1" value="checked" <?php echo @$config['be_seo_culist_h1']; ?> /> <?php echo $this->i18n('a1544_config_seo_culist_cols_h1'); ?>
                     </label>
                     </div>
 
-                    <div class="checkbox">
+                    <div class="checkbox toggle">
                     <label for="be_seo_culist_h2">
                         <input name="be_seo_culist_h2" type="checkbox" id="be_seo_culist_h2" value="checked" <?php echo @$config['be_seo_culist_h2']; ?> /> <?php echo $this->i18n('a1544_config_seo_culist_cols_h2'); ?>
                     </label>
                     </div>
 
-                    <div class="checkbox">
+                    <div class="checkbox toggle">
                     <label for="be_seo_culist_links">
                         <input name="be_seo_culist_links" type="checkbox" id="be_seo_culist_links" value="checked" <?php echo @$config['be_seo_culist_links']; ?> /> <?php echo $this->i18n('a1544_config_seo_culist_cols_links').' '.$this->i18n('a1544_config_seo_culist_checkmustactive'); ?>
                     </label>
                     </div>
 
-                    <div class="checkbox">
+                    <div class="checkbox toggle">
                     <label for="be_seo_culist_words">
                         <input name="be_seo_culist_words" type="checkbox" id="be_seo_culist_words" value="checked" <?php echo @$config['be_seo_culist_words']; ?> /> <?php echo $this->i18n('a1544_config_seo_culist_cols_words'); ?>
                     </label>
                     </div>
 
-                    <div class="checkbox">
+                    <div class="checkbox toggle">
                     <label for="be_seo_culist_wdf">
                         <input name="be_seo_culist_wdf" type="checkbox" id="be_seo_culist_wdf" value="checked" <?php echo @$config['be_seo_culist_wdf']; ?> /> <?php echo $this->i18n('a1544_config_seo_culist_cols_wdf').' '.$this->i18n('a1544_config_seo_culist_checkmustactive'); ?>
                     </label>
                     </div>
 
 					<!--	macht nicht viel Sinn und belegt viel Platz
-                    <div class="checkbox">
+                    <div class="checkbox toggle">
                     <label for="be_seo_culist_snippet">
                         <input name="be_seo_culist_snippet" type="checkbox" id="be_seo_culist_snippet" value="checked" <?php echo @$config['be_seo_culist_snippet']; ?> /> <?php echo $this->i18n('a1544_config_seo_culist_cols_snippet'); ?>
                     </label>
@@ -257,7 +257,7 @@ $config = $this->getConfig('config');
                 <dl class="rex-form-group form-group">
                     <dt><label for=""><?php echo $this->i18n('a1544_config_seo_checks_selection'); ?></label></dt>
                     <dd>                    
-                        <div class="radio">
+                        <div class="radio toggle switch">
                         <label for="seochecks1">
                             <input name="be_seo_checks_selection" type="radio" value="none" id="seochecks1" <?php echo (@$config['be_seo_checks_selection'] != "checked") ? 'checked' : ''; ?> data-fid="all" /> <?php echo $this->i18n('a1544_config_seo_checks_selection_info1'); ?>
                         </label>
@@ -272,61 +272,61 @@ $config = $this->getConfig('config');
                 <dl class="rex-form-group form-group hiddencontent" id="checks_selection">
                     <dt><label for=""><?php echo $this->i18n('a1544_config_seo_checks_list'); ?></label></dt>
                     <dd>
-                        <div class="checkbox">
+                        <div class="checkbox toggle">
                         <label for="be_seo_checks_titledesc">
                             <input name="be_seo_checks_titledesc" type="checkbox" id="be_seo_checks_titledesc" value="checked" <?php echo @$config['be_seo_checks_titledesc']; ?> /> <?php echo $this->i18n('a1544_config_seo_checks_titledesc'); ?>
                         </label>
                         </div>
     
-                        <div class="checkbox">
+                        <div class="checkbox toggle">
                         <label for="be_seo_checks_opengraph">
                             <input name="be_seo_checks_opengraph" type="checkbox" id="be_seo_checks_opengraph" value="checked" <?php echo @$config['be_seo_checks_opengraph']; ?> /> <?php echo $this->i18n('a1544_config_seo_checks_opengraph'); ?>
                         </label>
                         </div>
     
-                        <div class="checkbox">
+                        <div class="checkbox toggle">
                         <label for="be_seo_checks_url">
                             <input name="be_seo_checks_url" type="checkbox" id="be_seo_checks_url" value="checked" <?php echo @$config['be_seo_checks_url']; ?> /> <?php echo $this->i18n('a1544_config_seo_checks_url'); ?>
                         </label>
                         </div>
     
-                        <div class="checkbox">
+                        <div class="checkbox toggle">
                         <label for="be_seo_checks_header">
                             <input name="be_seo_checks_header" type="checkbox" id="be_seo_checks_header" value="checked" <?php echo @$config['be_seo_checks_header']; ?> /> <?php echo $this->i18n('a1544_config_seo_checks_header'); ?>
                         </label>
                         </div>
     
-                        <div class="checkbox">
+                        <div class="checkbox toggle">
                         <label for="be_seo_checks_content">
                             <input name="be_seo_checks_content" type="checkbox" id="be_seo_checks_content" value="checked" <?php echo @$config['be_seo_checks_content']; ?> /> <?php echo $this->i18n('a1544_config_seo_checks_content'); ?>
                         </label>
                         </div>
     
-                        <div class="checkbox">
+                        <div class="checkbox toggle">
                         <label for="be_seo_checks_links">
                             <input name="be_seo_checks_links" type="checkbox" id="be_seo_checks_links" value="checked" <?php echo @$config['be_seo_checks_links']; ?> /> <?php echo $this->i18n('a1544_config_seo_checks_links'); ?>
                         </label>
                         </div>
     
-                        <div class="checkbox">
+                        <div class="checkbox toggle">
                         <label for="be_seo_checks_images">
                             <input name="be_seo_checks_images" type="checkbox" id="be_seo_checks_images" value="checked" <?php echo @$config['be_seo_checks_images']; ?> /> <?php echo $this->i18n('a1544_config_seo_checks_images'); ?>
                         </label>
                         </div>
     
-                        <div class="checkbox">
+                        <div class="checkbox toggle">
                         <label for="be_seo_checks_density">
                             <input name="be_seo_checks_density" type="checkbox" id="be_seo_checks_density" value="checked" <?php echo @$config['be_seo_checks_density']; ?> /> <?php echo $this->i18n('a1544_config_seo_checks_density'); ?>
                         </label>
                         </div>
     
-                        <div class="checkbox">
+                        <div class="checkbox toggle">
                         <label for="be_seo_checks_wdf">
                             <input name="be_seo_checks_wdf" type="checkbox" id="be_seo_checks_wdf" value="checked" <?php echo @$config['be_seo_checks_wdf']; ?> /> <?php echo $this->i18n('a1544_config_seo_checks_wdf'); ?>
                         </label>
                         </div>
     
-                        <div class="checkbox">
+                        <div class="checkbox toggle">
                         <label for="be_seo_checks_flesch">
                             <input name="be_seo_checks_flesch" type="checkbox" id="be_seo_checks_flesch" value="checked" <?php echo @$config['be_seo_checks_flesch']; ?> /> <?php echo $this->i18n('a1544_config_seo_checks_flesch'); ?>
                         </label>
@@ -341,25 +341,25 @@ $config = $this->getConfig('config');
                 <dl class="rex-form-group form-group">
                     <dt><label for=""><?php echo $this->i18n('a1544_config_seo_removeblock'); ?></label></dt>
                     <dd>
-                        <div class="checkbox">
+                        <div class="checkbox toggle">
                         <label for="be_seo_removeblock_header">
                             <input name="be_seo_removeblock_header" type="checkbox" id="be_seo_removeblock_header" value="checked" <?php echo @$config['be_seo_removeblock_header']; ?> /> <?php echo $this->i18n('a1544_config_seo_removeblock_header'); ?>
                         </label>
                         </div>
     
-                        <div class="checkbox">
+                        <div class="checkbox toggle">
                         <label for="be_seo_removeblock_footer">
                             <input name="be_seo_removeblock_footer" type="checkbox" id="be_seo_removeblock_footer" value="checked" <?php echo @$config['be_seo_removeblock_footer']; ?> /> <?php echo $this->i18n('a1544_config_seo_removeblock_footer'); ?>
                         </label>
                         </div>
     
-                        <div class="checkbox">
+                        <div class="checkbox toggle">
                         <label for="be_seo_removeblock_nav">
                             <input name="be_seo_removeblock_nav" type="checkbox" id="be_seo_removeblock_nav" value="checked" <?php echo @$config['be_seo_removeblock_nav']; ?> /> <?php echo $this->i18n('a1544_config_seo_removeblock_nav'); ?>
                         </label>
                         </div>
     
-                        <div class="checkbox">
+                        <div class="checkbox toggle">
                         <label for="be_seo_hyphenator">
                             <input name="be_seo_hyphenator" type="checkbox" id="be_seo_hyphenator" value="checked" <?php echo @$config['be_seo_hyphenator']; ?> /> <?php echo $this->i18n('a1544_config_seo_hyphenator'); ?>
                         </label>
@@ -493,7 +493,7 @@ $config = $this->getConfig('config');
                 <dl class="rex-form-group form-group">
                     <dt><label for=""><?php echo $this->i18n('a1544_config_seo_offlinekeywords'); ?></label></dt>
                     <dd>
-                        <div class="checkbox">
+                        <div class="checkbox toggle">
                         <label for="be_seo_offlinekeywords">
                             <input name="be_seo_offlinekeywords" type="checkbox" id="be_seo_offlinekeywords" value="checked" <?php echo @$config['be_seo_offlinekeywords']; ?> /> <?php echo $this->i18n('a1544_yes').', '.$this->i18n('a1544_config_seo_offlinekeywords_info'); ?>
                         </label>
@@ -546,7 +546,7 @@ $config = $this->getConfig('config');
                 <dl class="rex-form-group form-group">
                     <dt><label for=""><?php echo $this->i18n('a1544_config_seo_wdf_skipshortwords'); ?></label></dt>
                     <dd>
-                        <div class="checkbox">
+                        <div class="checkbox toggle">
                         <label for="be_seo_wdf_skipshortwords">
                             <input name="be_seo_wdf_skipshortwords" type="checkbox" id="be_seo_wdf_skipshortwords" value="checked" <?php echo @$config['be_seo_wdf_skipshortwords']; ?> /> <?php echo $this->i18n('a1544_yes').', '.$this->i18n('a1544_config_seo_wdf_skipshortwords_info'); ?>
                         </label>

@@ -2,7 +2,7 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Installation
-	v1.5
+	v1.6
 	by Falko Müller @ 2019-2021
 	package: redaxo5
 */
@@ -36,7 +36,7 @@ if (!$this->hasConfig()):
 		'be_seo_culist_words'		=> '',
 		'be_seo_culist_wdf'			=> '',		
 		'be_seo_title_min'			=> '50',
-		'be_seo_title_max'			=> '65',
+		'be_seo_title_max'			=> '60',
 		'be_seo_title_words'		=> '6',
 		'be_seo_desc_min'			=> '130',
 		'be_seo_desc_max'			=> '160',

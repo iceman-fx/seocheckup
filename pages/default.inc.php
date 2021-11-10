@@ -2,7 +2,7 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Verwaltung: Hauptseite (Default)
-	v1.4.5
+	v1.6
 	by Falko Müller @ 2019-2021
 	package: redaxo5
 */
@@ -79,8 +79,8 @@ $addpath = "index.php?page=".$page;
 			<td class="td2"><img src="/assets/addons/<?php echo $mypage; ?>/indicator.gif" width="16" height="16" border="0" id="ajax_loading" style="display:none;" /></td>
 			<td class="td3">
             
-                <div class="input-group">
-                    <input class="form-control sbeg" type="text" name="s_sbeg" id="s_sbeg" maxlength="50" value="<?php echo aFM_maskChar($_SESSION['as_sbeg_seoculist']); ?>" placeholder="Suchbegriff">
+                <div class="input-group sbeg">
+                    <input class="form-control" type="text" name="s_sbeg" id="s_sbeg" maxlength="50" value="<?php echo aFM_maskChar($_SESSION['as_sbeg_seoculist']); ?>" placeholder="Suchbegriff">
                     <span class="input-group-btn">
                         <a class="btn btn-popup form-control-btn" title="Suche zurücksetzen ..." id="s_resetsbeg"><i class="rex-icon fa-close"></i></a>
                     </span>
@@ -163,7 +163,7 @@ $addpath = "index.php?page=".$page;
             	<div class="modal-content">
                 	<div class="modal-header"><div class="modal-title"><?php echo $this->i18n('a1544_seo_modal_title'); ?></div></div>
                     <div class="modal-body seocheckup"><?php echo $this->i18n('a1544_seo_modal_analyze'); ?></div>
-                    <div class="modal-footer"><button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo $this->i18n('a1544_seo_modal_close'); ?></button></div>
+                    <div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal"><?php echo $this->i18n('a1544_seo_modal_close'); ?></button></div>
                 </div>
             </div>
         </div>
