@@ -2,7 +2,7 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Backend-Funktionen (SEO)
-	v1.6
+	v1.6.2
 	by Falko Müller @ 2019-2021
 	package: redaxo5
 */
@@ -69,10 +69,19 @@ $panel .= <<<EOD
             </div>
         </div>
 	</div>
-	<script>$(function(){ var seocubtn = $(".seocheckup a");	$(".seocheckup form").on('submit', function(e){ e.preventDefault(); }); seocubtn.click(function(){ seocubtn.addClass("rotate"); 	
-	urldata = "rex-api-call=a1544_getSeocheckup&keyword="+encodeURIComponent($(".seocheckup input").val())+"&lasturl="+encodeURIComponent(window.location.href);
-	$("#seocheckup").load("", urldata, function(){ seocubtn.removeClass("rotate"); }); }); seocubtn.trigger('click'); 
-	$(document).on("rex:ready", function(){ setTimeout(function(){ seocubtn.trigger('click'); }, 1000); }); 
+	<script>
+	var seocu_articlechanged = false;
+	$(function(){
+		$(".seocheckup form").on('submit', function(e){ e.preventDefault(); });
+		var seocubtn = $(".seocheckup a");
+			seocubtn.click(function(){ 
+				seocubtn.addClass("rotate");
+				artchanged = (seocu_articlechanged ? '&seocucnt=changed' : '');
+				urldata = "rex-api-call=a1544_getSeocheckup&keyword="+encodeURIComponent($(".seocheckup input").val())+"&lasturl="+encodeURIComponent(window.location.href+artchanged);
+				$("#seocheckup").load("", urldata, function(){ seocu_articlechanged = false; seocubtn.removeClass("rotate"); });
+			});
+			seocubtn.trigger('click'); 
+			$(document).on("rex:ready", function(){ setTimeout(function(){ seocubtn.trigger('click'); }, 1000); }); 
 	});
 EOD;
 $panel .= '</script>';
