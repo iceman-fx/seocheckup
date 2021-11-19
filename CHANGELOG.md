@@ -4,6 +4,9 @@ SEO-CheckUp
 Changelog
 ---------
 
+<b>Version 1.6.2</b>
+- Fix: Loadingspinnerproblem in Rex5.13
+
 <b>Version 1.6.1</b>
 - Korrektur DarkMode
 

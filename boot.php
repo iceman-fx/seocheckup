@@ -2,7 +2,7 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Boot (weitere Konfigurationen)
-	v1.6
+	v1.6.2
 	by Falko Müller @ 2019-2021
 	package: redaxo5
 	
@@ -126,7 +126,11 @@ if (rex::isBackend() && rex::getUser()):
 			
 			//bei Contentänderung Info über URL bereitstellen
 			foreach(array("SLICE_ADDED", "SLICE_DELETED", "SLICE_UPDATED") as $e):
-				rex_extension::register($e, function($ep){ $op = $ep->getSubject(); $cnt = "<script>window.location.replace(window.location.href+'&seocucnt=changed');</script>"; return $op.$cnt; }, rex_extension::EARLY);
+				rex_extension::register($e, function($ep){ 
+					$op = $ep->getSubject(); 
+					$cnt = "<script>seocu_articlechanged = true;</script>"; 
+					
+					return $op.$cnt; }, rex_extension::EARLY);
 			endforeach;
 		}, rex_extension::LATE);
 	endif;
