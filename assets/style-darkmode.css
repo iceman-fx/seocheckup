@@ -1,6 +1,26 @@
 @charset "utf-8";
 /* CSS Document for SEO-CheckUp - DarkMode */
-/* v1.6.1 */
+/* v1.6.3 */
+
+
+body.rex-theme-dark .seocu-result-refresh, 
+body.rex-theme-dark .seoculist-data .seocu-result-info, 
+body.rex-theme-dark .seoculist-analysis .seocu-result-info 
+	{ background: #2e3b4a; color: rgba(255, 255, 255, 0.75); }
+
+body.rex-theme-dark .seocu-modal .modal-header { background: inherit; }
+
+body.rex-theme-dark .seocu-result-col5 { color: #e0332e; }
+body.rex-theme-dark .seocu-result-col5bg { background: #e0332e; }
+
+
+body.rex-theme-dark .seocu-quickinfo > span { background: rgba(255, 255, 255, 0.75); color: #000 !important; }
+
+body.rex-theme-dark .seocu-preview-url,
+body.rex-theme-dark .seocu-preview-title,
+body.rex-theme-dark .seocu-preview-desc
+	{ color: rgba(255, 255, 255, 0.75); }
+
 
 
 @media (prefers-color-scheme: dark){
