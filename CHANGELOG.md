@@ -4,6 +4,9 @@ SEO-CheckUp
 Changelog
 ---------
 
+<b>Version 1.6.3</b>
+- DarkMode für manuelle Theme-Auswahl hinzugefügt
+
 <b>Version 1.6.2</b>
 - Fix: Loadingspinnerproblem in Rex5.13
 
