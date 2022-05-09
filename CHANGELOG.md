@@ -3,6 +3,8 @@ SEO-CheckUp
 
 Changelog
 ---------
+<b>Version 1.6.4</b>
+- Bugfixing Rückgabe Analyse-Farbe
 
 <b>Version 1.6.3</b>
 - DarkMode für manuelle Theme-Auswahl hinzugefügt
