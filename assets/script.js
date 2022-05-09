@@ -1,5 +1,5 @@
 // SEO-CheckUp Scripts
-// v1.6
+// v1.6.4
 
 $(function(){
 	$seocu_multicount = 0;
@@ -171,7 +171,7 @@ function refreshSeoculist(btn)
 						resultcol = (result > 30 && result < 50 	? "col4" : resultcol);
 						resultcol = (result <= 30 					? "col5" : resultcol);
 						
-				rhtml = '<div class="seocu-result seocu-result-'+$resultcol+'bg">'+result+'/100</div> <div class="seocu-result seocu-result-info">'+seoculang_modal.legibility+': '+flesch+'</div>';
+				rhtml = '<div class="seocu-result seocu-result-'+resultcol+'bg">'+result+'/100</div> <div class="seocu-result seocu-result-info">'+seoculang_modal.legibility+': '+flesch+'</div>';
 					rhtml += '<br /><a class="seoculist-detail" data-toggle="modal" data-target="#seocu-modal" data-seocu-aid="'+aid+'" data-seocu-url="'+url+'" data-seocu-cid="'+cid+'" data-seocu-aname="'+data["article_name"]+'">'+seoculang_modal.detail+'</a>';
 				dst.find('.seoculist-data').html(rhtml);
 				
