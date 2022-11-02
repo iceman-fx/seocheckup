@@ -2,8 +2,8 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Verwaltung: AJAX Loader - SEO-CheckUp Artikel-Liste
-	v1.5
-	by Falko Müller @ 2019-2021
+	v1.6.5
+	by Falko Müller @ 2019-2022
 	package: redaxo5
 */
 
@@ -95,7 +95,8 @@ $addPath = "index.php?page=content/edit";
 					//$name = strip_tags($name, '<br>');
 					$name = strip_tags($name);
 					
-					$prot = 'http://';
+					$prot = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') || (isset($_SERVER['SERVER_PORT']) && (int)$_SERVER['SERVER_PORT'] === 443) || (isset($_SERVER['REQUEST_SCHEME']) && $_SERVER['REQUEST_SCHEME'] === 'https')) ? 'https://' : 'http://'; 
+					
 					$url = $prot.$_SERVER['SERVER_NAME'].rex_getUrl($eid, $cid);
 						//mit Daten aus yRewrite abgleichen
 						if (rex_addon::get('yrewrite')->isAvailable()):

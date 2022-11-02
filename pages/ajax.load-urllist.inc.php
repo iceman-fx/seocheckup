@@ -2,8 +2,8 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Verwaltung: AJAX Loader - SEO-CheckUp URL-Addon-Liste
-	v1.5
-	by Falko Müller @ 2019-2021
+	v1.6.5
+	by Falko Müller @ 2019-2022
 	package: redaxo5
 */
 
@@ -77,10 +77,12 @@ $db->setQuery($sql.$sql_where.$sql_limit);
                 for ($i=0; $i < $db->getRows(); $i++):
 					$eid = intval($db->getValue('id'));
 					$pid = intval($db->getValue('profile_id'));
-						
-					$prot = 'http://';
+					
+					$prot = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') || (isset($_SERVER['SERVER_PORT']) && (int)$_SERVER['SERVER_PORT'] === 443) || (isset($_SERVER['REQUEST_SCHEME']) && $_SERVER['REQUEST_SCHEME'] === 'https')) ? 'https://' : 'http://'; 
+					$prot = (rex_addon::get('yrewrite')->isAvailable() && rex_yrewrite::isHttps()) ? 'https://' : $prot;
+
 					$url = preg_replace("#^/{1,2}#", "", $db->getValue('url'));
-					$url = $prot.$url;
+					$url = (preg_match("#^//#", $db->getValue('url'))) ? $prot.$url : $prot.str_replace("//", "/", $_SERVER['SERVER_NAME'].'/'.$url);
 					//$d_url = (!empty($url)) ? '<br><span class="seoculist-url">'.$url.'</span>' : $url;
 					
 						
