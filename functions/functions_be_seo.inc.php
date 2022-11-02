@@ -2,8 +2,8 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Backend-Funktionen (SEO)
-	v1.6.2
-	by Falko Müller @ 2019-2021
+	v1.6.5
+	by Falko Müller @ 2019-2022
 	package: redaxo5
 */
 
@@ -235,7 +235,9 @@ function a1544_seocheckup()
 	
     //SEO+HTML-Daten vorbereiten
 	$yr = array();
-	$prot = 'http://';																								//TODO: Protokoll aus Aufruf bereits auslesen, falls kein yRewrite genutzt wird
+
+	$prot = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') || (isset($_SERVER['SERVER_PORT']) && (int)$_SERVER['SERVER_PORT'] === 443) || (isset($_SERVER['REQUEST_SCHEME']) && $_SERVER['REQUEST_SCHEME'] === 'https')) ? 'https://' : 'http://'; 
+
 	$dom = ($checkurl) ? preg_replace('/http[s]?:\/\/(.*?[^\/]*)\/.*/i', '$1', $testurl) : $_SERVER['SERVER_NAME'];
 	$url = ($checkurl) ? $testurl : $prot.str_replace("//", "/", $_SERVER['SERVER_NAME'].preg_replace("#^\.\./#", "/", rex_getUrl($actArt, $actClang)));
 
