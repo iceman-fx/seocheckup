@@ -3,6 +3,9 @@ SEO-CheckUp
 
 Changelog
 ---------
+<b>Version 1.6.6</b>
+- PHP8.1 Anpassungen
+
 <b>Version 1.6.5</b>
 - Bugfixing (https wurde nicht korrekt bei URLs ausgelesen)
 
