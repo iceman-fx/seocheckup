@@ -2,16 +2,16 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Verwaltung: AJAX Loader - SEO-CheckUp URL-Addon-Liste
-	v1.6.5
-	by Falko Müller @ 2019-2022
+	v1.6.6
+	by Falko Müller @ 2019-2023
 	package: redaxo5
 */
 
 //Variablen
 $page = rex_request('page', 'string');
-$subpage = "";																//ggf. manuell setzen
-$subpage2 = rex_be_controller::getCurrentPagePart(3);						//2. Unterebene = dritter Teil des page-Parameters
-	$subpage2 = preg_replace("/.*-([0-9])$/i", "$1", $subpage2);			//Auslesen der Profile-ID
+$subpage = "";																						//ggf. manuell setzen
+$subpage2 = rex_be_controller::getCurrentPagePart(3);												//2. Unterebene = dritter Teil des page-Parameters
+	$subpage2 = (!empty($subpage2)) ? preg_replace("/.*-([0-9])$/i", "$1", $subpage2) : '';
 
 $sbeg = trim(urldecode(rex_request('sbeg')));
 $id = rex_request('id', 'int');
@@ -93,7 +93,7 @@ $db->setQuery($sql.$sql_where.$sql_limit);
 						$seo_data = (!is_array($seo_data)) ? array() : $seo_data;
 					
 					$d_flesch = @$seo_data['flesch'];
-						$d_flesch = (preg_match("/[0-9,.]/", $d_flesch)) ? $d_flesch : 0;
+						$d_flesch = (!empty($d_flesch) && preg_match("/[0-9,.]/", $d_flesch)) ? $d_flesch : 0;
 					
 					$d_title = aFM_maskChar(@$seo_data['seo_title']);
 					$d_desc = aFM_maskChar(@$seo_data['seo_desc']);

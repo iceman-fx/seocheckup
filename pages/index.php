@@ -2,8 +2,8 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Verwaltung: index
-	v1.6.1
-	by Falko Müller @ 2019-2021
+	v1.6.6
+	by Falko Müller @ 2019-2023
 	package: redaxo5
 */
 
@@ -14,11 +14,12 @@
 $mypage = $this->getProperty('package');
 
 $page = rex_request('page', 'string');
-$subpage = rex_be_controller::getCurrentPagePart(2);						//Subpages werden aus page-Pfad ausgelesen (getrennt mit einem Slash, z.B. page=demo_addon/subpage -> 2 = zweiter Teil)
+$subpage = rex_be_controller::getCurrentPagePart(2);												//Subpages werden aus page-Pfad ausgelesen (getrennt mit einem Slash, z.B. page=demo_addon/subpage -> 2 = zweiter Teil)
 	$tmp = rex_request('subpage', 'string');
 	$subpage = (!empty($tmp)) ? $tmp : $subpage;
-$subpage2 = rex_be_controller::getCurrentPagePart(3);						//2. Unterebene = dritter Teil des page-Parameters
-	$subpage2 = preg_replace("/.*-([0-9])$/i", "$1", $subpage2);			//Auslesen der ClangID
+$subpage2 = rex_be_controller::getCurrentPagePart(3);												//2. Unterebene = dritter Teil des page-Parameters
+	$subpage2 = (!empty($subpage2)) ? preg_replace("/.*-([0-9])$/i", "$1", $subpage2) : '';
+
 $func = rex_request('func', 'string');
 
 	
