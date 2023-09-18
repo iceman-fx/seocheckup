@@ -1,6 +1,6 @@
 @charset "utf-8";
 /* CSS Document for SEO-CheckUp */
-/* v1.6 */
+/* v1.6.7 */
 
 .seocu-title { position: relative; padding-right: 35px; }
 .seocu-head { display: block; font-weight: bold !important; margin: 20px 0px 5px; }
@@ -43,11 +43,14 @@ form.seoculist-form a.rotate i, .seocheckup a.rotate i, .seocu-result-refresh.ro
 
 .seocu-scroll { max-height: 250px; overflow: auto; padding: 0px 5px 5px 0px; }
 
+
 .seocu-preview { max-width: 600px; }
-	.seocu-preview > span, .seocu-wdftable > span { display: block; width: auto; height: auto; font-family: Arial,sans-serif; font-style: normal; font-weight: 400; zoom: 1; text-align: left; text-decoration: none; list-style-image: none; list-style-position: outside; list-style-type: none; word-break: break-word; word-wrap: break-word; }
-.seocu-preview-url { color: #3C4043; font-size: 14px; line-height: 1.3; white-space: normal; cursor: pointer; }
-.seocu-preview-title { color: #1a0dab; font-size: 20px; line-height: 1.3; margin: 5px 0px 3px; cursor: pointer; }
-.seocu-preview-desc { color: #3C4043; font-size: 14px; line-height: 1.57; }
+	.seocu-preview-serp > span, .seocu-wdftable > span { display: block; width: auto; height: auto; font-family: Arial,sans-serif; font-style: normal; font-weight: 400; zoom: 1; text-align: left; text-decoration: none; list-style-image: none; list-style-position: outside; list-style-type: none; word-break: break-word; word-wrap: break-word; }
+.seocu-preview-serp { overflow: auto; padding: 0px 0px 10px; }
+    .seocu-preview-serp > span { width: 540px !important; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+    .seocu-preview-serp .seocu-preview-url { color: #4d5156; font-size: 14px; line-height: 1.3; white-space: normal; cursor: pointer; }
+    .seocu-preview-serp .seocu-preview-title { color: #1a0dab; font-size: 20px; line-height: 1.3; margin: 5px 0px 3px; cursor: pointer; }
+    .seocu-preview-serp .seocu-preview-desc { color: #4d5156; font-size: 14px; line-height: 1.58; -webkit-line-clamp: 2; }
 
 
 .seocu-infolistswitch { display: inline-block; cursor: pointer; }
@@ -100,9 +103,11 @@ div.seoculist-preview .seocu-head { font-size: 0.85em; }
 .seocu-modal .seocu-first-head { margin-top: 0px; }
 .seocu-modal .seocheckup li.seocu-detailsonly { display: block; }
 
+/*
 .seocu-modal .seocu-preview-title { font-size: 18px; }
 .seocu-modal .seocu-preview-url { font-size: 13px; min-height: 15px; }
 .seocu-modal .seocu-preview-desc { font-size: 13px; }
+*/
 
 @media (min-width: 768px){
 	.seocu-modal-large .modal-dialog { width: 90%; max-width: 800px;}
