@@ -2,8 +2,8 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Backend-Funktionen (SEO)
-	v1.6.5
-	by Falko Müller @ 2019-2022
+	v1.6.7
+	by Falko Müller @ 2019-2023
 	package: redaxo5
 */
 
@@ -1715,23 +1715,33 @@ function a1544_seocuSnippet($title = "", $desc = "", $url = "", $class = "")
 	//Addon-Konfig einladen
 	$config = rex_addon::get($a1544_mypage)->getConfig('config');
 		$config['be_seo_title_max'] 		= (!isset($config['be_seo_title_max']))			? '65' : $config['be_seo_title_max'];
+        $config['be_seo_desc_max'] 		    = (!isset($config['be_seo_desc_max']))			? '160' : $config['be_seo_desc_max'];
 
-	//SEO-Vars aufbereiten	
-	$title = (mb_strlen(utf8_decode($title)) > $config['be_seo_title_max']) ? mb_substr($title, 0, ($config['be_seo_title_max']-3)).' ...' : $title;
+
+	//SEO-Vars aufbereiten
+	//$title = (mb_strlen(utf8_decode($title)) > $config['be_seo_title_max']) ? mb_substr($title, 0, ($config['be_seo_title_max']-3)).' ...' : $title;
 	$title = aFM_maskChar($title);
-	$desc = aFM_maskChar(aFM_revChar($desc));
+    
+	$desc = aFM_revChar($desc);
+        //$desc = preg_replace('/[^ ]*$/', '', substr($desc, 0, $config['be_seo_desc_max']) );
+    $desc = aFM_maskChar($desc);
 	
-	$urlsep = " › ";
-	$url = preg_replace("#^http[s]?://#i", "", $url);
-	$url = str_replace("/", $urlsep, $url);
-	$url = trim(preg_replace("#".$urlsep."$#i", "", $url));
+    
+	$urlsep = " › ";	
+    $prot = preg_replace("#^(http[s]?://).*#i", "$1", $url);
+    $url = preg_replace("#^http[s]?://#i", "", $url);
+	   $url = str_replace("/", $urlsep, $url);
+	$url = $prot.trim(preg_replace("#".$urlsep."$#i", "", $url));
+    
 	
 	//Snippet erstellen
     $snip = '<div class="seocu-preview '.$class.'">';
 		$snip .= '<span class="seocu-head">'.rex_i18n::msg('a1544_seo_preview').'</span>';
-		$snip .= '<span class="seocu-preview-url">'.$url.'</span>';
-		$snip .= '<span class="seocu-preview-title">'.$title.'</span>';
-		$snip .= '<span class="seocu-preview-desc">'.$desc.'</span>';
+        $snip .= '<div class="seocu-preview-serp">';
+		  $snip .= '<span class="seocu-preview-url">'.$url.'</span>';
+		  $snip .= '<span class="seocu-preview-title">'.$title.'</span>';
+		  $snip .= '<span class="seocu-preview-desc">'.$desc.'</span>';
+        $snip .= '</div>';
     $snip .= '</div>';
 	
 	return $snip;
