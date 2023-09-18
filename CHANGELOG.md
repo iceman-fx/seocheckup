@@ -3,6 +3,9 @@ SEO-CheckUp
 
 Changelog
 ---------
+<b>Version 1.6.7</b>
+- Aktualisierung SERP-Snippet
+
 <b>Version 1.6.6</b>
 - PHP8.1 Anpassungen
 
