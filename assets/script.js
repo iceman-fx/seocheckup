@@ -1,5 +1,5 @@
 // SEO-CheckUp Scripts
-// v1.6.4
+// v1.8.1
 
 $(function(){
 	$seocu_multicount = 0;
