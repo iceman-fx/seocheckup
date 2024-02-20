@@ -2,8 +2,8 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Verwaltung: Einstellungen (config)
-	v1.6
-	by Falko Müller @ 2019-2021
+	v1.6.8
+	by Falko Müller @ 2019-2024
 	package: redaxo5
 */
 
@@ -249,9 +249,8 @@ $config = $this->getConfig('config');
             
             <dl class="rex-form-group form-group"><dt></dt></dl>
             
-            
-            <legend><?php echo $this->i18n('a1544_subheader_config2'); ?> &nbsp; (<a href="javascript:;" onclick="jQuery('#options3').toggle();"><?php echo $this->i18n('a1544_showbox'); ?></a>)</legend>
-            <div class="hiddencontent" id="options3">                
+			<legend><?php echo $this->i18n('a1544_subheader_config2'); ?> &nbsp; (<a class="cur-p" data-toggle="collapse" data-target="#options3"><?php echo $this->i18n('a1544_showbox'); ?></a>)</legend>
+            <div class="collapse" id="options3">                
                 
                 <!-- Auswahl Prüfungen -->
                 <dl class="rex-form-group form-group">
@@ -508,8 +507,8 @@ $config = $this->getConfig('config');
             
             
             <!-- Einstellungen WDF -->
-            <legend><?php echo $this->i18n('a1544_subheader_config4'); ?> &nbsp; (<a href="javascript:;" onclick="jQuery('#options4').toggle();"><?php echo $this->i18n('a1544_showbox'); ?></a>)</legend>
-            <div class="hiddencontent" id="options4">                
+			<legend><?php echo $this->i18n('a1544_subheader_config4'); ?> &nbsp; (<a class="cur-p" data-toggle="collapse" data-target="#options4"><?php echo $this->i18n('a1544_showbox'); ?></a>)</legend>
+            <div class="collapse" id="options4">                
                 
                 <dl class="rex-form-group form-group">
                     <dt><label for=""><?php echo $this->i18n('a1544_config_seo_wdf_stopwords'); ?></label></dt>

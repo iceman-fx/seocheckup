@@ -2,8 +2,8 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Verwaltung: index
-	v1.6.6
-	by Falko Müller @ 2019-2023
+	v1.6.8
+	by Falko Müller @ 2019-2024
 	package: redaxo5
 */
 
@@ -71,6 +71,9 @@ td.name { position: relative; padding-right: 20px !important; }
 .form_isoffline { color: #A00; }
 .addonversion { margin-left: 7px; }
 .radio label, .checkbox label { margin-right: 20px; }
+.spacerline { display: block; height: 7px; margin-bottom: 15px; }
+.cur-p { cursor: pointer; }
+.cur-d { cursor: default; }
 
 .form_column, .datepicker-widget { display: inline-block; vertical-align: middle; }
 	.form_column-spacer, .datepicker-widget-spacer { padding: 0px 5px; }
