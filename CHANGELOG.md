@@ -3,6 +3,12 @@ SEO-CheckUp
 
 Changelog
 ---------
+<b>Version 1.6.8</b>
+- unnötige API-Requests vermeiden, wenn im Gridblock editiert wird
+- Bugfixing (Fokus-Keyword mit dt. Umlauten wurde teilweise nicht korrekt geprüft)
+- Bugfixing (Prüfung der Position des Fokus-Keyword von "exakt" auf "Teilstring" umgestellt)
+- kleinere optische Anpassungen
+
 <b>Version 1.6.7</b>
 - Aktualisierung SERP-Snippet
 
