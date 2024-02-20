@@ -2,8 +2,8 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Backend-Funktionen (SEO)
-	v1.6.7
-	by Falko Müller @ 2019-2023
+	v1.6.8
+	by Falko Müller @ 2019-2024
 	package: redaxo5
 */
 
@@ -81,7 +81,10 @@ $panel .= <<<EOD
 				$("#seocheckup").load("", urldata, function(){ seocu_articlechanged = false; seocubtn.removeClass("rotate"); });
 			});
 			seocubtn.trigger('click'); 
-			$(document).on("rex:ready", function(){ setTimeout(function(){ seocubtn.trigger('click'); }, 1000); }); 
+			$(document).on("rex:ready", function(){ setTimeout(function(){ 
+				test = $("div.panel-body div#gridblockModal");
+				if (test.length <= 0) { seocubtn.trigger('click'); }
+			}, 1000); });
 	});
 EOD;
 $panel .= '</script>';
@@ -842,14 +845,18 @@ function a1544_seocheckup()
 				//title
 				$kwlist = $kwslist = "";
 				foreach ($kws as $kw):
+					$c_kw = aFM_convertUmlauts($kw);
+					$c_st = aFM_convertUmlauts($title_raw);
 				
-					if (mb_stristr($title_raw, $kw)):
+					if (mb_stristr($c_st, $c_kw)):
 						//Vorhanden
 						//Keyword ist max. das 3.Wort --> später evtl. definierbar machen
 						if (count($title_words) > 0):
 							$found = false;
 							for ($w=0; $w<3; $w++):
-								if (mb_strtolower($title_words[$w]) == $kw) { $found = true; }
+								//if (mb_strtolower(aFM_convertUmlauts($title_words[$w])) == $c_kw) { $found = true; }						//hier erfolgt ein exakter Wortvergleich (keine Teilmenge!)
+									
+								if (mb_stristr(aFM_convertUmlauts($title_words[$w]), $c_kw)) { $found = true; }
 							endfor;
 							
 							if (!$found):
@@ -895,11 +902,13 @@ function a1544_seocheckup()
 				//desc
 				$kwlist = $kwslist = "";
 				foreach ($kws as $kw):
+					$c_kw = aFM_convertUmlauts($kw);
+					$c_st = aFM_convertUmlauts($desc_raw);
 				
-					if (mb_stristr($desc_raw, $kw)):
+					if (mb_stristr($c_st, $c_kw)):
 						//Vorhanden
 						//Keyword in den ersten 120 Zeichen gefunden --> später evtl. definierbar machen !!!
-						if (!mb_stristr(mb_substr($desc_raw, 0,120), $kw)):
+						if (!mb_stristr(mb_substr($c_st, 0,120), $c_kw)):
 							$kwslist .= '<dl><dt>KW</dt><dd>'.$kw.'</dd></dl>';
 						endif;
 						
@@ -947,8 +956,10 @@ function a1544_seocheckup()
 				//H1
 				$kwlist = $kwslist = "";
 				foreach ($kws as $kw):
+					$c_kw = aFM_convertUmlauts($kw);
+					$c_st = aFM_convertUmlauts($h1cnt);
 				
-					if (!mb_stristr($h1cnt, $kw)):
+					if (!mb_stristr($c_st, $c_kw)):
 						$kwlist .= '<dl><dt>KW</dt><dd>'.$kw.'</dd></dl>';
 					endif;
 					
@@ -973,10 +984,12 @@ function a1544_seocheckup()
 				if (count($hx) > 0):
 					$kwlist = $kwslist = "";
 					foreach ($kws as $kw):
+						$c_kw = aFM_convertUmlauts($kw);
+						//$c_st = aFM_convertUmlauts($h1cnt);
 					
 						$found = 0;
 						foreach ($hx as $h):
-							if (mb_stristr($h, $kw)) { $found++; }
+							if (mb_stristr(aFM_convertUmlauts($h), $c_kw)) { $found++; }
 						endforeach;
 
 						if ($found < 2):
@@ -1006,14 +1019,16 @@ function a1544_seocheckup()
 			
 			
 			//Content
-			$kcountbody = (float)preg_match_all("/".$keyword."/iU", $artcnt);				//für Keyword-Density bei Single-Keyword !!! (U-Modifier, da sonst greedy)
+			$kcountbody = (float)preg_match_all("/".aFM_convertUmlauts($keyword)."/iU", aFM_convertUmlauts($artcnt));				//für Keyword-Density bei Single-Keyword !!! (U-Modifier, da sonst greedy)
 			if ($config['be_seo_checks_content']):
 			
 				//content (Länge)
 				$kwlist = $kwslist = $kwoklist = "";
 				foreach ($kws as $kw):
+					$c_kw = aFM_convertUmlauts($kw);
+					$c_st = aFM_convertUmlauts($artcnt);
 				
-					$kcountbody = (float)preg_match_all("/".$kw."/iU", $artcnt);
+					$kcountbody = (float)preg_match_all("/".$c_kw."/iU", $c_st);
 
 					if ($kcountbody > 0):
 						$kwoklist .= '<dl><dt>'.$kcountbody.'x</dt><dd>'.$kw.'</dd></dl>';
@@ -1023,7 +1038,9 @@ function a1544_seocheckup()
 						if (count($content_words) > 0):
 							$found = false;
 							for ($w=0; $w<400; $w++):
-								if (isset($content_words[$w]) && mb_strtolower($content_words[$w]) == $kw) { $found = true; }
+								//if (isset($content_words[$w]) && mb_strtolower(aFM_convertUmlauts($content_words[$w])) == $c_kw) { $found = true; }						//hier erfolgt ein exakter Wortvergleich (keine Teilmenge!)
+									
+								if (isset($content_words[$w]) && mb_stristr(aFM_convertUmlauts($content_words[$w]), $c_kw)) { $found = true; }
 							endfor;
 
 							if (!$found):
@@ -1079,15 +1096,17 @@ function a1544_seocheckup()
 			
 				$kwlist = $kwslist = "";
 				foreach ($kws as $kw):
+					$c_kw = aFM_convertUmlauts($kw);
+					$c_st = aFM_convertUmlauts($url);
 				
-					if (!mb_stristr($url, $kw)):
+					if (!mb_stristr($c_st, $c_kw)):
 						//kein Vorkommen = fehlt
 						$kwlist .= '<dl><dt>KW</dt><dd>'.$kw.'</dd></dl>';
 						
 					else:
 						//Vorhanden
 						//mehrfaches Vorkommen prüfen
-						if (mb_substr_count($url, $kw) > 1):
+						if (mb_substr_count($c_st, $c_kw) > 1):								//--> check auf korrekte Prüfung bei Großbuchstaben !!!
 							$kwslist .= '<dl><dt>KW</dt><dd>'.$kw.'</dd></dl>';
 						endif;
 					endif;
@@ -1130,17 +1149,19 @@ function a1544_seocheckup()
 			
 				$kwlist = $kwslist = $kwsslist = "";
 				foreach ($kws as $kw):
+					$c_kw = aFM_convertUmlauts($kw);
+					//$c_st = aFM_convertUmlauts($url);
 				
 					$found_alt = $found_title = $found_src = 0;
 					foreach ($imgs as $img):
 						preg_match("/alt\s*=\s*[\"']{1}([^\"']*)[\"']{1}/i", $img, $matches);
-						if (isset($matches[1]) && mb_stristr($matches[1], $kw)) { $found_alt++; }
+						if (isset($matches[1]) && mb_stristr(aFM_convertUmlauts($matches[1]), $c_kw)) { $found_alt++; }
 							
 						preg_match("/title\s*=\s*[\"']{1}([^\"']*)[\"']{1}/i", $img, $matches);
-						if (isset($matches[1]) && mb_stristr($matches[1], $kw)) { $found_title++; }
+						if (isset($matches[1]) && mb_stristr(aFM_convertUmlauts($matches[1]), $c_kw)) { $found_title++; }
 	
 						preg_match("/src\s*=\s*[\"']{1}([^\"']*)[\"']{1}/i", $img, $matches);
-						if (isset($matches[1]) && mb_stristr($matches[1], $kw)) { $found_src++; }
+						if (isset($matches[1]) && mb_stristr(aFM_convertUmlauts($matches[1]), $c_kw)) { $found_src++; }
 					endforeach;
 				
 					//ALT
@@ -1350,7 +1371,7 @@ function a1544_seocheckup()
 		$resultcol = ($result <= 30) 					? "col5" : $resultcol;
 
 	$quick = ($artChanged) ? '<span class="info"><i class="rex-icon fa-exclamation-triangle"></i></span>' : '<span>'.$result.'%</span>';
-	$cnt .= '<script type="text/javascript">$(function(){ seocuqi = $(".seocu-quickinfo"); seocuqi.addClass("seocu-result-'.$resultcol.'"); if ($(".seocu-quickinfo").parents("header.panel-heading").next("div").attr("aria-expanded") == "true") { seocuqi.html("<span>'.$result.'%</span>"); } else { seocuqi.html(\''.$quick.'\'); } $(".seocu-resultbar").addClass("seocu-result-'.$resultcol.'bg").animate({ width: "'.$result.'%" }); });</script>';
+	$cnt .= '<script type="text/javascript">$(function(){ seocuqi = $(".seocu-quickinfo"); seocuqi.removeClass("seocu-result-col1 seocu-result-col2 seocu-result-col3 seocu-result-col4 seocu-result-col5").addClass("seocu-result-'.$resultcol.'"); if ($(".seocu-quickinfo").parents("header.panel-heading").next("div").attr("aria-expanded") == "true") { seocuqi.html("<span>'.$result.'%</span>"); } else { seocuqi.html(\''.$quick.'\'); } $(".seocu-resultbar").removeClass("seocu-result-col1bg seocu-result-col2bg seocu-result-col3bg seocu-result-col4bg seocu-result-col5bg").addClass("seocu-result-'.$resultcol.'bg").animate({ width: "'.$result.'%" }); });</script>';
 	
 	
 	//Modalnamen setzen (URL oder Artikelname)

@@ -2,8 +2,8 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Globale-Funktionen
-	v1.4.1
-	by Falko Müller @ 2019-2021
+	v1.6.8
+	by Falko Müller @ 2019-2024
 	package: redaxo5
 */
 
@@ -24,6 +24,7 @@ if (!function_exists('aFM_bindAjax')):
 		return $op;
 	}
 endif;
+
 
 
 //Inhalte aufbereiten
@@ -48,6 +49,7 @@ if (!function_exists('aFM_getMonthName')):
 		return ($int > 0) ? $m[$int] : $int;
 	}
 endif;
+
 if (!function_exists('aFM_fillNull')):
 	function aFM_fillNull($str = "", $stellen = 2)
 	{	//füllt den Wert mit führenden nullen auf
@@ -55,6 +57,7 @@ if (!function_exists('aFM_fillNull')):
 		return (!empty($str) || $str == 0) ? str_pad($str, $stellen, 0, STR_PAD_LEFT) : $str;
 	}
 endif;
+
 if (!function_exists('aFM_arrayString')):
 	function aFM_arrayString($str = "", $out = 'array', $del = '#')
 	{	//bereitet Array-String als Ausgabe oder Array auf
@@ -78,6 +81,17 @@ if (!function_exists('aFM_arrayString')):
 	}
 endif;
 
+if (!function_exists('aFM_convertUmlauts')):
+	function aFM_convertUmlauts($str)
+	{	//wandelt deutsche Umlaute in Übersetzung um
+		//Aufruf: $var = aFM_convertUmlauts($str);		
+		$s = array("ä", "ö", "ü", "Ä", "Ö", "Ü", "ß");
+    	$r = array("ae", "oe", "ue", "Ae", "Oe", "Ue", "ss");
+		return str_replace($s, $r, $str);
+	}
+endif;
+
+
 
 //Maskierungen + Tags
 if (!function_exists('aFM_maskChar')):
@@ -90,6 +104,7 @@ if (!function_exists('aFM_maskChar')):
 		return $str;
 	}
 endif;
+
 if (!function_exists('aFM_maskArray')):
 	function aFM_maskArray($arr)
 	{	if (is_array($arr)):
@@ -99,18 +114,21 @@ if (!function_exists('aFM_maskArray')):
 		return $arr;
 	}
 endif;
+
 if (!function_exists('aFM_maskSingleQuote')):
 	function aFM_maskSingleQuote($str)
 	{	//Ersetzt Single-Quotes: '
 		return str_replace("'", "&#039;", $str);
 	}
 endif;
+
 if (!function_exists('aFM_maskDoubleQuote')):
 	function aFM_maskDoubleQuote($str)
 	{	//Ersetzt Double-Quotes: "
 		return str_replace('"', "&quot;", $str);
 	}
 endif;
+
 if (!function_exists('aFM_maskSql')):
 	function aFM_maskSql($str)
 	{	//Maskiert desn Wert für DB-Abfrage
@@ -126,6 +144,7 @@ if (!function_exists('aFM_unmaskQuotes')):
 		return str_replace(array("&quot;", "&#039;"), array('"', "'"), $str);
 	}
 endif;
+
 if (!function_exists('aFM_revChar')):
 	function aFM_revChar($str)
 	{	//Demaskiert folgende Sonderzeichen: & " < > '
@@ -159,12 +178,14 @@ if (!function_exists('aFM_blockTags')):
 		return $str;
 	}
 endif;
+
 if (!function_exists('aFM_noQuote')):
 	function aFM_noQuote($str)
 	{	//Ersetzt Double-Quotes: "
 		return str_replace('"', "'", $str);
 	}
 endif;
+
 if (!function_exists('aFM_textOnly')):
 	function aFM_textOnly($str, $nobreak = false)
 	{	//Entfernt HTML-Tags, Zeilenumbrüche und Tabstops
@@ -182,6 +203,7 @@ if (!function_exists('aFM_textOnly')):
 endif;
 
 
+
 //Strip-Tags Funktion, zur besserern Entfernung von Tags ab PHP 5.3.4
 if (!function_exists('aFM_stripTags')):
 	function aFM_stripTags($str, $allowed_tags = array())
@@ -197,6 +219,7 @@ if (!function_exists('aFM_stripTags')):
 endif;
 
 
+
 //Wandelt AJAX-Parameter wieder korrekt in UTF8 um
 if (!function_exists('aFM_utf8urldecode')):
 	function aFM_utf8urldecode($str) {
@@ -204,6 +227,7 @@ if (!function_exists('aFM_utf8urldecode')):
 		return html_entity_decode($str, null, 'UTF-8');
 	} 
 endif;
+
 
 
 //Texte kürzen inkl. Beachtung von HTML-Tags
