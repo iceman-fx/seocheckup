@@ -3,6 +3,10 @@ SEO-CheckUp
 
 Changelog
 ---------
+<b>Version 1.6.9</b>
+- Ausgabe der Anzahl der gefundenen Bilder
+- Bugfixing (Bold/Strong-Länge wurde falsch berechnet)
+
 <b>Version 1.6.8</b>
 - unnötige API-Requests vermeiden, wenn im Gridblock editiert wird
 - Bugfixing (Fokus-Keyword mit dt. Umlauten wurde teilweise nicht korrekt geprüft)
