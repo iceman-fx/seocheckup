@@ -2,7 +2,7 @@
 /*
 	Redaxo-Addon SEO-CheckUp
 	Backend-Funktionen (SEO)
-	v1.6.8
+	v1.6.9
 	by Falko Müller @ 2019-2024
 	package: redaxo5
 */
@@ -439,7 +439,7 @@ function a1544_seocheckup()
 
 		preg_match_all("/<(b\b|strong\b)[^>]*>(.*)<\/(b|strong)>/isU", $artcnt_tags, $matches);																					//alle strong-tags holen (<strong>) --> U-Modifier, da sonst greedy
 			$bolds = (isset($matches[2])) ? $matches[2] : array();																												// \b = Nichtwortzeichen als Abgrenzung
-
+			$bolds = array_map(function($bold){ return aFM_blockTags($bold); }, $bolds);
 
 		preg_match_all("/<img([\w\W]+?)\/>/is", $artcnt_tags, $matches);																										//alle Bilder holen --> kein U-Modifier, da bereits non-greedy
 			$imgs = (isset($matches[1])) ? $matches[1] : array();																												//alt: /<img [^\/>]*\/>/isU
@@ -696,6 +696,7 @@ function a1544_seocheckup()
 				//Inhalt prüfen
 				foreach ($bolds as $bold):
 					$bold = trim($bold);
+					
 					if (empty($bold)) { $bempty++; }
 	
 					$tmp = mb_strlen(utf8_decode($bold));
@@ -703,6 +704,12 @@ function a1544_seocheckup()
 						$bcount++;
 						$boldlist .= '<dl><dt>'.$tmp.' '.rex_i18n::msg('a1544_seo_bolds_char').'</dt><dd class="'.$col_nok.'">'.$bold.'</dd></dl>';
 					endif;
+					
+					/*
+					//dump-Ausgabe
+					$bcount++;
+					$boldlist .= '<dl><dt></dt><dd class="'.$col_nok.'">'.$bold.'</dd></dl>';
+					*/
 				endforeach;
 				
 				//Info: Anzahl
@@ -731,7 +738,7 @@ function a1544_seocheckup()
 			if ($berror):
 				$cnt .= $bcnt;
 			else:
-				$cnt .= '<li class="'.$css_detailsonly.'"><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_bolds_ok').'</li>';											//Keine probleme mit bold-Tags gefunden
+				$cnt .= '<li class="'.$css_detailsonly.'"><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_bolds_ok').'</li>';											//Keine Probleme mit bold-Tags gefunden
 				$cnt .= (count($bolds) <= 0) ? '<li class="'.$css_detailsonly.$css_sub.'"><i class="rex-icon '.$icon_info.'"></i>'.rex_i18n::msg('a1544_seo_bolds_short').'</li>' : '';			//Empfehlung: bold-Tags nutzen
 				$checks_ok++;
 			endif;
@@ -750,6 +757,8 @@ function a1544_seocheckup()
 				
 				$imglist = '';
 				foreach ($imgs as $img):
+					//$cnt .= "<li>>> $img</li>";					//dump-Ausgabe					
+				
 					preg_match("/alt\s*=\s*[\"']{1}([^\"']*)[\"']{1}/i", $img, $matches);
 					if (!isset($matches[1]) || empty($matches[1])):
 						$acount++;
@@ -759,10 +768,12 @@ function a1544_seocheckup()
 					endif;
 				endforeach;
 				
+				$cnt .= '<li class="'.$css_detailsonly.'"><i class="rex-icon '.$icon_ok.'"></i>'.str_replace("###count###", count($imgs), rex_i18n::msg('a1544_seo_img_ok')).'</li>';
+				
 				if ($acount > 0):
-					$cnt .= '<li><i class="rex-icon '.$icon_nok.'"></i>'.a1544_kwInfobox( str_replace("###count###", $acount, rex_i18n::msg('a1544_seo_img_alt_nok')), $imglist).'</li>';
+					$cnt .= '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_nok.'"></i>'.a1544_kwInfobox( str_replace("###count###", $acount, rex_i18n::msg('a1544_seo_img_alt_nok')), $imglist).'</li>';
 				else:
-					$cnt .= '<li class="'.$css_detailsonly.'"><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_img_ok').'</li>';
+					$cnt .= '<li class="'.$css_sub.' '.$css_detailsonly.'"><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_img_alt_ok').'</li>';
 					$checks_ok++;
 				endif;
 				$checks++;
