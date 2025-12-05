@@ -773,7 +773,6 @@ function a1544_seocheckup()
 				if ($acount > 0):
 					$cnt .= '<li class="'.$css_sub.'"><i class="rex-icon '.$icon_nok.'"></i>'.a1544_kwInfobox( str_replace("###count###", $acount, rex_i18n::msg('a1544_seo_img_alt_nok')), $imglist).'</li>';
 				else:
-					$cnt .= '<li class="'.$css_sub.' '.$css_detailsonly.'"><i class="rex-icon '.$icon_ok.'"></i>'.rex_i18n::msg('a1544_seo_img_alt_ok').'</li>';
 					$checks_ok++;
 				endif;
 				$checks++;
@@ -1862,5 +1861,6 @@ function a1544_seocuWDF($content = "")
 	
 	return $wdflist;	
 }
+
 
 ?>
