@@ -3,6 +3,9 @@ SEO-CheckUp
 
 Changelog
 ---------
+<b>Version 1.7.0</b>
+- Bugfixing (Scrolling des Modalfenster war nicht mehr möglich; fehlerhafte Übersetzung)
+
 <b>Version 1.6.9</b>
 - Ausgabe der Anzahl der gefundenen Bilder
 - Bugfixing (Bold/Strong-Länge wurde falsch berechnet)

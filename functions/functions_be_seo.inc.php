@@ -309,7 +309,7 @@ function a1544_seocheckup()
 				
 		//Redaxo-Artikel bzw. Content holen
 		if (!$hasRedirect && !$has404):
-			$artcnt_raw = (empty($artcnt_raw)) ? preg_replace("/^[\s\S]*<body[^\>]*>([\s\S]*)<\/body>[\s\S]*$/im", "$1", $html) : $artcnt_raw;				
+			$artcnt_raw = (empty($artcnt_raw)) ? preg_replace("/^[\s\S]*<body[^\>]*>([\s\S]*)<\/body>[\s\S]*$/im", "$1", $html) : $artcnt_raw;
 		endif;
 		rex::setProperty('redaxo', true);
 		

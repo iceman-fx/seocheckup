@@ -1,6 +1,6 @@
 @charset "utf-8";
 /* CSS Document for SEO-CheckUp */
-/* v1.6.7 */
+/* v1.7.0 */
 
 .seocu-title { position: relative; padding-right: 35px; }
 .seocu-head { display: block; font-weight: bold !important; margin: 20px 0px 5px; }
@@ -96,8 +96,8 @@ div.seoculist-preview > span { opacity: 0.85; }
 div.seoculist-preview .seocu-head { font-size: 0.85em; }
 
 
-.seocu-modal { background: rgba(40,53,66, 0.4); }
-.seocu-modal .modal-header { background: #dfe3e9; line-height: 1.25; padding: 10px 15px; font-size: 16px; }
+.seocu-modal { background: rgba(40,53,66, 0.4); max-height: 100%; }
+.seocu-modal .modal-header { /*background: #dfe3e9;*/ line-height: 1.25; padding: 10px 15px; font-size: 16px; }
 .seocu-modal .modal-title { display: inline; }
 .seocu-modal .seocu-status-head { margin-top: 0px; margin-bottom: 15px; }
 .seocu-modal .seocu-first-head { margin-top: 0px; }

@@ -101,9 +101,10 @@ a1544_seo_bolds_empty = Es gibt leere bold/strong-Tags auf der Seite
 a1544_seo_bolds_length = Einige bold/strong-Tags sind <span class="seocu-tooltip" title="Empfehlung: max. 70 Zeichen">zu lang</span>
 a1544_seo_bolds_char = Z.
 
-a1544_seo_img_ok = Alle Bilder besitzen Alternativtexte
-a1544_seo_img_alt_nok = ###count### Bild(er) ohne Alternativtext gefunden
+a1544_seo_img_ok = Es wurden Bilder gefunden
 a1544_seo_img_nok = Es sind keine Bilder vorhanden
+a1544_seo_img_alt_ok = Alle Bilder besitzen Alternativtexte
+a1544_seo_img_alt_nok = ###count### Bild(er) ohne Alternativtext gefunden
 
 a1544_seo_flesch = Flesch-Reading Wert: ###score### (###result### lesbarer Text)
 a1544_seo_flesch_grade1 = sehr leicht
